@@ -1,0 +1,1177 @@
+<!doctype html>
+
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rajdeep Mukherjee — Multidisciplinary AI/ML Researcher</title>
+    <meta
+      name="description"
+      content="Rajdeep Mukherjee — CS @ UMich. AI/ML researcher & engineer building agentic LLMs, memory‑augmented multimodal systems, and reliable computer‑using agents."
+    />
+
+    <!-- Open Graph / Twitter cards -->
+    <meta property="og:title" content="Rajdeep Mukherjee — Multidisciplinary AI/ML Researcher" />
+    <meta
+      property="og:description"
+      content="CS @ UMich. AI/ML researcher & engineer building agentic LLMs, memory‑augmented multimodal systems, and reliable computer‑using agents."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rajdeep.io/" />
+    <meta property="og:image" content="/assets/og-card.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Tailwind CDN for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Import high‑quality typefaces. Space Grotesk provides modern,
+         geometric headings while Inter offers a readable body font. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Base colour variables modelled on a dark palette. The colours here
+         loosely mirror the muted browns and blues from Minh Pham’s site. -->
+    <style>
+      :root {
+        --bg: #0d0d0d;
+        --surface: #1a1a1a;
+        --text: #e5e5e5;
+        --muted: #8f8f8f;
+        --accent: #b7ab98;
+        --primary: #4285f4;
+      }
+      html.dark {
+        color-scheme: dark;
+      }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+      }
+
+      /* Use Space Grotesk for all headings to achieve a refined geometric look */
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: -0.01em;
+      }
+      /* Simple animation for each character to drop into view, inspired by
+         the reference hero heading. Each character starts translated
+         downward and rotated slightly; the .in-view class resets those
+         transforms. */
+      .char {
+        display: inline-block;
+        transform: translateY(100%) rotateX(20deg);
+        transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s;
+        opacity: 0;
+      }
+      .char.in-view {
+        transform: translateY(0) rotateX(0);
+        opacity: 1;
+      }
+      .line {
+        display: block;
+        overflow: hidden;
+      }
+
+      /* Preloader styles */
+      #page-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* Dark radial gradient with full opacity so the underlying page isn't visible */
+        background: radial-gradient(circle at 50% 50%, rgba(10, 15, 30, 1), rgba(2, 5, 14, 1));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+      }
+      #page-loading.hidden {
+        display: none;
+      }
+      /* Canvas for the neural network loader fills the overlay */
+      #nn-loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #nn-loading-percent {
+        margin-top: 1.5rem;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+      #start-button {
+        margin-top: 2rem;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid var(--muted);
+        color: var(--text);
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        cursor: pointer;
+        display: none;
+        background: transparent;
+        transition: background 0.2s;
+      }
+      #start-button:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Reveal animations for sections and elements. Initially hidden with
+         opacity and translated down slightly; become visible when .show is added. */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+      .reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* Hero background animation: subtle scaling radial gradient to add depth */
+      .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: radial-gradient(circle at 50% 50%, rgba(66, 133, 244, 0.25), transparent 60%),
+          linear-gradient(180deg, rgba(66, 133, 244, 0.1), transparent);
+        animation: scale-up 20s infinite alternate;
+        z-index: -1;
+      }
+      @keyframes scale-up {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.3);
+        }
+      }
+    </style>
+
+    <!-- Script to reveal characters when they enter the viewport. Each line
+         will be observed and its characters animated when scrolled into view. -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.char').forEach((ch, idx) => {
+                  setTimeout(() => ch.classList.add('in-view'), idx * 30);
+                });
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.6 }
+        );
+        document.querySelectorAll('.line').forEach(line => observer.observe(line));
+      });
+    </script>
+  </head>
+
+  <body class="overflow-hidden">
+    <!-- Preloader overlay. It displays a loading bar and progress until the
+         page is fully loaded. Once the progress reaches 100%, a Start button
+         appears allowing the user to enter the site. -->
+    <div id="page-loading">
+      <!-- Canvas for neural network loader -->
+      <canvas id="nn-loader"></canvas>
+      <!-- Loader text and start button overlayed above the canvas -->
+      <div class="flex flex-col items-center relative z-10">
+        <div id="nn-loading-percent" class="text-sm">0%</div>
+        <button id="start-button">Enter site</button>
+      </div>
+    </div>
+    <!-- Header with simple navigation. The navigation sticks to the top and
+         links to sections within the page. -->
+    <header
+      class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+      style="background-color: transparent;"
+    >
+      <nav
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <a href="#hero" class="text-xl font-bold flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full" style="background: var(--primary)"></span>
+          Rajdeep<span style="color: var(--primary)">.io</span>
+        </a>
+        <ul class="hidden md:flex items-center gap-8 text-sm text-neutral-400">
+          <li><a href="#about" class="hover:text-white">About</a></li>
+          <li><a href="#whatido" class="hover:text-white">What I do</a></li>
+          <li><a href="#projects" class="hover:text-white">Work</a></li>
+          <li><a href="#experience" class="hover:text-white">Experience</a></li>
+          <li><a href="#contact" class="hover:text-white">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main content starts here. Each section mirrors the structure found on
+         minhpham.design: a hero, about description, capabilities, work,
+         experience and contact. -->
+    <main class="pt-24">
+      <!-- Hero Section -->
+      <section
+        id="hero"
+        class="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden"
+      >
+        <!-- Background element adds a subtle animated gradient similar to the
+             reference hero video. -->
+        <div class="hero-bg"></div>
+        <h6 class="uppercase tracking-widest text-sm" style="color: var(--accent)">
+          Rajdeep Mukherjee
+        </h6>
+        <!-- The headline is broken into lines and characters to simulate the
+             cascading reveal animation on the reference site. Adjust the
+             wording to suit your own persona. -->
+        <h1
+          class="mt-4 font-extrabold leading-tight text-5xl sm:text-6xl md:text-7xl"
+        >
+          <!-- Updated hero lines to better reflect Rajdeep’s focus.  Each word
+               is broken into characters for the staggered reveal animation. -->
+          <span class="line">
+            <span class="char">B</span><span class="char">u</span><span class="char">i</span><span class="char">l</span><span class="char">d</span><span class="char">i</span><span class="char">n</span><span class="char">g</span>
+          </span>
+          <span class="line">
+            <span class="char">a</span><span class="char">g</span><span class="char">e</span><span class="char">n</span><span class="char">t</span><span class="char">i</span><span class="char">c</span>
+          </span>
+          <span class="line">
+            <span class="char">L</span><span class="char">L</span><span class="char">M</span><span class="char">s</span>
+          </span>
+          <span class="line">
+            <span class="char">w</span><span class="char">i</span><span class="char">t</span><span class="char">h</span>
+          </span>
+          <span class="line">
+            <span class="char">m</span><span class="char">e</span><span class="char">m</span><span class="char">o</span><span class="char">r</span><span class="char">y</span>
+          </span>
+          <span class="line">
+            <span class="char">a</span><span class="char">n</span><span class="char">d</span>
+          </span>
+          <span class="line">
+            <span class="char">R</span><span class="char">L</span>
+          </span>
+        </h1>
+      </section>
+
+      <!-- About Section -->
+      <section
+        id="about"
+        class="py-20 md:py-24 border-t border-neutral-800"
+      >
+        <div class="max-w-4xl mx-auto px-4 reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-6">About me</h2>
+          <p class="text-lg text-neutral-400 leading-relaxed">
+            I’m a senior in Computer Science (B.S.E.) at the University of
+            Michigan with a minor in Mathematics. My current focus is on
+            <span class="font-semibold" style="color: var(--text)">agentic
+              LLMs, reinforcement learning for tool use, and memory
+              architectures</span>
+            that make models more reliable over long horizons. I love turning
+            research ideas into production‑quality systems that people can
+            actually use — especially in aerospace and automotive settings.
+          </p>
+          <p class="mt-4 text-base text-neutral-500">
+            Previously at Oakland University (CS with AI specialization), where
+            I co‑authored multiple IEEE papers on UAV security, datasets, and
+            autonomy.
+          </p>
+        </div>
+      </section>
+
+      <!-- What I do Section -->
+      <section
+        id="whatido"
+        class="py-20 md:py-24 border-t border-neutral-800"
+      >
+        <div class="max-w-6xl mx-auto px-4 reveal">
+          <!-- Section heading -->
+          <p class="text-sm uppercase tracking-widest text-neutral-500 mb-4">
+            What I do
+          </p>
+          <!-- Four capabilities presented as cards with oversized ghost text in the background. -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Agentic AI -->
+            <div class="relative border border-neutral-700 rounded-2xl bg-neutral-900 hover:bg-neutral-800 p-6 transition group overflow-hidden">
+              <!-- Ghost text sits behind the content and gives a layered effect -->
+              <div class="absolute inset-4 flex items-start justify-start pointer-events-none">
+                <span class="text-5xl sm:text-6xl font-extrabold tracking-tight text-neutral-700 opacity-5 group-hover:opacity-10 transition">Agentic</span>
+              </div>
+              <h3 class="relative text-xl font-bold">Agentic AI</h3>
+              <p class="relative mt-2 text-sm text-neutral-400">
+                Designing LLM agents that plan, adapt and finish complex tasks.
+                Combining memory and search to reduce tool thrash and improve reliability.
+              </p>
+            </div>
+            <!-- Memory & RL -->
+            <div class="relative border border-neutral-700 rounded-2xl bg-neutral-900 hover:bg-neutral-800 p-6 transition group overflow-hidden">
+              <div class="absolute inset-4 flex items-start justify-start pointer-events-none">
+                <span class="text-5xl sm:text-6xl font-extrabold tracking-tight text-neutral-700 opacity-5 group-hover:opacity-10 transition">Memory</span>
+              </div>
+              <h3 class="relative text-xl font-bold">Memory &amp; RL</h3>
+              <p class="relative mt-2 text-sm text-neutral-400">
+                Building memory architectures and reinforcement learners for tool‑use,
+                enabling long‑horizon reasoning and reproducible behavior.
+              </p>
+            </div>
+            <!-- Systems & Tools -->
+            <div class="relative border border-neutral-700 rounded-2xl bg-neutral-900 hover:bg-neutral-800 p-6 transition group overflow-hidden">
+              <div class="absolute inset-4 flex items-start justify-start pointer-events-none">
+                <span class="text-5xl sm:text-6xl font-extrabold tracking-tight text-neutral-700 opacity-5 group-hover:opacity-10 transition">Systems</span>
+              </div>
+              <h3 class="relative text-xl font-bold">Systems &amp; Tools</h3>
+              <p class="relative mt-2 text-sm text-neutral-400">
+                Developing high‑throughput engines, scalable search pipelines and modular
+                infrastructures that withstand real‑world adversarial conditions.
+              </p>
+            </div>
+            <!-- Research -->
+            <div class="relative border border-neutral-700 rounded-2xl bg-neutral-900 hover:bg-neutral-800 p-6 transition group overflow-hidden">
+              <div class="absolute inset-4 flex items-start justify-start pointer-events-none">
+                <span class="text-5xl sm:text-6xl font-extrabold tracking-tight text-neutral-700 opacity-5 group-hover:opacity-10 transition">Research</span>
+              </div>
+              <h3 class="relative text-xl font-bold">Research</h3>
+              <p class="relative mt-2 text-sm text-neutral-400">
+                Investigating trust‑aware multi‑agent coordination, causality‑aware retrieval
+                and secure autonomy. Bridging theory and practical systems for UAS and beyond.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section, reworked as “Work” to follow the reference naming. -->
+      <section id="projects" class="py-20 md:py-24 border-t border-neutral-800">
+        <div class="max-w-6xl mx-auto px-4 reveal">
+          <div class="flex items-end justify-between mb-8">
+            <h2 class="text-3xl sm:text-4xl font-bold">Selected work</h2>
+            <a
+              href="https://github.com/rajdeeepm?tab=repositories"
+              target="_blank"
+              rel="noopener"
+              class="text-sm text-blue-400 hover:underline"
+              >View all →</a
+            >
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <article
+              class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition"
+            >
+              <p class="uppercase text-xs tracking-widest text-neutral-500">
+                Agentic AI
+              </p>
+              <h3 class="mt-2 font-semibold text-lg">Memory‑Augmented Web Agent</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Integrated DeepSeek‑R1 with FAISS‑backed episodic memory for web
+                tasks; designed causality‑aware retrieval to reduce tool thrash.
+              </p>
+              <p class="mt-3 text-sm text-neutral-300">
+                <span class="font-semibold">Results:</span> WebShop
+                <span class="font-semibold">52%</span> vs R1
+                <span class="font-semibold">45%</span>; WebArena
+                <span class="font-semibold">24%</span> vs R1
+                <span class="font-semibold">15%</span>.
+              </p>
+            </article>
+            <!-- Card 2 -->
+            <article
+              class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition"
+            >
+              <p class="uppercase text-xs tracking-widest text-neutral-500">
+                Systems
+              </p>
+              <h3 class="mt-2 font-semibold text-lg">281Bank — High‑throughput C++ Engine</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Online banking simulator with priority queues, strict ordering,
+                and fraud detection; rock‑solid under adversarial tests.
+              </p>
+            </article>
+            <!-- Card 3 -->
+            <article
+              class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition"
+            >
+              <p class="uppercase text-xs tracking-widest text-neutral-500">
+                Machine Learning
+              </p>
+              <h3 class="mt-2 font-semibold text-lg">LLM JSON Synthesizer</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Instruction‑tuned LLaMA‑3 for structured JSON generation with
+                sliding‑window context handling and eval harness.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- EECS 485 Course Projects Section -->
+      <section id="eecs485" class="py-20 md:py-24 border-t border-neutral-800">
+        <div class="max-w-6xl mx-auto px-4 reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-8">EECS&nbsp;485 Projects</h2>
+          <p class="text-neutral-400 mb-8">
+            As part of UMich’s Web Systems course sequence, I built a series of increasingly sophisticated
+            applications that mirror the evolution of modern web stacks—from static site generation and
+            server‑side interactivity to client‑side applications, distributed computing and search engines.
+          </p>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- P1: Static Site Generator -->
+            <article class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition">
+              <p class="uppercase text-xs tracking-widest text-neutral-500">Web&nbsp;Systems</p>
+              <h3 class="mt-2 font-semibold text-lg">Templated Static Site Generator</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Wrote <code>insta485generator</code>, a Python tool that turns HTML templates, JSON data and
+                static assets into a static Instagram clone. This project honed my skills in templating, HTML/CSS,
+                Python and shell scripting and laid the groundwork for subsequent dynamic applications.
+              </p>
+            </article>
+            <!-- P2: Server‑side Dynamic Pages -->
+            <article class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition">
+              <p class="uppercase text-xs tracking-widest text-neutral-500">Web&nbsp;Systems</p>
+              <h3 class="mt-2 font-semibold text-lg">Server‑side Dynamic Pages</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Extended the clone with Flask‑powered server‑side pages. Reused templates from P1 and rendered them
+                on demand, implementing full CRUD for users, posts, comments and likes. Learned session management,
+                SQL database integration and built a multi‑user interactive site accessible at <code>localhost:8000</code>.
+              </p>
+            </article>
+            <!-- P3: Client‑side Dynamic Pages -->
+            <article class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition">
+              <p class="uppercase text-xs tracking-widest text-neutral-500">Web&nbsp;Systems</p>
+              <h3 class="mt-2 font-semibold text-lg">Client‑side Dynamic Pages</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Refactored the server code into a REST API and wrote a JavaScript client to fetch and render data
+                in the browser. Enabled asynchronous features—liking or commenting without reloads, infinite scroll,
+                and double‑click to like—using AJAX and DOM manipulation, demonstrating the power of client‑side apps.
+              </p>
+            </article>
+            <!-- P4: MapReduce Framework -->
+            <article class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition">
+              <p class="uppercase text-xs tracking-widest text-neutral-500">Distributed&nbsp;Systems</p>
+              <h3 class="mt-2 font-semibold text-lg">Distributed MapReduce Framework</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Implemented a MapReduce framework in Python inspired by Google’s paper. Built a <em>Manager</em> that accepts
+                jobs and coordinates multiple <em>Workers</em> over network sockets. Emphasised fault tolerance, concurrency
+                with threads and processes, and demonstrated the framework with a distributed word count across multiple inputs.
+              </p>
+            </article>
+            <!-- P5: Scalable Search Engine -->
+            <article class="border border-neutral-700 rounded-xl p-5 bg-neutral-900 hover:shadow-lg transition">
+              <p class="uppercase text-xs tracking-widest text-neutral-500">Information&nbsp;Retrieval</p>
+              <h3 class="mt-2 font-semibold text-lg">Scalable Search Engine</h3>
+              <p class="mt-1 text-sm text-neutral-400">
+                Constructed a full‑stack search engine. Created a segmented inverted index using MapReduce with tf‑idf text
+                analysis and PageRank link analysis. Developed an Index server exposing a REST API and a Search UI that
+                returns ranked results—mirroring real web search—with a service‑oriented architecture for scalability.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Research & Publications Section -->
+      <section id="research" class="py-20 md:py-24 border-t border-neutral-800">
+        <div class="max-w-6xl mx-auto px-4 reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-8">Research &amp; Publications</h2>
+          <div class="space-y-6">
+            <article class="border border-neutral-700 rounded-lg p-4 bg-neutral-900 hover:bg-neutral-800 transition">
+              <h3 class="font-semibold text-lg">
+                Aero‑LLM: A Distributed Framework for Secure UAV Communication and Intelligent Decision‑Making
+              </h3>
+              <p class="text-sm text-neutral-500 mt-1">
+                Proceedings of IEEE ICCCN (International Conference on Computer Communications and Networks), 2024 — July 2024
+              </p>
+              <p class="text-sm text-neutral-500 mt-1">
+                Authors: Balakrishnan Dharmalingam; <strong>Rajdeep Mukherjee</strong>; Brett Piggott; Guohuan Feng; Anyi Liu
+              </p>
+              <a
+                href="https://arxiv.org/abs/2502.05220"
+                class="text-sm text-blue-400 hover:underline mt-2 inline-block"
+                target="_blank"
+                rel="noopener"
+                >arXiv</a
+              >
+            </article>
+            <!-- Additional card encouraging visitors to see the full list of publications -->
+            <article class="border border-neutral-700 rounded-lg p-4 bg-neutral-900 hover:bg-neutral-800 transition">
+              <h3 class="font-semibold text-lg">More publications</h3>
+              <p class="text-sm text-neutral-500 mt-1">
+                See the full list of papers and citations on
+                <a
+                  href="https://scholar.google.com/citations?view_op=list_works&hl=en&user=q5MaIsUAAAAJ"
+                  class="text-blue-400 hover:underline"
+                  target="_blank"
+                  rel="noopener"
+                  >Google Scholar</a
+                >.
+              </p>
+            </article>
+            <article class="border border-neutral-700 rounded-lg p-4 bg-neutral-900 hover:bg-neutral-800 transition">
+              <h3 class="font-semibold text-lg">
+                Net‑GPT: A LLM‑Empowered Man‑in‑the‑Middle Chatbot for Unmanned Aerial Vehicle
+              </h3>
+              <p class="text-sm text-neutral-500 mt-1">
+                Proceedings of the ACM/IEEE Workshop on Security and Privacy in Edge Computing (EdgeSP), 2023 — December 6, 2023
+              </p>
+              <p class="text-sm text-neutral-500 mt-1">
+                Authors: Brett Piggott; Siddhant Patil; Guohuan Feng; Ibrahim Odat; <strong>Rajdeep Mukherjee</strong>; Balakrishnan Dharmalingam; Anyi Liu; et al.
+              </p>
+              <span class="mt-2 text-sm space-x-3">
+                <a
+                  href="https://dl.acm.org/doi/10.1145/3583740.3626809"
+                  class="text-blue-400 hover:underline"
+                  target="_blank"
+                  rel="noopener"
+                  >ACM Digital Library</a
+                >
+                <a
+                  href="https://scispace.com/papers/net-gpt-a-llm-empowered-man-in-the-middle-chatbot-for-2gtzlwvn1e"
+                  class="text-blue-400 hover:underline"
+                  target="_blank"
+                  rel="noopener"
+                  >SciSpace</a
+                >
+              </span>
+            </article>
+            <article class="border border-neutral-700 rounded-lg p-4 bg-neutral-900 hover:bg-neutral-800 transition">
+              <h3 class="font-semibold text-lg">
+                Heterogeneous Generative Dataset for UASes
+              </h3>
+              <p class="text-sm text-neutral-500 mt-1">
+                Proceedings of the IEEE International Conference on Mobility, Operations, Services and Technologies (MOST), 2023 — May 2023
+              </p>
+              <p class="text-sm text-neutral-500 mt-1">
+                Authors: Balakrishnan Dharmalingam; Ibrahim Odat; <strong>Rajdeep Mukherjee</strong>; Brett Piggott; Anyi Liu
+              </p>
+              <a
+                href="https://www.computer.org/csdl/proceedings-article/most/2023/199500a229/1PBwC49jDCU"
+                class="text-sm text-blue-400 hover:underline mt-2 inline-block"
+                target="_blank"
+                rel="noopener"
+                >IEEE Computer Society</a
+              >
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience Section using a simple vertical timeline reminiscent of the
+           reference site’s history section. Each entry alternates sides on
+           larger screens. -->
+      <section id="experience" class="py-20 md:py-24 border-t border-neutral-800">
+        <div class="max-w-5xl mx-auto px-4 reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-10">Experience</h2>
+          <div class="relative pl-6 md:pl-12 border-l border-neutral-700">
+            <!-- Timeline item 1 -->
+            <div class="mb-12 relative reveal">
+              <span
+                class="absolute -left-3 top-1 w-2 h-2 rounded-full"
+                style="background: var(--primary)"
+              ></span>
+              <div class="md:flex md:items-baseline md:justify-between">
+                <div class="md:w-2/3">
+                  <h3 class="font-semibold">Amazon Web Services — SDE Intern</h3>
+                  <p class="text-sm text-neutral-500">
+                    May 2025 – Aug 2025 · Seattle, WA
+                  </p>
+                  <ul class="mt-2 text-sm list-disc list-inside text-neutral-400 space-y-1">
+                    <li>
+                      Shipped a production agentic LLM system that auto‑generates
+                      configuration files <strong>24× faster</strong> with
+                      <strong>95.8%</strong> efficiency at
+                      <strong>99%+</strong> accuracy.
+                    </li>
+                    <li>
+                      Implemented a RAG service with GenAI indexing and built a
+                      multi‑model inference harness.
+                    </li>
+                    <li>
+                      Created a synthetic dataset and fine‑tuned models via
+                      PEFT (LoRA/QLoRA) for exact‑match robustness.
+                    </li>
+                    <li>
+                      Engineered a modular architecture reusable across
+                      projects; nominated for the team “Hawaiian T‑Shirt”
+                      award.
+                    </li>
+                  </ul>
+                </div>
+                <div class="mt-4 md:mt-0 md:w-1/3 md:text-right text-sm text-neutral-500">
+                  Intern · SageMaker Ground Truth
+                </div>
+              </div>
+            </div>
+            <!-- Timeline item 2 -->
+            <div class="mb-12 relative reveal">
+              <span
+                class="absolute -left-3 top-1 w-2 h-2 rounded-full"
+                style="background: var(--primary)"
+              ></span>
+              <div class="md:flex md:items-baseline md:justify-between">
+                <div class="md:w-2/3">
+                  <h3 class="font-semibold">Michigan Student AI Lab (MSAIL)</h3>
+                  <p class="text-sm text-neutral-500">2024 – present · Ann Arbor, MI</p>
+                  <p class="mt-2 text-sm text-neutral-400">
+                    Reinforcement learning & agentic systems reading groups;
+                    demos, papers, and open discussions.
+                  </p>
+                </div>
+                <div class="mt-4 md:mt-0 md:w-1/3 md:text-right text-sm text-neutral-500">
+                  Member
+                </div>
+              </div>
+            </div>
+            <!-- Timeline item 3 -->
+            <div class="mb-12 relative reveal">
+              <span
+                class="absolute -left-3 top-1 w-2 h-2 rounded-full"
+                style="background: var(--primary)"
+              ></span>
+              <div class="md:flex md:items-baseline md:justify-between">
+                <div class="md:w-2/3">
+                  <h3 class="font-semibold">Perot Jain TechLab @ MCity</h3>
+                  <p class="text-sm text-neutral-500">Aug 2024 – May 2025</p>
+                  <ul class="mt-2 text-sm list-disc list-inside text-neutral-400 space-y-1">
+                    <li>
+                      <strong>Retrospect:</strong> Built a trajectory emulator
+                      simulating vehicle motion under acceleration/jerk
+                      constraints; processed 5k+ points/run and produced
+                      multiple motion‑analysis plots.
+                    </li>
+                    <li>
+                      <strong>VTI Aero:</strong> Designed GPS‑independent
+                      localization via sensor fusion for autonomous drone
+                      navigation; drafted a voice‑command interface for
+                      complex spoken tasks.
+                    </li>
+                  </ul>
+                </div>
+                <div class="mt-4 md:mt-0 md:w-1/3 md:text-right text-sm text-neutral-500">
+                  Student Consultant
+                </div>
+              </div>
+            </div>
+            <!-- Additional items omitted for brevity, but follow the same pattern
+                 for Oakland University Research Assistant, Grader roles, etc. -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Clients & Awards Section
+           In the reference site there is a "Clients" section that lists
+           companies and projects Minh has worked on. Here we repurpose it to
+           showcase collaborators and honours. Logos are pulled from
+           simpleicons.org; you may replace the icons with your own assets. -->
+      <section id="awards" class="py-20 md:py-24 border-t border-neutral-800">
+        <div class="max-w-5xl mx-auto px-4 reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-8">Clients &amp; Awards</h2>
+          <p class="text-neutral-400 mb-6">
+            I’ve collaborated with industry leaders and been recognised for my
+            research and engineering contributions.
+          </p>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center justify-items-center"
+          >
+            <div class="flex flex-col items-center gap-2">
+              <img
+                src="https://cdn.simpleicons.org/amazonaws/ffffff"
+                alt="Amazon Web Services"
+                class="w-10 h-10"
+              />
+              <span class="text-sm text-neutral-400">AWS</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <img
+                src="https://cdn.simpleicons.org/universityofmichigan/ffffff"
+                alt="University of Michigan"
+                class="w-10 h-10"
+              />
+              <span class="text-sm text-neutral-400">UMich</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <img
+                src="https://cdn.simpleicons.org/nvidia/ffffff"
+                alt="NVIDIA"
+                class="w-10 h-10"
+              />
+              <span class="text-sm text-neutral-400">NVIDIA</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <img
+                src="https://cdn.simpleicons.org/amazonsagemaker/ffffff"
+                alt="SageMaker Ground Truth"
+                class="w-10 h-10"
+              />
+              <span class="text-sm text-neutral-400">SageMaker GT</span>
+            </div>
+          </div>
+          <!-- Display honours and awards as pill badges -->
+          <div class="mt-8 flex flex-wrap gap-3">
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >OpenAI Talent Community (invite)</span
+            >
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >3× IEEE co‑author</span
+            >
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >Hawaiian T‑Shirt Award — Nominee (AWS)</span
+            >
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >Honors College Student</span
+            >
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >President’s List</span
+            >
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >Alpha Lambda Delta (Member)</span
+            >
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-700 text-sm text-neutral-300"
+              >Dean’s List</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="py-20 md:py-24 border-t border-neutral-800">
+        <div class="max-w-4xl mx-auto px-4 text-center reveal">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+            Let’s build something meaningful
+          </h2>
+          <p class="text-neutral-400 mb-6">
+            I’m looking for teams pushing state‑of‑the‑art ideas into the real
+            world—agentic LLMs, RL for tool use, and safety‑first systems. If
+            that’s you, I’d love to talk.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="mailto:rajdeepm@umich.edu"
+              class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl shadow"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                class="mr-1"
+              >
+                <path d="M4 4h16v16H4z" />
+                <path d="m22 6-10 7L2 6" />
+              </svg>
+              rajdeepm@umich.edu
+            </a>
+            <button
+              id="copy-email"
+              class="inline-flex items-center gap-2 border border-neutral-700 text-neutral-200 px-5 py-3 rounded-xl hover:bg-neutral-800"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <rect x="2" y="2" width="13" height="13" rx="2" />
+              </svg>
+              Copy email
+            </button>
+          </div>
+          <div class="mt-6 text-sm text-neutral-500 flex flex-col items-center gap-2">
+            <div>Based in Ann Arbor, MI • open to SF / NYC / SEA</div>
+            <div>
+              <a
+                class="text-blue-400 hover:underline"
+                href="https://www.linkedin.com/in/rajdeep-mukherjee-cs752004"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              > ·
+              <a
+                class="text-blue-400 hover:underline"
+                href="https://github.com/rajdeeepm"
+                target="_blank"
+                rel="noopener"
+                >GitHub</a
+              > ·
+              <a
+                class="text-blue-400 hover:underline"
+                href="https://scholar.google.com/citations?view_op=list_works&user=q5MaIsUAAAAJ"
+                target="_blank"
+                rel="noopener"
+                >Google Scholar</a
+              >
+            </div>
+            <div>
+              <a
+                class="text-blue-400 hover:underline"
+                href="/blog"
+                >Blog</a
+              > ·
+              <a
+                class="text-blue-400 hover:underline"
+                href="/now"
+                >Now</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-10 text-center text-sm text-neutral-500 border-t border-neutral-800">
+      <p>
+        © <span id="year"></span> Rajdeep Mukherjee. Crafted with care. Last
+        updated <span id="last-updated"></span>.
+      </p>
+    </footer>
+
+    <!-- Footer script: sets dynamic year, last updated date, copy
+         functionality for the email button, and handles the preloader
+         simulation. The preloader simulates loading by filling a bar to
+         100%, then reveals a button to enter the site. -->
+    <script>
+      // Set dynamic year and last updated date
+      document.getElementById('year').textContent = new Date().getFullYear();
+      document.getElementById('last-updated').textContent = new Date().toLocaleDateString(
+        undefined,
+        { year: 'numeric', month: 'short', day: 'numeric' }
+      );
+
+      // Copy email to clipboard
+      const copyBtn = document.getElementById('copy-email');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText('rajdeepm@umich.edu');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => (copyBtn.textContent = 'Copy email'), 1500);
+          } catch {
+            /* silently fail */
+          }
+        });
+      }
+
+      // Preloader logic with a more refined neural network animation
+      const pageLoading = document.getElementById('page-loading');
+      const percentEl = document.getElementById('nn-loading-percent');
+      const startBtn = document.getElementById('start-button');
+      const canvas = document.getElementById('nn-loader');
+      const ctx = canvas.getContext('2d');
+
+      // Canvas sizing and centre position
+      let width, height, centerX, centerY;
+
+      // Data structures for the 3D neural network. Nodes holds 3D positions,
+      // edges defines which nodes are connected, pulses travel along edges.
+      let nodes = [];
+      let edges = [];
+      let pulses = [];
+      // Global rotation angles around the X and Y axes. These will be
+      // incremented in the animation loop to give a slow tumbling motion.
+      let rotX = 0;
+      let rotY = 0;
+      // Parameters controlling network size and perspective. NODE_COUNT sets
+      // how many points are generated, K_NEIGHBORS how many connections each
+      // point has on average, and fov influences the projection.
+      const NODE_COUNT = 70;
+      const K_NEIGHBORS = 3;
+      const fov = 3;
+
+      /**
+       * Resize the canvas and recalculate centre and radii. Radii are
+       * proportional to the smallest dimension so the network remains
+       * centred and responsive.
+       */
+      function resizeCanvas() {
+        width = canvas.clientWidth;
+        height = canvas.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        centerX = width / 2;
+        centerY = height / 2;
+        // Reinitialize the 3D neural network whenever the canvas is resized.
+        initNetwork();
+      }
+
+      /**
+       * Initialize layers and their nodes. Each node has an angle and its
+       * layer index. The angle determines initial position on the circle.
+       */
+      function initLayers() {
+        layers = [];
+        for (let li = 0; li < layerNodeCounts.length; li++) {
+          const count = layerNodeCounts[li];
+          const nodes = [];
+          for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 2;
+            nodes.push({ angle });
+          }
+          layers.push(nodes);
+        }
+      }
+
+      /**
+       * Create connections between nodes in adjacent layers. Each node in a
+       * layer connects to two nodes in the next layer (index and index+1)
+       * forming a mesh across layers. This yields a visually coherent
+       * structure reminiscent of neural network diagrams.
+       */
+      function initEdges() {
+        edges = [];
+        for (let li = 0; li < layers.length - 1; li++) {
+          const current = layers[li];
+          const next = layers[li + 1];
+          for (let i = 0; i < current.length; i++) {
+            const fromNode = { layer: li, index: i };
+            const j1 = i % next.length;
+            const j2 = (i + 1) % next.length;
+            edges.push({ from: fromNode, to: { layer: li + 1, index: j1 } });
+            edges.push({ from: fromNode, to: { layer: li + 1, index: j2 } });
+          }
+        }
+      }
+
+      /**
+       * Randomly spawn pulses along edges with varying speeds and colours.
+       */
+      function spawnPulses() {
+        pulses = [];
+        for (let i = 0; i < edges.length; i++) {
+          if (Math.random() < 0.5) {
+            pulses.push({ edgeIndex: i, t: Math.random(), speed: 0.002 + Math.random() * 0.002, color: randomColor() });
+          }
+        }
+      }
+
+      /**
+       * Generate a random vibrant colour from a curated palette. Colours were
+       * chosen to evoke high‑tech neon vibes reminiscent of professional
+       * motion graphics.
+       */
+      function randomColor() {
+        const palette = ['#69b3ff', '#a66dd6', '#36cfc9', '#ff6e99', '#60a5fa'];
+        return palette[Math.floor(Math.random() * palette.length)];
+      }
+
+      /**
+       * Initialise a 3D neural network by generating random node positions and
+       * connecting each node to its nearest neighbours. Nodes are distributed
+       * within a unit cube and edges are deduplicated to avoid redundant
+       * connections. The resulting graph has an organic yet connected feel.
+       */
+      function initNetwork() {
+        nodes = [];
+        // Generate random positions for each node within a unit cube
+        for (let i = 0; i < NODE_COUNT; i++) {
+          const x = (Math.random() * 2 - 1);
+          const y = (Math.random() * 2 - 1);
+          const z = (Math.random() * 2 - 1);
+          nodes.push({ x, y, z });
+        }
+        // Build edges by connecting each node to its K closest neighbours
+        edges = [];
+        const edgeSet = {};
+        for (let i = 0; i < NODE_COUNT; i++) {
+          const dists = [];
+          for (let j = 0; j < NODE_COUNT; j++) {
+            if (i === j) continue;
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dz = nodes[i].z - nodes[j].z;
+            const distSq = dx * dx + dy * dy + dz * dz;
+            dists.push({ j, distSq });
+          }
+          dists.sort((a, b) => a.distSq - b.distSq);
+          for (let k = 0; k < K_NEIGHBORS; k++) {
+            const j = dists[k].j;
+            // Use a sorted key to avoid duplicate undirected edges
+            const key = i < j ? i + '-' + j : j + '-' + i;
+            if (!edgeSet[key]) {
+              edgeSet[key] = true;
+              edges.push({ from: i, to: j });
+            }
+          }
+        }
+      }
+
+      /**
+       * Project a 3D point into 2D screen space with perspective and apply
+       * rotations around the X and Y axes. The returned object includes
+       * projected x/y positions and the updated z value which is used for
+       * depth‑based styling (e.g. node size).
+       */
+      function projectPoint(x, y, z) {
+        // Rotate around X axis
+        const cosX = Math.cos(rotX);
+        const sinX = Math.sin(rotX);
+        let y1 = y * cosX - z * sinX;
+        let z1 = y * sinX + z * cosX;
+        let x1 = x;
+        // Rotate around Y axis
+        const cosY = Math.cos(rotY);
+        const sinY = Math.sin(rotY);
+        let x2 = x1 * cosY + z1 * sinY;
+        let z2 = -x1 * sinY + z1 * cosY;
+        let y2 = y1;
+        // Perspective projection: scale diminishes with depth
+        const scale = fov / (fov + z2 + 3);
+        const spread = Math.min(width, height) * 0.4;
+        return {
+          x: centerX + x2 * scale * spread,
+          y: centerY + y2 * scale * spread,
+          z: z2
+        };
+      }
+
+      /**
+       * Compute the (x,y) position of a node given its layer and index.
+       * The layer’s angle offset rotates all nodes in that layer.
+       */
+      function getNodePosition(layerIndex, nodeIndex) {
+        const layer = layers[layerIndex];
+        const radius = layerRadii[layerIndex];
+        const angle = layer[nodeIndex].angle;
+        return {
+          x: centerX + radius * Math.cos(angle),
+          y: centerY + radius * Math.sin(angle)
+        };
+      }
+
+      /**
+       * Main update loop for the 3D neural network. Each frame rotates the
+       * network slightly, projects the 3D coordinates into 2D, draws
+       * edges, pulses and nodes with depth‑aware sizing and transparency,
+       * and schedules the next frame via requestAnimationFrame.
+       */
+      function updateNetwork() {
+        ctx.clearRect(0, 0, width, height);
+        // Increment rotation angles for continuous motion
+        rotX += 0.0018;
+        rotY += 0.001;
+        // Precompute projected positions for all nodes
+        const projected = nodes.map(n => projectPoint(n.x, n.y, n.z));
+        // Draw edges with subtle transparency and gradient colouring
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.22;
+        edges.forEach(edge => {
+          const a = projected[edge.from];
+          const b = projected[edge.to];
+          const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+          grad.addColorStop(0, 'rgba(90,120,255,0.15)');
+          grad.addColorStop(1, 'rgba(158,197,255,0.15)');
+          ctx.strokeStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+        // Update and draw pulses travelling along edges
+        pulses.forEach(p => {
+          p.t += p.speed;
+          if (p.t > 1) {
+            p.t = 0;
+            p.color = randomColor();
+          }
+          const edge = edges[p.edgeIndex];
+          const from = nodes[edge.from];
+          const to = nodes[edge.to];
+          const x3 = from.x + (to.x - from.x) * p.t;
+          const y3 = from.y + (to.y - from.y) * p.t;
+          const z3 = from.z + (to.z - from.z) * p.t;
+          const pos = projectPoint(x3, y3, z3);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        // Draw nodes with glow. Node size depends on depth: nearer nodes appear larger.
+        for (let i = 0; i < nodes.length; i++) {
+          const pos = projected[i];
+          // Normalize z value to [-1,1] range for size calculation
+          const depthFactor = Math.max(-1, Math.min(1, pos.z / 2));
+          const baseSize = 3 + (1 - depthFactor) * 2.5;
+          const rg = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, baseSize * 3);
+          rg.addColorStop(0, 'rgba(114,162,255,0.8)');
+          rg.addColorStop(1, 'rgba(114,162,255,0)');
+          ctx.fillStyle = rg;
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, baseSize * 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#bcd7ff';
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, baseSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(updateNetwork);
+      }
+
+      // Initialise and start the network animation
+      resizeCanvas();
+      spawnPulses();
+      updateNetwork();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Simulate loading progress and reveal the start button when complete
+      let progress = 0;
+      const simulateLoading = setInterval(() => {
+        progress += Math.random() * 3 + 1;
+        if (progress >= 100) progress = 100;
+        percentEl.textContent = Math.floor(progress) + '%';
+        if (progress >= 100) {
+          clearInterval(simulateLoading);
+          startBtn.style.display = 'block';
+        }
+      }, 70);
+
+      startBtn.addEventListener('click', () => {
+        pageLoading.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      });
+
+      // Header background changes after scrolling a bit
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+          header.style.backgroundColor = 'rgba(0,0,0,0.5)';
+          header.style.backdropFilter = 'blur(8px)';
+        } else {
+          header.style.backgroundColor = 'transparent';
+          header.style.backdropFilter = '';
+        }
+      });
+
+      // IntersectionObserver for reveal animations
+      const revealObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+  </body>
+</html>
