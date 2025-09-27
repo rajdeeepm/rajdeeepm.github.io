@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en" class="dark scroll-smooth">
   <head>
     <meta charset="utf-8" />
@@ -42,9 +41,28 @@
         --muted: #8f8f8f;
         --accent: #b7ab98;
         --primary: #4285f4;
+        /* Colours used by the page-loading overlay. Defaults are for the dark
+           theme and are overridden in html.light below. */
+        --loading-start: rgba(10, 15, 30, 1);
+        --loading-end: rgba(2, 5, 14, 1);
       }
       html.dark {
         color-scheme: dark;
+      }
+
+      /* Light theme overrides. The theme toggle will switch the
+         <html> element to have class="light" or "dark". When the
+         class is "light", these variables override the dark defaults. */
+      html.light {
+        color-scheme: light;
+        --bg: #fafafa;
+        --surface: #ffffff;
+        --text: #0d0d0d;
+        --muted: #6b7280;
+        --accent: #b7ab98;
+        --primary: #4285f4;
+        --loading-start: rgba(255, 255, 255, 1);
+        --loading-end: rgba(230, 230, 230, 1);
       }
       body {
         background-color: var(--bg);
@@ -75,51 +93,79 @@
         display: block;
         overflow: hidden;
       }
-      
-      /* Reset that sometimes matters */
-     html, body { margin: 0; height: 100%; }
-      
+
       /* Preloader styles */
-     #page-loading {
+      #page-loading {
         position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;   /* <- hard guarantee */
-        background: radial-gradient(circle at 50% 50%, rgba(10,15,30,1), rgba(2,5,14,1));
-        display: flex; align-items: center; justify-content: center;
-        z-index: 2147483647;            /* <- higher than anything */
-        overflow: hidden;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* Radial gradient referencing CSS variables for start/end colours. The
+           variables differ between dark and light mode. */
+        background: radial-gradient(circle at 50% 50%, var(--loading-start), var(--loading-end));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
       }
-    #page-loading.hidden { display: none; }
+      #page-loading.hidden {
+        display: none;
+      }
       /* Canvas for the neural network loader fills the overlay */
       #nn-loader {
-        position: absolute; top: 0; left: 0;
-        inset: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        display: block;
-        cursor: grab;
-        touch-action: none; /* better touch dragging */
       }
-    #nn-loader.dragging { cursor: grabbing; }
+      /* Canvas for the square loader shares the same positioning so it
+         overlays the neural net canvas. Pointer events are disabled to allow
+         clicks on the start button. */
+      #square-loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
       #nn-loading-percent {
         margin-top: 1.5rem;
         color: var(--muted);
         font-size: 0.875rem;
+        /* Hide the numeric progress during the loader. The animation itself
+           conveys progress, and the button will appear once complete. */
+        display: none;
       }
       #start-button {
         margin-top: 2rem;
-        padding: 0.5rem 1.25rem;
-        border: 1px solid var(--muted);
-        color: var(--text);
-        border-radius: 0.5rem;
-        font-size: 0.875rem;
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        background: var(--primary);
+        color: var(--bg);
+        font-size: 1.125rem;
+        font-weight: 600;
         cursor: pointer;
         display: none;
-        background: transparent;
-        transition: background 0.2s;
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.35);
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
       }
       #start-button:hover {
-        background: rgba(255, 255, 255, 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+      }
+
+      /* Position the theme toggle button at the top right of the viewport.
+         This ensures it remains accessible regardless of scroll position. */
+      #theme-toggle {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 10000;
       }
 
       /* Reveal animations for sections and elements. Initially hidden with
@@ -146,14 +192,6 @@
         animation: scale-up 20s infinite alternate;
         z-index: -1;
       }
-
-       /* Keep text on top, but non-blocking */
-      #page-loading .hud {
-        position: relative;
-        z-index: 10;
-        pointer-events: none;
-      }
-      
       @keyframes scale-up {
         from {
           transform: scale(1);
@@ -191,12 +229,17 @@
          page is fully loaded. Once the progress reaches 100%, a Start button
          appears allowing the user to enter the site. -->
     <div id="page-loading">
-  <canvas id="nn-loader"></canvas>
-  <div class="hud flex flex-col items-center">
-    <div id="nn-loading-percent" class="text-sm">0%</div>
-    <button id="start-button" style="pointer-events:auto">Enter site</button>
-  </div>
-</div>
+      <!-- Canvas for neural network loader -->
+      <canvas id="nn-loader"></canvas>
+      <!-- Canvas for the square grid loader overlay. This draws the colourful
+           tiles that fade away and sits above the neural net canvas. -->
+      <canvas id="square-loader"></canvas>
+      <!-- Loader text and start button overlayed above the canvas -->
+      <div class="flex flex-col items-center relative z-10">
+        <div id="nn-loading-percent" class="text-sm">0%</div>
+        <button id="start-button">Enter site</button>
+      </div>
+    </div>
     <!-- Header with simple navigation. The navigation sticks to the top and
          links to sections within the page. -->
     <header
@@ -210,13 +253,27 @@
           <span class="w-2.5 h-2.5 rounded-full" style="background: var(--primary)"></span>
           Rajdeep<span style="color: var(--primary)">.io</span>
         </a>
-        <ul class="hidden md:flex items-center gap-8 text-sm text-neutral-400">
-          <li><a href="#about" class="hover:text-white">About</a></li>
-          <li><a href="#whatido" class="hover:text-white">What I do</a></li>
-          <li><a href="#projects" class="hover:text-white">Work</a></li>
-          <li><a href="#experience" class="hover:text-white">Experience</a></li>
-          <li><a href="#contact" class="hover:text-white">Contact</a></li>
-        </ul>
+        <div class="flex items-center gap-6">
+          <ul class="hidden md:flex items-center gap-8 text-sm text-neutral-400">
+            <li><a href="#about" class="hover:text-white">About</a></li>
+            <li><a href="#whatido" class="hover:text-white">What I do</a></li>
+            <li><a href="#projects" class="hover:text-white">Work</a></li>
+            <li><a href="#experience" class="hover:text-white">Experience</a></li>
+            <li><a href="#contact" class="hover:text-white">Contact</a></li>
+          </ul>
+          <!-- Theme toggle button -->
+          <button id="theme-toggle" class="ml-4 flex items-center justify-center w-9 h-9 border border-neutral-700 rounded-md text-neutral-400 hover:bg-neutral-800 focus:outline-none">
+            <!-- Sun icon for light mode -->
+            <svg class="dark:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 3v2m0 14v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              <circle cx="12" cy="12" r="4"/>
+            </svg>
+            <!-- Moon icon for dark mode -->
+            <svg class="hidden dark:block" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+        </div>
       </nav>
     </header>
 
@@ -874,222 +931,288 @@
         });
       }
 
-    // ===== Improved full-screen neural-net loader (mouse/touch orbit + zoom) =====
-const pageLoading = document.getElementById('page-loading');
-const percentEl = document.getElementById('nn-loading-percent');
-const startBtn = document.getElementById('start-button');
-const canvas = document.getElementById('nn-loader');
-const ctx = canvas.getContext('2d', { alpha: true });
+      // Preloader logic with a more refined neural network animation
+      const pageLoading = document.getElementById('page-loading');
+      const percentEl = document.getElementById('nn-loading-percent');
+      const startBtn = document.getElementById('start-button');
+      const canvas = document.getElementById('nn-loader');
+      const ctx = canvas.getContext('2d');
 
-let width, height, centerX, centerY, dpr;
-let nodes = [], edges = [], pulses = [];
+      // Canvas sizing and centre position
+      let width, height, centerX, centerY;
 
-// rotation (eases toward target for inertia)
-let rotX = 0, rotY = 0;
-let targetRotX = 0, targetRotY = 0;
-const EASE = 0.08;
+      // Data structures for the 3D neural network. Nodes holds 3D positions,
+      // edges defines which nodes are connected, pulses travel along edges.
+      let nodes = [];
+      let edges = [];
+      let pulses = [];
+      // Global rotation angles around the X and Y axes. These will be
+      // incremented in the animation loop to give a slow tumbling motion.
+      let rotX = 0;
+      let rotY = 0;
+      // Parameters controlling network size and perspective. NODE_COUNT sets
+      // how many points are generated, K_NEIGHBORS how many connections each
+      // point has on average, and fov influences the projection.
+      const NODE_COUNT = 70;
+      const K_NEIGHBORS = 3;
+      const fov = 3;
 
-// drag state
-let dragging = false;
-let lastPX = 0, lastPY = 0;
-
-// zoom
-let zoom = 1.0;
-const ZOOM_MIN = 0.6, ZOOM_MAX = 2.0, ZOOM_STEP = 0.1;
-
-// graph params
-const NODE_COUNT = 110;
-const K_NEIGHBORS = 3;
-const fov = 3;
-
-function resizeCanvas(){
-  dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  width = canvas.clientWidth;
-  height = canvas.clientHeight;
-  canvas.width = Math.floor(width * dpr);
-  canvas.height = Math.floor(height * dpr);
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  centerX = width / 2;
-  centerY = height / 2;
-  initNetwork();
-}
-
-function randomColor(){
-  const palette = ['#69b3ff','#a66dd6','#36cfc9','#ff6e99','#60a5fa'];
-  return palette[(Math.random()*palette.length)|0];
-}
-
-function initNetwork(){
-  nodes.length = 0;
-  for (let i=0;i<NODE_COUNT;i++){
-    nodes.push({ x: Math.random()*2-1, y: Math.random()*2-1, z: Math.random()*2-1 });
-  }
-  edges.length = 0;
-  const seen = new Set();
-  for (let i=0;i<NODE_COUNT;i++){
-    const d = [];
-    for (let j=0;j<NODE_COUNT;j++){
-      if (i===j) continue;
-      const dx = nodes[i].x - nodes[j].x;
-      const dy = nodes[i].y - nodes[j].y;
-      const dz = nodes[i].z - nodes[j].z;
-      d.push({ j, d2: dx*dx + dy*dy + dz*dz });
-    }
-    d.sort((a,b)=>a.d2-b.d2);
-    for (let k=0;k<K_NEIGHBORS;k++){
-      const j = d[k].j;
-      const key = i<j ? `${i}-${j}` : `${j}-${i}`;
-      if (!seen.has(key)){
-        seen.add(key);
-        edges.push({ from:i, to:j });
+      /**
+       * Resize the canvas and recalculate centre and radii. Radii are
+       * proportional to the smallest dimension so the network remains
+       * centred and responsive.
+       */
+      function resizeCanvas() {
+        width = canvas.clientWidth;
+        height = canvas.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        centerX = width / 2;
+        centerY = height / 2;
+        // Reinitialize the 3D neural network whenever the canvas is resized.
+        initNetwork();
       }
-    }
-  }
-  pulses.length = 0;
-  for (let i=0;i<edges.length;i++){
-    if (Math.random()<0.5){
-      pulses.push({ edgeIndex:i, t:Math.random(), speed:0.002+Math.random()*0.002, color:randomColor() });
-    }
-  }
-}
 
-function projectPoint(x,y,z){
-  const cosX=Math.cos(rotX), sinX=Math.sin(rotX);
-  let y1 = y*cosX - z*sinX;
-  let z1 = y*sinX + z*cosX;
-  let x1 = x;
+      /**
+       * Initialize layers and their nodes. Each node has an angle and its
+       * layer index. The angle determines initial position on the circle.
+       */
+      function initLayers() {
+        layers = [];
+        for (let li = 0; li < layerNodeCounts.length; li++) {
+          const count = layerNodeCounts[li];
+          const nodes = [];
+          for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 2;
+            nodes.push({ angle });
+          }
+          layers.push(nodes);
+        }
+      }
 
-  const cosY=Math.cos(rotY), sinY=Math.sin(rotY);
-  let x2 = x1*cosY + z1*sinY;
-  let z2 = -x1*sinY + z1*cosY;
-  let y2 = y1;
+      /**
+       * Create connections between nodes in adjacent layers. Each node in a
+       * layer connects to two nodes in the next layer (index and index+1)
+       * forming a mesh across layers. This yields a visually coherent
+       * structure reminiscent of neural network diagrams.
+       */
+      function initEdges() {
+        edges = [];
+        for (let li = 0; li < layers.length - 1; li++) {
+          const current = layers[li];
+          const next = layers[li + 1];
+          for (let i = 0; i < current.length; i++) {
+            const fromNode = { layer: li, index: i };
+            const j1 = i % next.length;
+            const j2 = (i + 1) % next.length;
+            edges.push({ from: fromNode, to: { layer: li + 1, index: j1 } });
+            edges.push({ from: fromNode, to: { layer: li + 1, index: j2 } });
+          }
+        }
+      }
 
-  const scale = fov / (fov + z2 + 3);
-  const spread = Math.min(width, height) * 0.45 * zoom;
-  return { x: centerX + x2*scale*spread, y: centerY + y2*scale*spread, z: z2 };
-}
+      /**
+       * Randomly spawn pulses along edges with varying speeds and colours.
+       */
+      function spawnPulses() {
+        pulses = [];
+        for (let i = 0; i < edges.length; i++) {
+          if (Math.random() < 0.5) {
+            pulses.push({ edgeIndex: i, t: Math.random(), speed: 0.002 + Math.random() * 0.002, color: randomColor() });
+          }
+        }
+      }
 
-function drawFrame(){
-  // inertia toward target rotation
-  rotX += (targetRotX - rotX) * EASE;
-  rotY += (targetRotY - rotY) * EASE;
+      /**
+       * Generate a random vibrant colour from a curated palette. Colours were
+       * chosen to evoke high‑tech neon vibes reminiscent of professional
+       * motion graphics.
+       */
+      function randomColor() {
+        const palette = ['#69b3ff', '#a66dd6', '#36cfc9', '#ff6e99', '#60a5fa'];
+        return palette[Math.floor(Math.random() * palette.length)];
+      }
 
-  ctx.clearRect(0,0,width,height);
+      /**
+       * Initialise a 3D neural network by generating random node positions and
+       * connecting each node to its nearest neighbours. Nodes are distributed
+       * within a unit cube and edges are deduplicated to avoid redundant
+       * connections. The resulting graph has an organic yet connected feel.
+       */
+      function initNetwork() {
+        nodes = [];
+        // Generate random positions for each node within a unit cube
+        for (let i = 0; i < NODE_COUNT; i++) {
+          const x = (Math.random() * 2 - 1);
+          const y = (Math.random() * 2 - 1);
+          const z = (Math.random() * 2 - 1);
+          nodes.push({ x, y, z });
+        }
+        // Build edges by connecting each node to its K closest neighbours
+        edges = [];
+        const edgeSet = {};
+        for (let i = 0; i < NODE_COUNT; i++) {
+          const dists = [];
+          for (let j = 0; j < NODE_COUNT; j++) {
+            if (i === j) continue;
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dz = nodes[i].z - nodes[j].z;
+            const distSq = dx * dx + dy * dy + dz * dz;
+            dists.push({ j, distSq });
+          }
+          dists.sort((a, b) => a.distSq - b.distSq);
+          for (let k = 0; k < K_NEIGHBORS; k++) {
+            const j = dists[k].j;
+            // Use a sorted key to avoid duplicate undirected edges
+            const key = i < j ? i + '-' + j : j + '-' + i;
+            if (!edgeSet[key]) {
+              edgeSet[key] = true;
+              edges.push({ from: i, to: j });
+            }
+          }
+        }
+      }
 
-  const projected = nodes.map(n => projectPoint(n.x,n.y,n.z));
+      /**
+       * Project a 3D point into 2D screen space with perspective and apply
+       * rotations around the X and Y axes. The returned object includes
+       * projected x/y positions and the updated z value which is used for
+       * depth‑based styling (e.g. node size).
+       */
+      function projectPoint(x, y, z) {
+        // Rotate around X axis
+        const cosX = Math.cos(rotX);
+        const sinX = Math.sin(rotX);
+        let y1 = y * cosX - z * sinX;
+        let z1 = y * sinX + z * cosX;
+        let x1 = x;
+        // Rotate around Y axis
+        const cosY = Math.cos(rotY);
+        const sinY = Math.sin(rotY);
+        let x2 = x1 * cosY + z1 * sinY;
+        let z2 = -x1 * sinY + z1 * cosY;
+        let y2 = y1;
+        // Perspective projection: scale diminishes with depth
+        const scale = fov / (fov + z2 + 3);
+        const spread = Math.min(width, height) * 0.4;
+        return {
+          x: centerX + x2 * scale * spread,
+          y: centerY + y2 * scale * spread,
+          z: z2
+        };
+      }
 
-  // edges
-  ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.22;
-  for (const e of edges){
-    const a = projected[e.from], b = projected[e.to];
-    const g = ctx.createLinearGradient(a.x,a.y,b.x,b.y);
-    g.addColorStop(0,'rgba(90,120,255,0.15)');
-    g.addColorStop(1,'rgba(158,197,255,0.15)');
-    ctx.strokeStyle = g;
-    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
+      /**
+       * Compute the (x,y) position of a node given its layer and index.
+       * The layer’s angle offset rotates all nodes in that layer.
+       */
+      function getNodePosition(layerIndex, nodeIndex) {
+        const layer = layers[layerIndex];
+        const radius = layerRadii[layerIndex];
+        const angle = layer[nodeIndex].angle;
+        return {
+          x: centerX + radius * Math.cos(angle),
+          y: centerY + radius * Math.sin(angle)
+        };
+      }
 
-  // pulses
-  for (const p of pulses){
-    p.t += p.speed;
-    if (p.t>1){ p.t=0; p.color=randomColor(); }
-    const e = edges[p.edgeIndex];
-    const a = nodes[e.from], b = nodes[e.to];
-    const x = a.x + (b.x-a.x)*p.t;
-    const y = a.y + (b.y-a.y)*p.t;
-    const z = a.z + (b.z-a.z)*p.t;
-    const pos = projectPoint(x,y,z);
-    ctx.fillStyle = p.color;
-    ctx.beginPath(); ctx.arc(pos.x,pos.y,3,0,Math.PI*2); ctx.fill();
-  }
+      /**
+       * Main update loop for the 3D neural network. Each frame rotates the
+       * network slightly, projects the 3D coordinates into 2D, draws
+       * edges, pulses and nodes with depth‑aware sizing and transparency,
+       * and schedules the next frame via requestAnimationFrame.
+       */
+      function updateNetwork() {
+        ctx.clearRect(0, 0, width, height);
+        // Increment rotation angles for continuous motion
+        rotX += 0.0018;
+        rotY += 0.001;
+        // Precompute projected positions for all nodes
+        const projected = nodes.map(n => projectPoint(n.x, n.y, n.z));
+        // Draw edges with subtle transparency and gradient colouring
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.22;
+        edges.forEach(edge => {
+          const a = projected[edge.from];
+          const b = projected[edge.to];
+          const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+          grad.addColorStop(0, 'rgba(90,120,255,0.15)');
+          grad.addColorStop(1, 'rgba(158,197,255,0.15)');
+          ctx.strokeStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+        // Update and draw pulses travelling along edges
+        pulses.forEach(p => {
+          p.t += p.speed;
+          if (p.t > 1) {
+            p.t = 0;
+            p.color = randomColor();
+          }
+          const edge = edges[p.edgeIndex];
+          const from = nodes[edge.from];
+          const to = nodes[edge.to];
+          const x3 = from.x + (to.x - from.x) * p.t;
+          const y3 = from.y + (to.y - from.y) * p.t;
+          const z3 = from.z + (to.z - from.z) * p.t;
+          const pos = projectPoint(x3, y3, z3);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        // Draw nodes with glow. Node size depends on depth: nearer nodes appear larger.
+        for (let i = 0; i < nodes.length; i++) {
+          const pos = projected[i];
+          // Normalize z value to [-1,1] range for size calculation
+          const depthFactor = Math.max(-1, Math.min(1, pos.z / 2));
+          const baseSize = 3 + (1 - depthFactor) * 2.5;
+          const rg = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, baseSize * 3);
+          rg.addColorStop(0, 'rgba(114,162,255,0.8)');
+          rg.addColorStop(1, 'rgba(114,162,255,0)');
+          ctx.fillStyle = rg;
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, baseSize * 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#bcd7ff';
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, baseSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(updateNetwork);
+      }
 
-  // nodes
-  for (let i=0;i<nodes.length;i++){
-    const pos = projected[i];
-    const depth = Math.max(-1, Math.min(1, pos.z/2));
-    const r = 3 + (1 - depth)*2.5;
+      // Initialise and start the network animation
+      // The legacy 3D network animation is disabled. The loader is now drawn
+      // by a dedicated script on #square-loader. Remove calls to render the
+      // network or simulate its progress.
+      /*
+      resizeCanvas();
+      spawnPulses();
+      updateNetwork();
+      window.addEventListener('resize', resizeCanvas);
 
-    const glow = ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,r*3);
-    glow.addColorStop(0,'rgba(114,162,255,0.8)');
-    glow.addColorStop(1,'rgba(114,162,255,0)');
-    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(pos.x,pos.y,r*3,0,Math.PI*2); ctx.fill();
+      // Simulate loading progress and reveal the start button when complete
+      let progress = 0;
+      const simulateLoading = setInterval(() => {
+        progress += Math.random() * 3 + 1;
+        if (progress >= 100) progress = 100;
+        percentEl.textContent = Math.floor(progress) + '%';
+        if (progress >= 100) {
+          clearInterval(simulateLoading);
+          startBtn.style.display = 'block';
+        }
+      }, 70);
+      */
 
-    ctx.fillStyle = '#bcd7ff'; ctx.beginPath(); ctx.arc(pos.x,pos.y,r,0,Math.PI*2); ctx.fill();
-  }
-
-  requestAnimationFrame(drawFrame);
-}
-
-// pointer “look” (when not dragging)
-function setPointerLook(px,py){
-  const nx = (px - centerX) / Math.max(200, width*0.5);
-  const ny = (py - centerY) / Math.max(200, height*0.5);
-  targetRotY = nx * Math.PI * 0.5;
-  targetRotX = -ny * Math.PI * 0.5;
-}
-
-canvas.addEventListener('pointerdown', e=>{
-  dragging = true; lastPX=e.clientX; lastPY=e.clientY;
-  canvas.setPointerCapture(e.pointerId);
-  canvas.classList.add('dragging');
-});
-canvas.addEventListener('pointermove', e=>{
-  if (dragging){
-    const dx = e.clientX - lastPX;
-    const dy = e.clientY - lastPY;
-    targetRotY += dx * 0.006;
-    targetRotX += dy * 0.006;
-    const limit = Math.PI * 0.95;
-    if (targetRotX >  limit) targetRotX =  limit;
-    if (targetRotX < -limit) targetRotX = -limit;
-    lastPX = e.clientX; lastPY = e.clientY;
-  } else {
-    setPointerLook(e.clientX, e.clientY);
-  }
-});
-function endDrag(e){
-  if (!dragging) return;
-  dragging = false;
-  try{ canvas.releasePointerCapture(e.pointerId); } catch{}
-  canvas.classList.remove('dragging');
-}
-canvas.addEventListener('pointerup', endDrag);
-canvas.addEventListener('pointercancel', endDrag);
-canvas.addEventListener('pointerleave', endDrag);
-
-// wheel zoom
-canvas.addEventListener('wheel', e=>{
-  e.preventDefault();
-  const dir = Math.sign(e.deltaY);
-  zoom -= dir * 0.1;
-  zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoom));
-},{ passive:false });
-
-// boot
-resizeCanvas();
-drawFrame();
-window.addEventListener('resize', resizeCanvas);
-
-// fake loading -> show Enter button
-let progress = 0;
-const simulateLoading = setInterval(()=>{
-  progress += Math.random()*3 + 1;
-  if (progress >= 100) progress = 100;
-  percentEl.textContent = Math.floor(progress) + '%';
-  if (progress >= 100){
-    clearInterval(simulateLoading);
-    startBtn.style.display = 'block';
-  }
-},70);
-
-startBtn.addEventListener('click', ()=>{
-  pageLoading.classList.add('hidden');
-  document.body.classList.remove('overflow-hidden');
-});
-// ===== end improved loader =====
-
+      startBtn.addEventListener('click', () => {
+        pageLoading.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      });
 
       // Header background changes after scrolling a bit
       const header = document.querySelector('header');
@@ -1117,5 +1240,243 @@ startBtn.addEventListener('click', ()=>{
       );
       document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     </script>
+
+  <!-- Script implementing a neural‑network inspired loader.  This new loader
+       animates colourful lines fanning out from the left and converging into
+       a grid of squares on the right.  Each square is drawn one by one,
+       accompanied by a smooth line connecting it back to a random origin.
+       The squares fade out as they appear, and once all tiles have been
+       displayed and faded, the “Enter site” button is revealed. -->
+  <script>
+    (function() {
+      // Hide the original 3D neural network canvas. We still include it in
+      // the markup for legacy reasons but do not draw on it any longer.
+      const originalCanvas = document.getElementById('nn-loader');
+      if (originalCanvas) {
+        originalCanvas.style.display = 'none';
+      }
+      const canvas = document.getElementById('square-loader');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+
+      // Tile configuration. Tiles form a grid on the right portion of the
+      // screen. Each tile stores its path points from a random source on
+      // the left side to its destination on the grid, plus colour and age.
+      let tileSize, cols, rows, tiles = [], totalTiles, spawnIndex = 0;
+      // Count how many tiles have completely finished (drawn and faded).
+      let completedTiles = 0;
+      const activeTiles = [];
+      const colours = ['#00b4d8', '#fa00ff', '#ffda00', '#6f2dbd', '#00c49a', '#56cfe1', '#f15bb5'];
+      const appearFrames = 70;  // frames for a tile to be drawn in
+      const fadeFrames = 40;    // frames for a tile to fade out after drawn
+
+      // Compute a quadratic Bézier point.
+      function bezierQuad(p0, p1, p2, t) {
+        const u = 1 - t;
+        const tt = t * t;
+        const uu = u * u;
+        return {
+          x: uu * p0.x + 2 * u * t * p1.x + tt * p2.x,
+          y: uu * p0.y + 2 * u * t * p1.y + tt * p2.y
+        };
+      }
+
+      // Create the grid of tiles and precompute their paths. Each tile has a
+      // unique starting point on the left (random y position) and an end
+      // point on the right (grid location). We generate a control point to
+      // produce a smooth curve between the start and end.
+      function initTiles() {
+        tiles = [];
+        totalTiles = cols * rows;
+        completedTiles = 0;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            // Destination location in grid
+            const endX = width * 0.60 + c * tileSize;
+            const endY = height * 0.5 - (rows * tileSize) / 2 + r * tileSize;
+            // Random start location on the left quarter of the screen
+            const startX = Math.random() * (width * 0.25);
+            const startY = Math.random() * height;
+            // Control point somewhere between start and end to create a gentle curve
+            const controlX = width * 0.35 + (Math.random() - 0.5) * width * 0.1;
+            const controlY = (startY + endY) / 2 + (Math.random() - 0.5) * height * 0.2;
+            // Sample points along the curve for incremental drawing
+            const pathPoints = [];
+            const samples = 60;
+            for (let i = 0; i < samples; i++) {
+              const t = i / (samples - 1);
+              const pt = bezierQuad({ x: startX, y: startY }, { x: controlX, y: controlY }, { x: endX, y: endY }, t);
+              pathPoints.push(pt);
+            }
+            const color = colours[Math.floor(Math.random() * colours.length)];
+            tiles.push({
+              path: pathPoints,
+              endX,
+              endY,
+              color,
+              age: 0,
+              spawned: false
+            });
+          }
+        }
+      }
+
+      // Resize handler. Recompute canvas size and tile layout on window resize.
+      function resize() {
+        // Derive the viewport dimensions. Use offsetWidth/offsetHeight as a
+        // fallback to avoid zeros if the canvas has not yet been laid out.
+        width = canvas.clientWidth || canvas.offsetWidth || window.innerWidth;
+        height = canvas.clientHeight || canvas.offsetHeight || window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        // Determine tile size relative to viewport. Limit min size for mobile.
+        tileSize = Math.max(8, Math.min(width, height) * 0.02);
+        // Use a portion of the right half for the grid. Reserve 45% of the
+        // viewport width and 60% of its height. The number of columns and
+        // rows is proportional to the viewport size. By not clamping the
+        // total number of tiles, the animation covers a large area of the
+        // screen, resulting in a richer effect similar to the reference image.
+        cols = Math.max(4, Math.floor((width * 0.45) / tileSize));
+        rows = Math.max(4, Math.floor((height * 0.60) / tileSize));
+        spawnIndex = 0;
+        activeTiles.length = 0;
+        initTiles();
+      }
+
+      // Spawn the next tile into the active list. This will cause it to be drawn.
+      function spawnNextTile() {
+        if (spawnIndex >= totalTiles) {
+          return;
+        }
+        const tile = tiles[spawnIndex];
+        tile.age = 0;
+        tile.spawned = true;
+        activeTiles.push(tile);
+        spawnIndex++;
+      }
+
+      // Draw a single tile given its age. Handles incremental drawing of the
+      // connecting line and fading of the square.
+      function drawTile(tile) {
+        tile.age++;
+        // Determine progress relative to appear and fade durations
+        if (tile.age <= appearFrames) {
+          // Line drawing phase
+          const p = tile.age / appearFrames;
+          const idx = Math.floor(tile.path.length * p);
+          ctx.beginPath();
+          ctx.strokeStyle = tile.color;
+          ctx.lineWidth = 1.5;
+          ctx.moveTo(tile.path[0].x, tile.path[0].y);
+          for (let i = 1; i <= idx && i < tile.path.length; i++) {
+            const pt = tile.path[i];
+            ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.stroke();
+          // Draw the square gradually appearing with its alpha proportional to progress
+          const alpha = p;
+          ctx.fillStyle = hexToRgba(tile.color, alpha);
+          ctx.fillRect(tile.endX, tile.endY, tileSize - 1, tileSize - 1);
+        } else {
+          // Fade out phase
+          const f = (tile.age - appearFrames) / fadeFrames;
+          const alpha = Math.max(0, 1 - f);
+          // Draw the full line with diminishing opacity
+          ctx.beginPath();
+          ctx.strokeStyle = hexToRgba(tile.color, alpha);
+          ctx.lineWidth = 1.5;
+          ctx.moveTo(tile.path[0].x, tile.path[0].y);
+          for (let i = 1; i < tile.path.length; i++) {
+            const pt = tile.path[i];
+            ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.stroke();
+          // Draw the square with fading opacity
+          ctx.fillStyle = hexToRgba(tile.color, alpha);
+          ctx.fillRect(tile.endX, tile.endY, tileSize - 1, tileSize - 1);
+        }
+        // Remove tiles after fade completes and increment completion count
+        if (tile.age >= appearFrames + fadeFrames) {
+          const index = activeTiles.indexOf(tile);
+          if (index !== -1) {
+            activeTiles.splice(index, 1);
+            completedTiles++;
+          }
+        }
+      }
+
+      // Convert hex to RGBA for drawing with alpha.
+      function hexToRgba(hex, a) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+
+      // Main animation loop. Clears the canvas, draws all active tiles and
+      // updates the loading percentage and button visibility.
+      function loop() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Spawn a few new tiles each frame to stagger the animation. Increase
+        // the allowed active tile count so the loader progresses faster and
+        // multiple lines are visible simultaneously. With more active tiles
+        // the loader reaches 100% in a reasonable time while still showing
+        // rich line patterns.
+        if (spawnIndex < totalTiles && activeTiles.length < 8) {
+          spawnNextTile();
+        }
+
+        // Draw all active tiles
+        for (let i = 0; i < activeTiles.length; i++) {
+          drawTile(activeTiles[i]);
+        }
+
+        // Update progress text based on how many tiles have fully completed. This
+        // yields a smoother percentage that reflects the fading of tiles.
+        const progressEl = document.getElementById('nn-loading-percent');
+        if (progressEl && totalTiles) {
+          const progress = Math.min(100, (completedTiles / totalTiles) * 100);
+          progressEl.textContent = Math.floor(progress) + '%';
+        }
+
+        // Show the start button when all tiles have been spawned and finished fading
+        if (spawnIndex >= totalTiles && activeTiles.length === 0) {
+          const btn = document.getElementById('start-button');
+          if (btn) {
+            btn.style.display = 'block';
+          }
+        }
+        requestAnimationFrame(loop);
+      }
+
+      resize();
+      loop();
+      window.addEventListener('resize', resize);
+    })();
+
+    // Persisted light/dark mode toggle. This separate IIFE reads the
+    // previously stored theme from localStorage (or uses the system
+    // preference) and applies it by toggling classes on <html>. The
+    // toggle button switches the theme and saves the new preference.
+    (function() {
+      const toggle = document.getElementById('theme-toggle');
+      const storageKey = 'rajdeep-theme';
+      function setMode(mode) {
+        document.documentElement.classList.toggle('light', mode === 'light');
+        document.documentElement.classList.toggle('dark', mode === 'dark');
+      }
+      let mode = localStorage.getItem(storageKey) ||
+        (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      setMode(mode);
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          mode = mode === 'light' ? 'dark' : 'light';
+          setMode(mode);
+          localStorage.setItem(storageKey, mode);
+        });
+      }
+    })();
+  </script>
   </body>
 </html>
