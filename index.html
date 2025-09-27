@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en" class="dark scroll-smooth">
   <head>
     <meta charset="utf-8" />
@@ -1263,12 +1264,13 @@
       // screen. Each tile stores its path points from a random source on
       // the left side to its destination on the grid, plus colour and age.
       let tileSize, cols, rows, tiles = [], totalTiles, spawnIndex = 0;
-      // Count how many tiles have completely finished (drawn and faded).
-      let completedTiles = 0;
+      // Tiles remain visible once drawn; we no longer track individually finished tiles.
       const activeTiles = [];
       const colours = ['#00b4d8', '#fa00ff', '#ffda00', '#6f2dbd', '#00c49a', '#56cfe1', '#f15bb5'];
-      const appearFrames = 70;  // frames for a tile to be drawn in
-      const fadeFrames = 40;    // frames for a tile to fade out after drawn
+      // The number of frames over which each tile is drawn. A smaller value
+      // yields a faster loader. Tiles remain visible once fully drawn.
+      const appearFrames = 50;
+      // FadeFrames is removed; tiles no longer fade individually.
 
       // Compute a quadratic Bézier point.
       function bezierQuad(p0, p1, p2, t) {
@@ -1288,7 +1290,6 @@
       function initTiles() {
         tiles = [];
         totalTiles = cols * rows;
-        completedTiles = 0;
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
             // Destination location in grid
@@ -1378,12 +1379,9 @@
           ctx.fillStyle = hexToRgba(tile.color, alpha);
           ctx.fillRect(tile.endX, tile.endY, tileSize - 1, tileSize - 1);
         } else {
-          // Fade out phase
-          const f = (tile.age - appearFrames) / fadeFrames;
-          const alpha = Math.max(0, 1 - f);
-          // Draw the full line with diminishing opacity
+          // Once the tile has been fully drawn, render the entire path and square at full opacity.
           ctx.beginPath();
-          ctx.strokeStyle = hexToRgba(tile.color, alpha);
+          ctx.strokeStyle = tile.color;
           ctx.lineWidth = 1.5;
           ctx.moveTo(tile.path[0].x, tile.path[0].y);
           for (let i = 1; i < tile.path.length; i++) {
@@ -1391,17 +1389,9 @@
             ctx.lineTo(pt.x, pt.y);
           }
           ctx.stroke();
-          // Draw the square with fading opacity
-          ctx.fillStyle = hexToRgba(tile.color, alpha);
+          // Draw the square fully opaque
+          ctx.fillStyle = tile.color;
           ctx.fillRect(tile.endX, tile.endY, tileSize - 1, tileSize - 1);
-        }
-        // Remove tiles after fade completes and increment completion count
-        if (tile.age >= appearFrames + fadeFrames) {
-          const index = activeTiles.indexOf(tile);
-          if (index !== -1) {
-            activeTiles.splice(index, 1);
-            completedTiles++;
-          }
         }
       }
 
@@ -1418,13 +1408,14 @@
       function loop() {
         ctx.clearRect(0, 0, width, height);
 
-        // Spawn a few new tiles each frame to stagger the animation. Increase
-        // the allowed active tile count so the loader progresses faster and
-        // multiple lines are visible simultaneously. With more active tiles
-        // the loader reaches 100% in a reasonable time while still showing
-        // rich line patterns.
-        if (spawnIndex < totalTiles && activeTiles.length < 8) {
+        // Spawn multiple tiles each frame to accelerate the loader. Without removing
+        // tiles, the activeTiles array grows, so spawning is no longer limited by
+        // its length. Instead we cap how many new tiles are created per frame.
+        let spawns = 0;
+        const maxSpawns = 8;
+        while (spawnIndex < totalTiles && spawns < maxSpawns) {
           spawnNextTile();
+          spawns++;
         }
 
         // Draw all active tiles
@@ -1432,19 +1423,15 @@
           drawTile(activeTiles[i]);
         }
 
-        // Update progress text based on how many tiles have fully completed. This
-        // yields a smoother percentage that reflects the fading of tiles.
-        const progressEl = document.getElementById('nn-loading-percent');
-        if (progressEl && totalTiles) {
-          const progress = Math.min(100, (completedTiles / totalTiles) * 100);
-          progressEl.textContent = Math.floor(progress) + '%';
-        }
-
-        // Show the start button when all tiles have been spawned and finished fading
-        if (spawnIndex >= totalTiles && activeTiles.length === 0) {
-          const btn = document.getElementById('start-button');
-          if (btn) {
-            btn.style.display = 'block';
+        // When all tiles have been spawned and the final tile has fully appeared,
+        // reveal the start button. Tiles remain visible until this moment.
+        if (spawnIndex >= totalTiles) {
+          const lastTile = tiles[totalTiles - 1];
+          if (lastTile && lastTile.spawned && lastTile.age >= appearFrames) {
+            const btn = document.getElementById('start-button');
+            if (btn) {
+              btn.style.display = 'block';
+            }
           }
         }
         requestAnimationFrame(loop);
