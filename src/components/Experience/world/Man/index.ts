@@ -82,6 +82,7 @@ export default class Man {
     if (!this.resource.scene) return
 
     this.model = this.resource.scene
+    this.model.scale.x = -1  // Horizontal flip to show RIGHT hand instead of LEFT
     this.scene.add(this.model)
   }
 

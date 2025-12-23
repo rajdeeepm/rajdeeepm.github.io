@@ -672,7 +672,12 @@ export default class Portfolio {
     // https://stackoverflow.com/a/13351534/2150128
     const vFOV = THREE.MathUtils.degToRad(this.camera.fov) // convert vertical fov to radians
     const screenHeight = 2 * Math.tan(vFOV / 2) * Math.abs(this.debugObject.offsetZ) // visible height
-    const screenWidth = screenHeight * this.camera.aspect // visible width
+    let screenWidth = screenHeight * this.camera.aspect // visible width
+
+    // Clamp for ultrawide screens to prevent off-screen cards from being visible
+    const MAX_SCREEN_WIDTH = 2.0
+    screenWidth = Math.min(screenWidth, MAX_SCREEN_WIDTH)
+
     return { screenWidth, screenHeight }
   }
 
