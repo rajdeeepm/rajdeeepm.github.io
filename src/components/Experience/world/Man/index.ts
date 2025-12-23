@@ -83,7 +83,31 @@ export default class Man {
 
     this.model = this.resource.scene
     this.model.scale.x = -1  // Horizontal flip to show RIGHT hand instead of LEFT
+
+    // Position offset to compensate for the flip
+    // Adjust based on screen width to keep hand visible
+    this.updateModelPosition()
+
     this.scene.add(this.model)
+  }
+
+  updateModelPosition() {
+    if (!this.model) return
+
+    // Adjust X position based on screen width to keep hand visible on all screen sizes
+    const aspect = this.sizes.width / this.sizes.height
+
+    // Shift figure slightly to the right to keep right hand visible
+    if (aspect < 1.5) {
+      // Mobile/Portrait
+      this.model.position.x = 0.05
+    } else if (aspect < 2.0) {
+      // Desktop
+      this.model.position.x = 0.1
+    } else {
+      // Ultrawide
+      this.model.position.x = 0.15
+    }
   }
 
   setMaterial() {
@@ -387,6 +411,7 @@ export default class Man {
   }
 
   resize() {
-    // Resize handler
+    // Update model position based on new screen size
+    this.updateModelPosition()
   }
 }
