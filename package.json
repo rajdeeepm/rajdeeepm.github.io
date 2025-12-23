@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts,.js,.jsx,.tsx",
     "prettier-all": "prettier --config .prettierrc 'src/**/*.tsx' --write",
     "preview": "vite preview",
-    "deploy": "pnpm build && gh-pages -d dist"
+    "deploy": "pnpm build && gh-pages -d dist -t true"
   },
   "dependencies": {
     "@masatomakino/threejs-interactive-object": "0.13.2",
