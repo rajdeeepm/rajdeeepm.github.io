@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { gsap } from 'gsap'
 
 // Types
 import type { LoadResult } from '../../utils/Resources'
@@ -185,6 +186,23 @@ export default class Man {
 
       const nextAnimation = this.animation.actions[currentSection]?.enter.a
       const prevAnimation = this.animation.actions.current
+
+      // Adjust model rotation for contact section to make arm face forward
+      if (currentSection === 'contact') {
+        // Rotate model 40 degrees to make right arm face forward at bottom of page
+        gsap.to(this.model.rotation, {
+          y: (Math.PI * 2) / 9,
+          duration: 1,
+          ease: 'power2.inOut'
+        })
+      } else if (prevSection === 'contact') {
+        // Rotate back when leaving contact section
+        gsap.to(this.model.rotation, {
+          y: 0,
+          duration: 1,
+          ease: 'power2.inOut'
+        })
+      }
 
       // console.log('Trigger new action due to section.current changed to', currentSection)
       if (prevAnimation?.isRunning()) {
