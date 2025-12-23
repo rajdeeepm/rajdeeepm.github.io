@@ -1,0 +1,94 @@
+{
+  "loading": "Loading",
+  "enter": "Enter",
+  "role": "Role",
+  "agency": "Agency",
+  "completed": "Completed",
+  "riconoscimenti": "Awards",
+  "close": "Close",
+  "close project": "Close this project",
+  "go to project": "Go to",
+  "intro": {
+    "p1": {
+      "l1": "Building intelligent systems",
+      "l2": "that learn, adapt, and assist"
+    },
+    "p2": {
+      "l1": "AI Research and Engineering",
+      "l2": "are the foundation of tomorrow's experiences"
+    },
+    "p3": {
+      "l1": "I'm an AI Researcher & Engineer"
+    },
+    "p4": {
+      "l1": "I'm Rajdeep Mukherjee."
+    },
+    "scroll_cta": {
+      "line1": "Scroll down",
+      "line2": "to see my work"
+    }
+  },
+  "portfolio": {
+    "intro": [
+      "I build",
+      "intelligent AI<br />systems.",
+      "From agentic LLMs, to multimodal agents, to reinforcement learning solutions.",
+      "Plus, my passion for research and innovation."
+    ],
+    "portfolio": [
+      "Research & Projects",
+      "I have worked with organizations such as: <strong>AWS</strong>, <strong>University of Michigan</strong>, <strong>Oakland University</strong>, <strong>Human-AI Lab</strong>.<br /><br />",
+      "Here are some of my most impactful projects."
+    ]
+  },
+  "about": {
+    "intro": [
+      "I'm currently pursuing B.S.E. Computer Science at <strong>University of Michigan</strong>, specializing in Intelligent Systems. Previously completed B.S. Computer Science with AI specialization at Oakland University (3.92 GPA).",
+      "My journey into AI began with deep learning research, and today I work at the intersection of machine learning, reinforcement learning, and natural language processing.",
+      "I'm passionate about building agentic systems that can reason, learn, and assist humans in meaningful ways.",
+      "From academic research to production systems at AWS, I've explored the full spectrum of AI development.",
+      "Today I think in PyTorch and transformers."
+    ],
+    "clan_title": ["Research", "&<br/>Innovation"],
+    "clan": [
+      "At the <strong>UMich Human-AI Lab</strong>, I investigate accessibility-aware computer-use agents, exploring how AI can better serve users with diverse needs.",
+      "My work on multimodal web agents extended DeepSeek R1 with audio, vision, and persistent memory, achieving significant performance improvements on WebShop (+7pp) and WebArena (+9pp).",
+      "At <strong>AWS</strong>, I built production agentic LLM systems achieving 24× speed improvement with 95.8% efficiency boost at 99%+ accuracy.",
+      "I've published research on secure UAV communication using LLMs (ICCCN 2024), edge-consistent temporal stabilization for portrait matting, and LLM-based network security (EdgeSP 2023)."
+    ],
+    "method_title": "Approach<br /><pre>&</pre>Impact",
+    "method": [
+      "Building effective AI systems requires more than just model architecture and training pipelines.<br />The real impact comes from understanding user needs, system constraints, and ethical implications.",
+      "I emphasize rigorous experimentation<br />and reproducible research",
+      "I promote collaborative development,<br />knowledge sharing,<br />and open-source contributions",
+      "When research leads to real-world impact and published work, it's even more rewarding."
+    ],
+    "skills_title": "Technical<br/>Expertise",
+    "skills": [
+      "<strong>Languages:</strong> Python, C, C++, Java, JavaScript, TypeScript, HTML/CSS, SQL, MATLAB",
+      "<strong>ML/AI Frameworks:</strong> PyTorch, TensorFlow, Hugging Face, scikit-learn, OpenCV, CUDA",
+      "<strong>Specializations:</strong> Large Language Models, Reinforcement Learning, Computer Vision, Natural Language Processing, Multimodal AI, Prompt Engineering, Model Fine-Tuning, RAG Systems",
+      "<strong>Infrastructure:</strong> AWS (SageMaker, Lambda), Docker, Git, Linux, MLOps, Data Pipelines, FAISS, Vector Databases",
+      "<strong>Research Methods:</strong> Supervised Fine-Tuning (SFT), RLHF, PPO, POMDP, Synthetic Data Generation, Benchmarking, Statistical Analysis"
+    ],
+    "awards_title": "Recognition<br/>&<br/>Awards",
+    "awards": [
+      "<strong>Hawaiian T-shirt Award Nominee</strong> – AWS SageMaker AI (Summer 2025)<br/>Awarded to 3 employees in a 100+ employee team in a month for the most innovative/impactful project",
+      "<strong>Dean's List</strong> – University of Michigan – Ann Arbor (Winter 2025)<br/>Given to students with at least 12 credits and 3.5+ GPA",
+      "<strong>Dean's List</strong> – Oakland University (Winter 2024)<br/>Given to students with at least 12 credits and 3.5+ GPA",
+      "<strong>President's List</strong> – Oakland University (Fall 2022, Winter 2023)<br/>Given to students with at least 12 credits and 3.9+ GPA",
+      "<strong>Oakland University International Opportunity Award</strong> (Fall 2022)<br/>International student merit scholarship",
+      "<strong>Published Researcher</strong> – 3 peer-reviewed publications (IEEE ICCCN, ACM EdgeSP, IEEE MOST) + 1 manuscript in preparation"
+    ],
+    "teaching_title": "Teaching<br/>&<br/>Mentorship",
+    "teaching": [
+      "<strong>Course Grader</strong> – CSE 231: Introduction to Programming I, Oakland University (Fall 2023)",
+      "Evaluated coding assignments, provided detailed feedback to students, and held regular office hours to support student learning.",
+      "Assisted students in understanding fundamental programming concepts, debugging techniques, and best practices in Python development."
+    ]
+  },
+  "contact": {
+    "intro": "You can get in touch with me by writing to",
+    "social_intro": "You can find me a little less on social, but if you want you can also contact me on"
+  }
+}

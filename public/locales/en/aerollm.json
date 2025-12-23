@@ -1,0 +1,42 @@
+{
+  "title": "Aero-LLM",
+  "subtitle": "Distributed Framework for Secure UAV Communication with LLMs",
+  "role": "Team Lead & Research Assistant",
+  "agency": "Oakland University (Prof. Anyi Liu)",
+  "completed": "September 2023 – April 2024",
+  "description": "Distributed framework for secure UAV communication and intelligent decision-making using fine-tuned LLMs (OPT/Llama2) with SFT and RLHF. Achieved >82% accuracy in SITL/HITL environments. Published at IEEE ICCCN 2024.",
+  "body": [
+    {
+      "title": "Research Motivation",
+      "paragraphs": [
+        "Unmanned Aerial Vehicles (UAVs) face critical challenges in secure communication and autonomous decision-making in dynamic, adversarial environments where traditional rule-based systems fail to adapt.",
+        "Existing UAV communication protocols lack the intelligence to recognize security threats, make context-aware decisions, and coordinate effectively in real-time without human intervention."
+      ]
+    },
+    {
+      "title": "Technical Implementation",
+      "paragraphs": [
+        "Led research team in designing and implementing the complete architecture of Aero-LLM, a distributed framework that integrates Large Language Models for secure UAV communication and intelligent decision-making.",
+        "Collected comprehensive training data using software-in-the-loop (SITL) and hardware-in-the-loop (HITL) simulation environments, capturing realistic UAV communication patterns and security scenarios.",
+        "Fine-tuned several OPT and Llama-2 LLMs using both Supervised Fine-Tuning (SFT) and Reinforcement Learning from Human Feedback (RLHF), optimizing model performance for UAV-specific tasks and enhanced decision-making capabilities.",
+        "Conducted extensive experiments across multiple model configurations, systematically evaluating accuracy, precision, recall, and F1 scores with minimal error rates."
+      ]
+    },
+    {
+      "title": "Results & Impact",
+      "paragraphs": [
+        "Achieved high accuracy (>82%), precision, recall, and F1 scores with minimal error rates across comprehensive test scenarios involving UAV communication and security challenges.",
+        "Successfully demonstrated the framework's ability to detect and respond to security threats in real-time, enabling autonomous UAV decision-making without compromising mission objectives.",
+        "Co-authored research paper published at ICCCN 2024: IEEE's 33rd International Conference on Computer Communications and Networks, 1st International Workshop on Integrated Sensing, Communication, and Computing (IoT Systems).",
+        "Established a foundation for next-generation intelligent UAV systems that can adapt to dynamic environments, coordinate securely, and make autonomous decisions using natural language understanding."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "IEEE ICCCN 2024",
+      "description": "1st Int'l Workshop on Integrated Sensing, Communication, and Computing"
+    }
+  ],
+  "stack": ["Large Language Models", "OPT", "Llama-2", "SFT (Supervised Fine-Tuning)", "RLHF", "UAV Systems", "SITL/HITL Simulation", "Distributed Computing", "Security", "PyTorch", "PX4 Autopilot", "JMavSim"]
+}

@@ -1,0 +1,52 @@
+{
+  "title": "EC-TSS: Edge-Consistent Temporal Stabilization System",
+  "subtitle": "Self-Supervised Temporal Fusion for Portrait Video Matting",
+  "role": "Independent Researcher",
+  "agency": "Independent Research (with Tod Manlaibaatar)",
+  "completed": "October 2025 – Present",
+  "description": "Lightweight temporal fusion head that stabilizes portrait matting via motion-compensated priors and self-supervised training. Reduces FCD by 25%, HFTE by ~24%, and FCD burst ratio by ~17% versus per-frame inference.",
+  "body": [
+    {
+      "title": "Research Problem",
+      "paragraphs": [
+        "Video portrait matting suffers from severe temporal inconsistencies—edge flickering, hair jitter, and ghosting artifacts—that degrade visual quality across consecutive frames.",
+        "Existing methods face a fundamental trade-off: temporal smoothing via EMA (Exponential Moving Average) over-smooths fine details, while per-frame inference produces unstable, flickering edges.",
+        "The challenge is to achieve temporal stability without sacrificing edge sharpness or introducing motion artifacts like ghosting."
+      ]
+    },
+    {
+      "title": "Technical Architecture",
+      "paragraphs": [
+        "Developed a lightweight, backbone-agnostic temporal fusion head (shallow U-Net) that stabilizes portrait matting by refining the output of a frozen per-frame MODNet-style backbone (ONNX) using a motion-compensated prior and pixel-wise fusion weights.",
+        "Engineered a motion-compensated fusion pipeline with Farnebäck optical flow to warp the previous fused matte and derive reliability cues including flow magnitude, occlusion from forward-backward consistency, edge-consistency gating, and high-frequency energy plus a learned confidence map to drive spatially varying fusion.",
+        "Designed a self-supervised training objective using only raw frames and backbone predictions (no ground-truth alpha during training), combining EMA teacher consistency with reliability masking, symmetric spatial anchoring, edge/gradient consistency, and photometric reconstruction with regularizers to avoid oversmoothing and ghosting.",
+        "Built temporally-aware stability metrics (flow-compensated delta, high-frequency temporal energy, hair-edge stability + burst ratios) to rigorously quantify flicker and edge jitter across sequences."
+      ]
+    },
+    {
+      "title": "Implementation & Training",
+      "paragraphs": [
+        "Trained on the VideoMatting108 training split and evaluated on held-out validation clips, running all experiments on a single GPU with carefully tuned hyperparameters.",
+        "Developed a comprehensive self-supervised loss function that balances temporal consistency (via EMA teacher) with spatial accuracy (edge/gradient matching, photometric reconstruction) while using reliability masks to prevent propagation of errors.",
+        "Implemented symmetric spatial anchoring to ensure the fusion head respects the backbone's spatial predictions while still achieving temporal stability.",
+        "Created custom metrics specifically designed for video matting: FCD (Flicker Consistency Distance), HFTE (High-Frequency Temporal Error), burst ratios, and hair-edge stability measures."
+      ]
+    },
+    {
+      "title": "Results & Impact",
+      "paragraphs": [
+        "Demonstrated consistent stability gains over per-frame inference across validation clips: on some testing clips, EC-TSS reduces FCD by 25%, HFTE by ~24%, and FCD burst ratio by ~17% versus per-frame baseline.",
+        "Qualitative and metric plots on other testing sequences show the same trend, closing much of EMA's stability gap without EMA's oversmoothing artifacts.",
+        "Achieved temporal stability comparable to EMA-based methods while preserving fine details like hair edges and facial features that EMA typically over-smooths.",
+        "Manuscript in preparation for submission, demonstrating a novel self-supervised approach to temporal stabilization that can be applied to any per-frame matting backbone without requiring ground-truth temporal annotations."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "Manuscript in Preparation",
+      "description": "Co-authored with Tod Manlaibaatar"
+    }
+  ],
+  "stack": ["Computer Vision", "Self-Supervised Learning", "Portrait Matting", "Optical Flow (Farnebäck)", "Temporal Consistency", "U-Net", "MODNet", "ONNX", "PyTorch", "Video Processing", "Motion Compensation"]
+}

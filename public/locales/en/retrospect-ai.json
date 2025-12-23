@@ -1,0 +1,41 @@
+{
+  "title": "Retrospect AI: Autonomous Vehicle Trajectory Emulator",
+  "subtitle": "Multi-Agent Simulation for AV Behavior Prediction",
+  "role": "Lead Developer",
+  "agency": "University of Michigan EECS 442",
+  "completed": "August 2024 – December 2024",
+  "description": "Built a trajectory emulation system that predicts and simulates autonomous vehicle behavior in complex traffic scenarios using deep learning and multi-agent simulation frameworks.",
+  "body": [
+    {
+      "title": "Motivation",
+      "paragraphs": [
+        "Testing autonomous vehicles in real-world conditions is expensive, dangerous, and time-consuming, requiring millions of miles to validate safety in edge-case scenarios.",
+        "Existing simulation tools lack the fidelity to accurately model complex multi-agent interactions, human driver behaviors, and emergent traffic patterns that AVs encounter in deployment."
+      ]
+    },
+    {
+      "title": "Technical Approach",
+      "paragraphs": [
+        "Developed a trajectory prediction model using recurrent neural networks (LSTM/GRU) trained on real-world autonomous vehicle datasets to capture temporal dependencies in vehicle motion.",
+        "Implemented multi-agent simulation framework that models interactions between autonomous vehicles, human drivers, pedestrians, and cyclists with realistic behavior patterns.",
+        "Engineered scene understanding pipeline that processes map data, traffic signals, and agent states to provide contextual inputs for trajectory generation.",
+        "Built visualization and analysis tools to validate predicted trajectories against ground truth, measuring metrics like Average Displacement Error (ADE) and Final Displacement Error (FDE)."
+      ]
+    },
+    {
+      "title": "Results",
+      "paragraphs": [
+        "Achieved accurate trajectory prediction across diverse driving scenarios including lane changes, merges, intersections, and roundabouts.",
+        "Enabled rapid testing of AV decision-making algorithms across thousands of simulated scenarios that would take months to collect in real-world driving.",
+        "System capable of generating realistic edge-case scenarios for stress-testing autonomous vehicle safety systems."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "EECS 442 Course Project",
+      "description": "Computer Vision - University of Michigan"
+    }
+  ],
+  "stack": ["Deep Learning", "LSTM/GRU", "Multi-Agent Simulation", "Trajectory Prediction", "PyTorch", "Computer Vision", "Scene Understanding", "Python", "Autonomous Vehicles"]
+}

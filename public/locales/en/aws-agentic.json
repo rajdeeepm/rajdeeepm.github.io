@@ -1,0 +1,48 @@
+{
+  "title": "AWS Production Agentic LLM System",
+  "subtitle": "Auto-Configuration Generation with 24× Speed & 95.8% Efficiency Gain",
+  "role": "Software Development Engineering Intern (AI/ML)",
+  "agency": "Amazon Web Services - SageMaker AI",
+  "completed": "May 2025 – August 2025",
+  "description": "Shipped production agentic LLM system that auto-generates configuration files from simple prompts 24× faster with 95.8% efficiency boost at 99%+ accuracy. Engineered modular, extensible architecture reusable across adjacent projects.",
+  "body": [
+    {
+      "title": "Business Problem",
+      "paragraphs": [
+        "AWS customers and internal teams spent significant time manually creating complex configuration files, leading to errors, inconsistencies, and slow onboarding for new services.",
+        "Traditional templating approaches lacked the flexibility to handle ambiguous requirements, edge cases, and the long tail of configuration variations across diverse AWS services.",
+        "Needed a production-grade solution that could understand natural language requirements and generate accurate, validated configurations at scale."
+      ]
+    },
+    {
+      "title": "Technical Solution",
+      "paragraphs": [
+        "Built a multi-LLM inference harness to systematically benchmark foundation models across accuracy, latency, and cost for experiment trials, enabling data-driven model selection.",
+        "Created a comprehensive synthetic dataset modeling real-world ambiguities and long-tail edge cases, used for both training data augmentation and rigorous evaluation of model robustness.",
+        "Fine-tuned foundation models on synthetic and curated production data to maximize exact-match performance and robustness using instruction tuning techniques.",
+        "Engineered a modular, extensible architecture with clear separation between prompt engineering, model inference, validation, and output formatting—designed for reuse across adjacent AWS projects."
+      ]
+    },
+    {
+      "title": "Impact & Recognition",
+      "paragraphs": [
+        "Achieved 24× speed improvement over manual configuration creation while maintaining 99%+ accuracy on exact-match evaluation, dramatically reducing time-to-deployment for customers.",
+        "Delivered 95.8% efficiency boost through intelligent prompt optimization, caching strategies, and batched inference, significantly reducing compute costs.",
+        "Shipped to AWS production environment, handling real-world enterprise workloads across multiple AWS services with robust error handling and validation.",
+        "Nominated for Hawaiian T-shirt Award at AWS SageMaker AI (Summer 2025) — awarded to 3 employees in a 100+ employee team in a month for the most innovative/impactful project.",
+        "Architecture and patterns adopted by adjacent teams, multiplying impact beyond initial deployment scope."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "Hawaiian T-shirt Award Nominee",
+      "description": "AWS SageMaker AI (Summer 2025) - Most Innovative/Impactful Project"
+    },
+    {
+      "title": "Production Deployment",
+      "description": "Shipped to AWS production serving enterprise customers"
+    }
+  ],
+  "stack": ["Large Language Models", "Agentic AI", "AWS SageMaker", "Python", "Instruction Tuning", "Synthetic Data Generation", "Production ML", "Model Benchmarking", "Distributed Systems", "AWS Lambda", "Configuration Management"]
+}

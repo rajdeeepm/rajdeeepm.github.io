@@ -1,0 +1,43 @@
+{
+  "title": "Net-GPT: LLM-Empowered Man-in-the-Middle Chatbot for UAVs",
+  "subtitle": "Secure Communication via Fine-Tuned Language Models",
+  "role": "Research Assistant & Co-Author",
+  "agency": "Oakland University (Prof. Anyi Liu)",
+  "completed": "March 2023 – August 2023",
+  "description": "LLM-based man-in-the-middle communication system for UAV networks, enabling intelligent message filtering, threat detection, and secure coordination. Published at EdgeSP 2023 (ACM EdgeSys Workshop).",
+  "body": [
+    {
+      "title": "Research Problem",
+      "paragraphs": [
+        "UAV networks face sophisticated communication attacks including message spoofing, injection, and adversarial coordination that traditional rule-based filters fail to detect.",
+        "Existing security mechanisms lack contextual understanding of mission intent, making them unable to distinguish between legitimate tactical deviations and malicious commands.",
+        "Need for an intelligent intermediary that can understand natural language commands, assess threat levels, and make real-time decisions about message validity."
+      ]
+    },
+    {
+      "title": "Technical Solution",
+      "paragraphs": [
+        "Developed Net-GPT, a fine-tuned GPT-based language model that operates as an intelligent man-in-the-middle agent in UAV communication pipelines.",
+        "Collected and curated a specialized dataset of UAV commands, attack patterns, and security scenarios to fine-tune the model for threat detection and message validation.",
+        "Engineered a real-time inference pipeline that intercepts, analyzes, and filters UAV communication messages with minimal latency overhead, ensuring mission-critical operations remain responsive.",
+        "Implemented contextual reasoning capabilities that assess message validity based on mission state, sender identity, command semantics, and historical communication patterns."
+      ]
+    },
+    {
+      "title": "Impact & Publication",
+      "paragraphs": [
+        "Successfully detected and blocked sophisticated attack patterns including command injection, replay attacks, and adversarial coordination attempts that evaded traditional filters.",
+        "Maintained operational performance with minimal false positives, ensuring legitimate tactical commands pass through while blocking malicious messages.",
+        "Published at EdgeSP 2023 (3rd International Workshop on Edge Systems, Analytics and Networking) co-located with ACM EdgeSys.",
+        "Demonstrated the viability of LLM-based security layers for critical autonomous systems, opening new research directions in AI-powered network defense."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "EdgeSP 2023",
+      "description": "3rd Int'l Workshop on Edge Systems, Analytics and Networking (ACM EdgeSys)"
+    }
+  ],
+  "stack": ["GPT", "Large Language Models", "Fine-Tuning", "UAV Networks", "Cybersecurity", "Man-in-the-Middle", "Natural Language Processing", "PyTorch", "Network Security", "Edge Computing"]
+}
