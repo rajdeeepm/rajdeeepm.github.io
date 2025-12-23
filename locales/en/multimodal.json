@@ -1,0 +1,42 @@
+{
+  "title": "Multimodal Web Agents with Persistent Memory",
+  "subtitle": "Extended DeepSeek R1 for Audio, Vision & Cross-Session Recall",
+  "role": "Undergraduate Researcher (EECS 545)",
+  "agency": "University of Michigan (Prof. Honglak Lee & Violet Fu)",
+  "completed": "January 2025 – May 2025",
+  "description": "Extended DeepSeek R1 with multimodality (audio via Whisper, vision via Llama 3.2 90B) and persistent memory (FAISS + Gemini embeddings). WebShop: 52% vs 45% (+7pp, +15.6% rel.); WebArena: 24% vs 15% (+9pp, +60% rel.).",
+  "body": [
+    {
+      "title": "Research Motivation",
+      "paragraphs": [
+        "Existing web navigation agents operate in text-only modalities and lack persistent memory across sessions, limiting their ability to handle rich multimodal web content and learn from past interactions.",
+        "Real-world web environments require understanding audio cues, visual UI elements, and remembering user preferences and past actions to accomplish complex, multi-step tasks effectively."
+      ]
+    },
+    {
+      "title": "Technical Implementation",
+      "paragraphs": [
+        "Extended DeepSeek R1 for multimodality by integrating OpenAI Whisper for audio understanding and Llama 3.2 90B Vision for image/UI comprehension, unifying all modalities into a single action schema for planning and tool use.",
+        "Upgraded agent memory from episodic to persistent, cross-session recall by designing a FAISS vector store backed by Gemini text embeddings, implementing memory read/write hooks directly in the tool-use loop.",
+        "Developed a unified action representation that seamlessly combines text, audio, and visual inputs, enabling the agent to reason across modalities for decision-making.",
+        "Engineered efficient retrieval mechanisms to query relevant past experiences from memory during task execution, improving contextual understanding and reducing redundant exploration."
+      ]
+    },
+    {
+      "title": "Results & Impact",
+      "paragraphs": [
+        "Achieved 52% accuracy on WebShop vs 45% baseline (+7 percentage points, +15.6% relative improvement), demonstrating significant gains in e-commerce navigation and product search tasks.",
+        "Reached 24% accuracy on WebArena vs 15% baseline (+9 percentage points, +60% relative improvement), showing substantial progress on complex, compositional web tasks requiring multi-step reasoning.",
+        "Demonstrated that multimodal understanding and persistent memory are critical components for building robust web agents that can handle real-world scenarios.",
+        "Established a framework for extending language models with cross-modal capabilities and long-term memory, applicable to broader agent architectures beyond web navigation."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "EECS 545 - Machine Learning",
+      "description": "Advised by Prof. Honglak Lee and Violet Fu"
+    }
+  ],
+  "stack": ["DeepSeek R1", "OpenAI Whisper", "Llama 3.2 90B Vision", "FAISS", "Gemini Embeddings", "PyTorch", "Multimodal Learning", "Memory Networks", "Web Automation", "WebShop", "WebArena"]
+}

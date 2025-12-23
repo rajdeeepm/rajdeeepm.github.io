@@ -1,0 +1,43 @@
+{
+  "title": "Heterogeneous Generative Dataset for UAV Intrusion Detection",
+  "subtitle": "Synthetic Data Generation for Cybersecurity ML Models",
+  "role": "Research Assistant & Co-Author",
+  "agency": "Oakland University (Prof. Anyi Liu)",
+  "completed": "January 2023 – June 2023",
+  "description": "Developed a heterogeneous synthetic dataset generation framework for training UAV intrusion detection systems, addressing data scarcity and class imbalance. Published at IEEE MOST 2023.",
+  "body": [
+    {
+      "title": "Research Motivation",
+      "paragraphs": [
+        "Training effective intrusion detection systems for UAV networks requires massive amounts of labeled attack data, which is expensive, dangerous, and time-consuming to collect from real deployments.",
+        "Existing datasets suffer from severe class imbalance, limited attack diversity, and lack of realistic edge cases, resulting in ML models that fail to generalize to novel attack patterns.",
+        "Real-world UAV security data is often proprietary or classified, creating a critical barrier for academic research and model development."
+      ]
+    },
+    {
+      "title": "Technical Approach",
+      "paragraphs": [
+        "Designed a generative framework that synthesizes realistic, heterogeneous network traffic patterns for UAV communication, modeling both benign operations and diverse attack scenarios.",
+        "Implemented multiple data generation techniques including GANs (Generative Adversarial Networks), variational autoencoders, and statistical modeling to capture traffic distribution diversity.",
+        "Developed a parameterized attack simulation engine that generates synthetic intrusion patterns across multiple attack categories: DoS, spoofing, injection, eavesdropping, and jamming.",
+        "Engineered data augmentation pipelines with careful control of class balance, feature distributions, and statistical properties to match real-world UAV network characteristics."
+      ]
+    },
+    {
+      "title": "Results & Impact",
+      "paragraphs": [
+        "Generated a comprehensive dataset with balanced representation across attack types, enabling robust training of intrusion detection models without real-world data collection risks.",
+        "Demonstrated that models trained on synthetic data achieved comparable or superior performance to models trained on limited real-world datasets, while generalizing better to novel attacks.",
+        "Published at IEEE MOST 2023 (7th International Conference on Mobility, Sensing and Networking), contributing a reproducible methodology for synthetic security dataset generation.",
+        "Dataset generation framework adaptable to other domains requiring security training data, including IoT networks, industrial control systems, and edge computing environments."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "IEEE MOST 2023",
+      "description": "7th Int'l Conference on Mobility, Sensing and Networking"
+    }
+  ],
+  "stack": ["GANs", "Variational Autoencoders", "Synthetic Data Generation", "UAV Networks", "Intrusion Detection", "Cybersecurity", "PyTorch", "Data Augmentation", "Network Security", "Machine Learning"]
+}

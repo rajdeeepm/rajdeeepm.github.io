@@ -1,0 +1,40 @@
+{
+  "title": "Accessibility-Aware Computer-Use Agents",
+  "subtitle": "LSTM-based POMDP Policies for Inclusive AI",
+  "role": "Undergraduate Researcher",
+  "agency": "University of Michigan Human-AI Lab (Prof. Anhong Guo)",
+  "completed": "September 2025 – Present",
+  "description": "Systematically investigating SOTA computer-use agents under preregistered accessibility constraints with rigorous benchmarking and LSTM-based POMDP decision policies.",
+  "body": [
+    {
+      "title": "Research Problem",
+      "paragraphs": [
+        "State-of-the-art computer-use agents (CUAs) operate under assumptions of full visual and mouse access, failing catastrophically when users require accessibility modes like Keyboard-Only, Screen-Reader, or High-Zoom navigation.",
+        "No existing benchmarks rigorously quantify the modality gap between standard and accessibility-constrained interactions, nor do current agents adapt their decision-making to capability-aware observations."
+      ]
+    },
+    {
+      "title": "Technical Approach",
+      "paragraphs": [
+        "Built a capability-aware benchmark with preregistered accessibility constraints (Keyboard-Only, Screen-Reader, High-Zoom) and rigorously defined metrics including success rate, latency, action/error counts, and F1–F8 failure taxonomy with Wilson confidence intervals and Cliff's δ effect sizes.",
+        "Prototyped an LSTM-based Partially Observable Markov Decision Process (POMDP) decision policy that maps capability-aware observations to reliable keyboard/screen-reader actions, trained via Supervised Fine-Tuning (SFT) followed by Proximal Policy Optimization (PPO) with action masking and compatibility regularization.",
+        "Conducted controlled interventions to quantify failure modes and systematically map the modality gap in a fully reproducible evaluation suite."
+      ]
+    },
+    {
+      "title": "Impact & Outcomes",
+      "paragraphs": [
+        "Established the first rigorous benchmark for evaluating computer-use agents under accessibility constraints, enabling systematic measurement of the modality gap.",
+        "Developed decision policies that can potentially close the performance gap between standard and accessibility-constrained modes, making AI agents usable for millions of users with disabilities.",
+        "Research contributes to human-centered AI by ensuring autonomous agents work equitably across diverse user capabilities and interaction modalities."
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "Human-AI Lab",
+      "description": "Research under Prof. Anhong Guo"
+    }
+  ],
+  "stack": ["LSTM", "POMDP", "Proximal Policy Optimization (PPO)", "Supervised Fine-Tuning", "Accessibility", "Human-AI Interaction", "Action Masking", "Python"]
+}

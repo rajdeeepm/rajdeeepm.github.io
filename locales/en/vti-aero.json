@@ -1,0 +1,36 @@
+{
+  "title": "VTI Aero: GPS-Independent Indoor Localization",
+  "subtitle": "Multi-Sensor Fusion for Autonomous UAV Navigation",
+  "role": "Research Developer",
+  "agency": "Oakland University Verification Technologies Inc.",
+  "completed": "January 2025 – April 2025",
+  "description": "Developed GPS-independent localization system for autonomous UAVs using multi-sensor fusion, computer vision, and Kalman filtering to enable precise indoor navigation where GPS signals are unavailable.",
+  "body": [
+    {
+      "title": "Technical Challenge",
+      "paragraphs": [
+        "GPS-based navigation fails in indoor environments, tunnels, and urban canyons where satellite signals are blocked or unreliable, creating a critical gap in autonomous UAV capabilities.",
+        "Traditional dead reckoning approaches accumulate drift errors over time, while vision-only systems struggle with lighting variations, occlusions, and computational constraints on embedded hardware."
+      ]
+    },
+    {
+      "title": "Implementation",
+      "paragraphs": [
+        "Engineered a multi-sensor fusion architecture combining inertial measurement units (IMU), optical flow, visual odometry, and depth sensors to estimate position and orientation without GPS dependency.",
+        "Implemented Extended Kalman Filter (EKF) for sensor fusion, combining high-frequency IMU data with lower-frequency but more accurate vision-based position estimates to maintain drift-corrected localization.",
+        "Developed computer vision pipeline using feature detection (ORB, SIFT) and visual SLAM techniques to extract pose information from onboard camera feeds in real-time.",
+        "Optimized algorithms for embedded deployment on resource-constrained UAV flight controllers, achieving real-time performance with minimal latency."
+      ]
+    },
+    {
+      "title": "Impact",
+      "paragraphs": [
+        "Enabled autonomous UAV navigation in GPS-denied environments with centimeter-level accuracy across extended flight durations.",
+        "Successfully demonstrated indoor waypoint navigation, obstacle avoidance, and autonomous landing using only onboard sensors.",
+        "System architecture designed for portability across multiple UAV platforms and indoor/outdoor transition scenarios."
+      ]
+    }
+  ],
+  "awards": [],
+  "stack": ["Computer Vision", "Sensor Fusion", "Extended Kalman Filter", "Visual SLAM", "Optical Flow", "IMU", "ORB/SIFT Features", "Python", "C++", "ROS", "OpenCV", "PX4 Autopilot"]
+}
