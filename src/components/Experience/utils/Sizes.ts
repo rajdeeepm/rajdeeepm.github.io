@@ -11,7 +11,7 @@ export default class Sizes extends EventEmitter {
 
     this.width = window.innerWidth
     this.height = window.innerHeight
-    this.pixelRatio = Math.min(window.devicePixelRatio, 2)
+    this.pixelRatio = Math.min(window.devicePixelRatio, 1) // Reduced from 2 to 1 for better performance
 
     // Store change listener
     const storeWatcher = new StoreWatcher()
@@ -25,7 +25,7 @@ export default class Sizes extends EventEmitter {
     ) {
       this.width = state.sizes.width
       this.height = state.sizes.height
-      this.pixelRatio = Math.min(window.devicePixelRatio, 2)
+      this.pixelRatio = Math.min(window.devicePixelRatio, 1) // Reduced from 2 to 1 for better performance
 
       this.trigger('resize')
     }

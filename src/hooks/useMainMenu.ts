@@ -117,8 +117,8 @@ function useMainMenu() {
   ])
 
   useEffect(() => {
-    window.addEventListener('mousemove', updateSelectedItem)
-    window.addEventListener('touchmove', updateSelectedItem)
+    window.addEventListener('mousemove', updateSelectedItem, { passive: true })
+    window.addEventListener('touchmove', updateSelectedItem, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', updateSelectedItem)

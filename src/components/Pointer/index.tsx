@@ -21,20 +21,22 @@ function Pointer() {
   const location = useLocation()
   const pointer = useSelector((state: RootState) => state.pointer)
   const cursorRef = useRef<HTMLDivElement>(null)
+  const rafId = useRef<number | null>(null)
 
   const update = useCallback(() => {
     if (cursorRef.current) {
-      gsap.set(cursorRef.current, {
-        x: window.cursor.x,
-        y: window.cursor.y
-      })
+      // Use native CSS transform with GPU acceleration (translate3d)
+      cursorRef.current.style.transform = `translate3d(${window.cursor.x}px, ${window.cursor.y}px, 0)`
     }
 
-    requestAnimationFrame(update)
+    rafId.current = requestAnimationFrame(update)
   }, [])
 
   useEffect(() => {
-    update()
+    rafId.current = requestAnimationFrame(update)
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current)
+    }
   }, [update])
 
   const classes = cn(style.root, {

@@ -112,18 +112,30 @@ export default class Image {
   }
 
   update() {
+    if (!this.isVisible) return
+
     this.cursorOffset.x = lerp(this.cursorOffset.x, window.cursor.x, 0.1)
     this.cursorOffset.y = lerp(this.cursorOffset.y, window.cursor.y, 0.1)
-
-    if (!this.isVisible) return
 
     const offset = {
       x: (window.cursor.x - this.cursorOffset.x) * 0.0002,
       y: (window.cursor.y - this.cursorOffset.y) * -0.0002
     }
 
-    //
-    this.material.uniforms.uOffset.value.set(offset.x, offset.y)
-    this.mesh.position.set(window.cursorNormalized.x * 0.5, window.cursorNormalized.y * -0.5, -0.5)
+    // Only update uniforms if change is meaningful
+    const currentOffsetX = this.material.uniforms.uOffset.value.x
+    const currentOffsetY = this.material.uniforms.uOffset.value.y
+
+    if (Math.abs(offset.x - currentOffsetX) > 0.00001 || Math.abs(offset.y - currentOffsetY) > 0.00001) {
+      this.material.uniforms.uOffset.value.set(offset.x, offset.y)
+    }
+
+    // Only update position if change is meaningful
+    const targetX = window.cursorNormalized.x * 0.5
+    const targetY = window.cursorNormalized.y * -0.5
+
+    if (Math.abs(this.mesh.position.x - targetX) > 0.001 || Math.abs(this.mesh.position.y - targetY) > 0.001) {
+      this.mesh.position.set(targetX, targetY, -0.5)
+    }
   }
 }

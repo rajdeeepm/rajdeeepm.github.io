@@ -92,9 +92,9 @@ function App() {
     updateAppHeight()
 
     window.addEventListener('resize', updateAppHeight)
-    window.addEventListener('touchstart', updatePointerPosition)
-    window.addEventListener('touchmove', updatePointerPosition)
-    window.addEventListener('mousemove', updatePointerPosition)
+    window.addEventListener('touchstart', updatePointerPosition, { passive: true })
+    window.addEventListener('touchmove', updatePointerPosition, { passive: true })
+    window.addEventListener('mousemove', updatePointerPosition, { passive: true })
 
     return () => {
       window.removeEventListener('resize', updateAppHeight)

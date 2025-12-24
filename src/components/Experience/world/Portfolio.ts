@@ -85,6 +85,8 @@ export default class Portfolio {
   flippedStates: boolean[]
   frontTextures: THREE.CanvasTexture[]
   backTextures: THREE.CanvasTexture[]
+  positionTween: gsap.core.Tween | null
+  targetXPosition: number
 
   constructor() {
     this.isVisible = false
@@ -96,6 +98,8 @@ export default class Portfolio {
     this.flippedStates = []
     this.frontTextures = []
     this.backTextures = []
+    this.positionTween = null
+    this.targetXPosition = 0
 
     this.experience = new Experience()
     this.resources = this.experience.resources
@@ -689,7 +693,6 @@ export default class Portfolio {
 
     let i = 0
     for (const item of this.items) {
-      // Update time uniform for shader animation
       const itemMaterial = item.material as THREE.ShaderMaterial
       if (itemMaterial.uniforms && itemMaterial.uniforms.time) {
         itemMaterial.uniforms.time.value = this.time.clockElapsed
@@ -705,10 +708,18 @@ export default class Portfolio {
       i++
     }
 
-    gsap.to(this.group.position, {
-      x: this.xPosition,
-      duration: 1
-    })
+    // Only create new tween if position changed significantly (> 0.01 units)
+    if (Math.abs(this.targetXPosition - this.xPosition) > 0.01) {
+      this.targetXPosition = this.xPosition
+
+      // Kill existing tween before creating new one
+      if (this.positionTween) this.positionTween.kill()
+
+      this.positionTween = gsap.to(this.group.position, {
+        x: this.xPosition,
+        duration: 1
+      })
+    }
   }
 
   resize() {

@@ -54,33 +54,8 @@ function Portfolio() {
 
       <div className={style.cardContainer} id="card-container" />
 
-      <video id="aerollmReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/aerollm/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="awsReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/aws-agentic/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="accessReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/accessibility/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="multimodalReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/multimodal/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="ectssReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/ectss/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="vtiReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/vti-aero/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="retrospectReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/retrospect-ai/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="netgptReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/net-gpt/reel.mp4" type="video/mp4" />
-      </video>
-      <video id="heteroDataReel" autoPlay muted loop playsInline className={style.video}>
-        <source src="/projects/heterogeneous-dataset/reel.mp4" type="video/mp4" />
-      </video>
+      {/* Videos removed - they were consuming CPU/GPU resources even when hidden */}
+      {/* Video elements can be added back if needed for specific project pages */}
     </Section>
   )
 }

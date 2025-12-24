@@ -129,7 +129,7 @@ const fragment = /* glsl */ `
     vec3 normal = normalize(vNormal);
     vec3 viewDir = normalize(vViewPosition);
 
-    // Very subtle animated normal perturbation for shimmer effect
+    // Animated perturbation for surface variation
     vec2 perturbCoord = vUv * 3.0 + vec2(time * 0.2, time * 0.15);
     float perturbation = fbm(perturbCoord) * 0.08;
     vec3 perturbedNormal = normalize(normal + vec3(perturbation * 0.05, perturbation * 0.05, 0.0));
@@ -138,28 +138,25 @@ const fragment = /* glsl */ `
     vec3 uvNormal = normalize(vec3((vUv - 0.5) * 0.9, 1.0));
     vec3 mixedNormal = normalize(mix(perturbedNormal, uvNormal, 0.6));
 
-    // Fresnel calculation for polished glossy surface with minimal animation
+    // Fresnel calculation for polished glossy surface with shimmer
     float fresnel = abs(dot(viewDir, mixedNormal));
-    fresnel = fresnelMax - fresnel * fresnelMultiplier;
-
-    // Add minimal animated variation to fresnel for shimmer
     float fresnelShimmer = sin(time * 1.5 + vUv.x * 10.0 + vUv.y * 8.0) * 0.02;
-    fresnel += fresnelShimmer;
+    fresnel = fresnelMax - fresnel * fresnelMultiplier + fresnelShimmer;
     fresnel = clamp(fresnel, 0.0, 1.0);
 
-    // Main page radial spotlight lighting (copied from strikes shader)
+    // Moving center spotlight
     vec2 center = vec2(0.5, 0.5);
     center.x += sin(time * 0.3) * 0.4;
     center.y += cos(time * 0.4) * 0.35;
 
-    // Distance from drifting center
+    // Distance from center
     float dist = distance(vUv, center);
 
-    // Add noise for subtle variation and "breathing"
+    // Animated noise for variation
     vec2 noiseCoord = vUv * 2.0 + vec2(time * 0.15, time * 0.1);
     float noiseVal = fbm(noiseCoord) * 0.3;
 
-    // Create radial gradient with noise - smaller spotlight area
+    // Create radial gradient with noise
     float gradient = dist - noiseVal;
     gradient = smoothstep(0.0, 0.7, gradient);
 
@@ -167,41 +164,40 @@ const fragment = /* glsl */ `
     float vignette = smoothstep(0.7, 0.3, dist);
 
     // Rich dark black metallic surface colors
-    vec3 baseColor = vec3(0.12, 0.12, 0.12);  // Darker grey for richer black
-    vec3 darkBaseColor = vec3(0.02, 0.02, 0.02);  // Very deep black
-    vec3 highlightColor = vec3(0.35, 0.35, 0.35);  // Subtle highlights for shine
+    vec3 baseColor = vec3(0.12, 0.12, 0.12);
+    vec3 darkBaseColor = vec3(0.02, 0.02, 0.02);
+    vec3 highlightColor = vec3(0.35, 0.35, 0.35);
 
     // Blend base color with fresnel for glossy effect
     vec3 shaded = mix(darkBaseColor, baseColor, fresnel);
 
-    // Apply main page radial gradient and vignette
-    shaded = mix(shaded * 1.5, shaded * 0.3, gradient);  // Brighter in center, darker at edges
-    shaded *= vignette * 0.7 + 0.3;  // Apply vignette like main page
+    // Apply radial gradient and vignette
+    shaded = mix(shaded * 1.5, shaded * 0.3, gradient);
+    shaded *= vignette * 0.7 + 0.3;
 
-    // Spherical UV mapping for mirror-like reflections (like human figure)
+    // Animated spherical UV for reflections
     float phi = acos(vNormal.y);
     float angle = atan(vNormal.x, vNormal.z);
     vec2 fakeUv = vec2(dot(vec3(1.0), vNormal), dot(vec3(-1.0, 0.0, 1.0), vNormal));
-    fakeUv = fract(fakeUv + vec2(time / 100.0, time / 50.0));
+    fakeUv = fract(fakeUv);
     vec2 sphericalUv = vec2((angle + PI) / (2.0 * PI), phi / PI);
 
     // Sample reflection texture with animated noise
-    vec4 reflection = texture2D(outline, sphericalUv + 0.2 * cnoise(vec3(fakeUv * 0.2, time / 2.0)));
+    vec4 reflection = texture2D(outline, sphericalUv + 0.2 * cnoise(vec3(fakeUv * 0.2, time * 0.15)));
 
-    // Blend reflection very subtly to preserve card text visibility
+    // Blend reflection subtly
     shaded = mix(shaded, reflection.rgb * baseColor, fresnel * 0.08);
 
-    // Add minimal animated specular highlights for shimmer
-    vec2 specCoord = vUv + vec2(sin(time * 0.8) * 0.3, cos(time * 0.6) * 0.3);
+    // Animated specular highlights
+    vec2 specCoord = vUv + vec2(time * 0.1, time * 0.08);
     float specNoise = fbm(specCoord * 4.0) * 0.5;
     float specular = pow(fresnel, 3.0) * specNoise;
     vec3 specularHighlight = highlightColor * specular * 0.1;
     shaded += specularHighlight;
 
     // Sample card texture and use alpha channel for masking
-    // Brightness-based masking can't compensate for alpha transparency baked into texture pixels
     vec4 txt = texture2D(cardTexture, vUv);
-    float textMask = txt.a;  // Use alpha channel directly
+    float textMask = txt.a;
     vec3 color = mix(shaded, txt.rgb, textMask);
 
     gl_FragColor = vec4(color, 1.0);
