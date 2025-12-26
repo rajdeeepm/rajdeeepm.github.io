@@ -11,6 +11,7 @@ export type ProjectInfo = {
     description: string
   }[]
   detailedBullets: string[]
+  publicationUrl?: string
 }
 
 export const projectDetails: { [key: string]: ProjectInfo } = {
@@ -74,6 +75,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
     period: 'Sept 2023 - April 2024',
     heroOutcome: 'Led distributed LLM framework for secure UAV communication achieving >82% accuracy—published at IEEE ICCCN 2024.',
     chips: ['>82% Accuracy', 'IEEE ICCCN 2024', 'SFT + RLHF', 'OPT/Llama2', 'SITL/HITL', 'Team Lead'],
+    publicationUrl: 'https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Aero-LLM%20Distributed%20Framework%20Secure%20UAV',
     highlights: [
       {
         title: 'Publication',
@@ -101,6 +103,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
     period: 'May 2023 - Aug 2023',
     heroOutcome: 'Developed LLM-powered man-in-the-middle chatbot hijacking UAV-GCS communication with 95.3% predictive accuracy—published at ACM/IEEE EdgeSP 2023.',
     chips: ['95.3% Accuracy', 'ACM/IEEE EdgeSP 2023', 'Llama-2-7B/13B', 'MitM Attack', 'Network Packets', 'UAV Security'],
+    publicationUrl: 'https://dl.acm.org/doi/proceedings/10.1145/3565478',
     highlights: [
       {
         title: 'Publication',
@@ -128,6 +131,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
     period: 'Jan 2023 - April 2023',
     heroOutcome: 'Researched and constructed heterogeneous generative dataset for unmanned aerial systems—published at IEEE MOST 2023.',
     chips: ['IEEE MOST 2023', 'UAS Dataset', 'Generative Data', 'Research Publication'],
+    publicationUrl: 'https://ieeexplore.ieee.org/document/10147369',
     highlights: [
       {
         title: 'Research Contribution',
@@ -275,24 +279,44 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
 
   let yPos = 110
 
-  // Project name at top left (clean white, bold)
+  // Project name with wrapping if too long
   ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'  // Primary text color
   ctx.font = '900 100px Arial'
   ctx.letterSpacing = '2px'
-  ctx.fillText(project.name, 60, yPos)
+  const nameLines = wrapText(ctx, project.name, canvas.width - 120)
+  nameLines.slice(0, 1).forEach(line => {  // Show only first line of name
+    ctx.fillText(line, 60, yPos)
+  })
   yPos += 35
 
-  // Organization and period (low contrast, smaller)
+  // Organization and period with wrapping
   ctx.fillStyle = 'rgba(255, 255, 255, 0.48)'  // Secondary text color
   ctx.font = '400 32px Arial'
   ctx.letterSpacing = '0px'
-  ctx.fillText(`${project.organization} · ${project.period}`, 60, yPos)
-  yPos += 75
+  const orgText = `${project.organization} · ${project.period}`
+  const orgLines = wrapText(ctx, orgText, canvas.width - 120)
+  orgLines.slice(0, 1).forEach(line => {  // Show only first line
+    ctx.fillText(line, 60, yPos)
+  })
+  yPos += 45
+
+  // Publication link with wrapping
+  if (project.publicationUrl) {
+    ctx.fillStyle = 'rgba(255, 203, 5, 0.9)'  // Maize accent
+    ctx.font = '400 28px Arial'
+    ctx.fillText('Link to paper: ', 60, yPos)
+    const linkLabelWidth = ctx.measureText('Link to paper: ').width
+    ctx.fillStyle = 'rgba(200, 220, 255, 0.95)'  // Pale blue for URL
+    ctx.font = '400 24px Arial'  // Smaller font for URL
+    const urlLines = wrapText(ctx, project.publicationUrl, canvas.width - 120 - linkLabelWidth)
+    ctx.fillText(urlLines[0] || project.publicationUrl, 60 + linkLabelWidth, yPos)
+  }
+  yPos += 30
 
   // Hero outcome (white/pale blue, not yellow - max 2 lines)
   ctx.fillStyle = 'rgba(200, 220, 255, 0.95)'  // Pale blue instead of yellow
   ctx.font = '500 48px Arial'
-  const heroLines = wrapText(ctx, project.heroOutcome, canvas.width - 200)  // Constrain width
+  const heroLines = wrapText(ctx, project.heroOutcome, canvas.width - 120)  // Constrain width
   const maxHeroLines = 2
   heroLines.slice(0, maxHeroLines).forEach(line => {
     ctx.fillText(line, 60, yPos)
@@ -300,39 +324,42 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
   })
   yPos += 40
 
-  // Stats chips (smaller, cleaner, subtler)
+  // Stats chips (smaller, cleaner, subtler) with wrapping
   let chipX = 60
   const chipY = yPos
   const chipHeight = 42  // Smaller height (was 55)
   const chipPadding = 22
   const chipSpacing = 14
+  let currentRowY = chipY
 
   project.chips.forEach((chip, index) => {
     ctx.font = '500 24px Arial'  // Smaller, medium weight
     const chipWidth = ctx.measureText(chip).width + chipPadding * 2
 
+    // Wrap to next line if chip would go off edge
+    if (chipX + chipWidth > canvas.width - 60) {
+      chipX = 60
+      currentRowY += chipHeight + chipSpacing
+    }
+
     // Subtle chip background (less opacity)
     ctx.fillStyle = 'rgba(80, 140, 255, 0.08)'
-    roundRect(ctx, chipX, chipY, chipWidth, chipHeight, 8)
+    roundRect(ctx, chipX, currentRowY, chipWidth, chipHeight, 8)
     ctx.fill()
 
     // Subtle border (no heavy glow)
     ctx.strokeStyle = 'rgba(120, 160, 255, 0.20)'
     ctx.lineWidth = 1
-    roundRect(ctx, chipX, chipY, chipWidth, chipHeight, 8)
+    roundRect(ctx, chipX, currentRowY, chipWidth, chipHeight, 8)
     ctx.stroke()
 
     // Clean white text (not neon blue)
     ctx.fillStyle = 'rgba(255, 255, 255, 0.72)'
-    ctx.fillText(chip, chipX + chipPadding, chipY + 29)
+    ctx.fillText(chip, chipX + chipPadding, currentRowY + 29)
 
     chipX += chipWidth + chipSpacing
-    if (chipX > canvas.width - 300 && index < project.chips.length - 1) {
-      chipX = 60
-      yPos += chipHeight + chipSpacing
-    }
   })
-  yPos = chipY + chipHeight + 65
+  yPos = currentRowY + chipHeight + 65
 
   // 3 Highlight tiles (premium design with better hierarchy)
   const tileWidth = (canvas.width - 140) / 3
@@ -359,25 +386,27 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
     roundRect(ctx, tileX + 28, tileY + 35, 5, 60, 3)
     ctx.fill()
 
-    // Tile title (bold, clean white)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'
-    ctx.font = '700 44px Arial'
-    const titleLines = wrapText(ctx, highlight.title, tileWidth - 90)
-    let titleY = tileY + 85
-    titleLines.forEach(line => {
-      ctx.fillText(line, tileX + 55, titleY)
-      titleY += 52
-    })
+    clipRect(ctx, tileX + 40, tileY + 30, tileWidth - 80, tileHeight - 60, () => {
+      // Tile title (bold, clean white)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'
+      ctx.font = '700 44px Arial'
+      const titleLines = wrapText(ctx, highlight.title, tileWidth - 90)
+      let titleY = tileY + 85
+      titleLines.forEach(line => {
+        ctx.fillText(line, tileX + 55, titleY)
+        titleY += 52
+      })
 
-    // Tile description (better contrast, proper line-height)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.72)'  // Improved readability
-    ctx.font = '400 32px Arial'  // Slightly larger for glass blur
-    const descLines = wrapText(ctx, highlight.description, tileWidth - 75)
-    const maxDescLines = 6  // Limit to prevent overflow
-    let descY = titleY + 40
-    descLines.slice(0, maxDescLines).forEach(line => {
-      ctx.fillText(line, tileX + 55, descY)
-      descY += 46  // Better line-height (1.5x)
+      // Tile description (better contrast, proper line-height)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.72)'  // Improved readability
+      ctx.font = '400 32px Arial'  // Slightly larger for glass blur
+      const descLines = wrapText(ctx, highlight.description, tileWidth - 75)
+      const maxDescLines = 6  // Limit to prevent overflow
+      let descY = titleY + 40
+      descLines.slice(0, maxDescLines).forEach(line => {
+        ctx.fillText(line, tileX + 55, descY)
+        descY += 46  // Better line-height (1.5x)
+      })
     })
   })
 
@@ -416,42 +445,46 @@ function createBackCardTexture(project: ProjectInfo): THREE.CanvasTexture {
   ctx.fillText('Detailed Overview', 60, yPos)
   yPos += 100
 
-  // Beat-style bullets with accent lines
-  project.detailedBullets.forEach((bullet, index) => {
-    // Left accent line (maize - rare secondary accent)
-    ctx.fillStyle = 'rgba(255, 203, 5, 0.9)'
-    roundRect(ctx, 60, yPos - 45, 5, 60, 3)
-    ctx.fill()
+  const bulletClipTop = yPos - 60
+  const bulletClipHeight = canvas.height - yPos - 120
+  clipRect(ctx, 40, bulletClipTop, canvas.width - 80, bulletClipHeight, () => {
+    // Beat-style bullets with accent lines
+    project.detailedBullets.forEach((bullet, index) => {
+      // Left accent line (maize - rare secondary accent)
+      ctx.fillStyle = 'rgba(255, 203, 5, 0.9)'
+      roundRect(ctx, 60, yPos - 45, 5, 60, 3)
+      ctx.fill()
 
-    // Parse HTML bold tags and render
-    const lines = wrapText(ctx, bullet.replace(/<\/?strong>/g, ''), canvas.width - 160)
-    ctx.font = '400 36px Arial'
+      // Parse HTML bold tags and render
+      const lines = wrapText(ctx, bullet.replace(/<\/?strong>/g, ''), canvas.width - 160)
+      ctx.font = '400 36px Arial'
 
-    lines.forEach((line, lineIndex) => {
-      // Check if this line starts with a bold label
-      const boldMatch = bullet.match(/<strong>([^<]+)<\/strong>/)
-      if (lineIndex === 0 && boldMatch) {
-        const boldText = boldMatch[1]
-        const restText = line.substring(boldText.length)
+      lines.forEach((line, lineIndex) => {
+        // Check if this line starts with a bold label
+        const boldMatch = bullet.match(/<strong>([^<]+)<\/strong>/)
+        if (lineIndex === 0 && boldMatch) {
+          const boldText = boldMatch[1]
+          const restText = line.substring(boldText.length)
 
-        // Draw bold part (maize for labels)
-        ctx.font = '700 38px Arial'
-        ctx.fillStyle = 'rgba(255, 203, 5, 0.95)'
-        ctx.fillText(boldText, 90, yPos)
+          // Draw bold part (maize for labels)
+          ctx.font = '700 38px Arial'
+          ctx.fillStyle = 'rgba(255, 203, 5, 0.95)'
+          ctx.fillText(boldText, 90, yPos)
 
-        // Draw rest (clean white)
-        const boldWidth = ctx.measureText(boldText).width
-        ctx.font = '400 36px Arial'
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.78)'  // Better readability
-        ctx.fillText(restText, 90 + boldWidth, yPos)
-      } else {
-        ctx.font = '400 36px Arial'
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.78)'
-        ctx.fillText(line, 90, yPos)
-      }
-      yPos += 48  // Better line-height
+          // Draw rest (clean white)
+          const boldWidth = ctx.measureText(boldText).width
+          ctx.font = '400 36px Arial'
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.78)'  // Better readability
+          ctx.fillText(restText, 90 + boldWidth, yPos)
+        } else {
+          ctx.font = '400 36px Arial'
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.78)'
+          ctx.fillText(line, 90, yPos)
+        }
+        yPos += 48  // Better line-height
+      })
+      yPos += 35
     })
-    yPos += 35
   })
 
   // "Click to return" indicator
@@ -499,6 +532,22 @@ function addNoiseOverlay(ctx: CanvasRenderingContext2D, width: number, height: n
   }
 
   ctx.putImageData(imageData, 0, 0)
+}
+
+function clipRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  draw: () => void
+) {
+  ctx.save()
+  ctx.beginPath()
+  ctx.rect(x, y, width, height)
+  ctx.clip()
+  draw()
+  ctx.restore()
 }
 
 function roundRect(

@@ -7,9 +7,30 @@ import Container, { Row } from 'components/Container'
 import ContentBlock from 'components/ContentBlock'
 import Heading from 'components/Heading'
 import { Trans } from 'react-i18next'
+import { projectDetails } from 'components/Experience/utils/projectCardGenerator'
 
 // Hooks
 import { useTranslation } from 'react-i18next'
+
+const projectOrder = [
+  'accessibility',
+  'ectss',
+  'aws-agentic',
+  'multimodal',
+  'vti-aero',
+  'retrospect-ai',
+  'aerollm',
+  'net-gpt',
+  'heterogeneous-dataset'
+]
+
+const stripHtml = (value: string) =>
+  value
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<\/?strong>/gi, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
 
 function Portfolio() {
   const { t } = useTranslation('translation', { keyPrefix: 'portfolio' })
@@ -53,6 +74,43 @@ function Portfolio() {
       </Container>
 
       <div className={style.cardContainer} id="card-container" />
+
+      <div className={style.srOnly} aria-label="Project details for search">
+        <ul>
+          {projectOrder.map((key) => {
+            const project = projectDetails[key]
+            if (!project) return null
+
+            return (
+              <li key={key}>
+                <h3>{project.name}</h3>
+                <p>{`${project.organization} • ${project.period}`}</p>
+                <p>{stripHtml(project.heroOutcome)}</p>
+                {project.publicationUrl && (
+                  <p>
+                    <a href={project.publicationUrl} target="_blank" rel="noopener noreferrer">
+                      View Publication
+                    </a>
+                  </p>
+                )}
+                <p>{`Tags: ${project.chips.join(', ')}`}</p>
+                <div>
+                  {project.highlights.map((highlight) => (
+                    <p key={highlight.title}>
+                      {highlight.title}: {stripHtml(highlight.description)}
+                    </p>
+                  ))}
+                </div>
+                <div>
+                  {project.detailedBullets.map((bullet, index) => (
+                    <p key={`${key}-${index}`}>{stripHtml(bullet)}</p>
+                  ))}
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
 
       {/* Videos removed - they were consuming CPU/GPU resources even when hidden */}
       {/* Video elements can be added back if needed for specific project pages */}

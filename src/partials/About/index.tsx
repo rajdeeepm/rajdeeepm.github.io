@@ -6,7 +6,6 @@ import Container, { Row } from 'components/Container'
 import ContentBlock from 'components/ContentBlock'
 import Square from 'components/Square'
 import Heading from 'components/Heading'
-import { List, ListItem } from 'components/List'
 
 // Hooks
 import { Trans, useTranslation } from 'react-i18next'
@@ -18,6 +17,12 @@ function About() {
   const clan: string[] = t('clan', { returnObjects: true })
   const methodTitle: string = t('method_title')
   const method: string[] = t('method', { returnObjects: true })
+  const skillsTitle: string = t('skills_title')
+  const skills: string[] = t('skills', { returnObjects: true })
+  const awardsTitle: string = t('awards_title')
+  const awards: string[] = t('awards', { returnObjects: true })
+  const teachingTitle: string = t('teaching_title')
+  const teaching: string[] = t('teaching', { returnObjects: true })
 
   return (
     <Section name="about" className={style.root}>
@@ -129,16 +134,63 @@ function About() {
           </div>
         </Row>
       </Container>
+      <Container grid outerRightOnMobile>
+        <Row start={1} end={3}>
+          <div className={style.section}>
+            <Heading key={skillsTitle}>
+              <Trans i18nKey="about.skills_title" components={{ pre: <pre /> }} />
+            </Heading>
+          </div>
+        </Row>
+      </Container>
+      <Container grid>
+        <Row start={2} end={2}>
+          <ContentBlock key={skills[0]}>
+            {skills.map((_, i) => (
+              <div key={i}>
+                <Trans i18nKey={`about.skills.${i}`} />
+              </div>
+            ))}
+          </ContentBlock>
+        </Row>
+      </Container>
       <Container grid>
         <Row start={1} end={3}>
-          <ContentBlock>
-            <List>
-              <ListItem end="x6">Awwwards</ListItem>
-              <ListItem end="x6">CSS Design Awards</ListItem>
-              <ListItem end="x1">FWA</ListItem>
-              <ListItem end="x3">iF Design Award</ListItem>
-              <ListItem end="x8">Other</ListItem>
-            </List>
+          <div className={style.section}>
+            <Heading className={style.awardsTitle} key={awardsTitle}>
+              <Trans i18nKey="about.awards_title" />
+            </Heading>
+          </div>
+        </Row>
+      </Container>
+      <Container grid>
+        <Row start={2} end={2}>
+          <ContentBlock key={awards[0]}>
+            {awards.map((_, i) => (
+              <div key={i}>
+                <Trans i18nKey={`about.awards.${i}`} />
+              </div>
+            ))}
+          </ContentBlock>
+        </Row>
+      </Container>
+      <Container grid outerRightOnMobile>
+        <Row start={1} end={3}>
+          <div className={style.section}>
+            <Heading key={teachingTitle}>
+              <Trans i18nKey="about.teaching_title" />
+            </Heading>
+          </div>
+        </Row>
+      </Container>
+      <Container grid>
+        <Row start={2} end={2}>
+          <ContentBlock key={teaching[0]}>
+            {teaching.map((_, i) => (
+              <div key={i}>
+                <Trans i18nKey={`about.teaching.${i}`} />
+              </div>
+            ))}
           </ContentBlock>
         </Row>
       </Container>

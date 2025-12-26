@@ -169,19 +169,40 @@ export default class Title {
     }
   }
 
+  getMenuLeftPx(): number {
+    if (this.sizes.width >= breakpoints.xl) {
+      return 450
+    }
+    if (this.sizes.width >= breakpoints.lg) {
+      return 320
+    }
+    if (this.sizes.width >= breakpoints.mdL) {
+      return 280
+    }
+    return 116
+  }
+
   menuOpen(itemIndex: number) {
     const { height: screenHeightPx } = this.sizes
-    const { screenHeight } = this.getScreenSizes()
+    const { screenHeight, screenWidth } = this.getScreenSizes()
     const geometry = this.mesh.geometry as MSDFTextGeometry
-    const textHeight = (geometry.layout?.height || 0) * this.scale
+    const baseScale = this.scale / 1.5
+    const textWidth = (geometry.layout?.width || 0) * baseScale
+    const leftPosition = (screenWidth * this.getMenuLeftPx()) / this.sizes.width
+    const padding = screenWidth * 0.06
+    const maxWidth = screenWidth - leftPosition - padding
+    const safeMaxWidth = Math.max(screenWidth * 0.2, maxWidth)
+    const scaleFactor = textWidth > 0 ? Math.min(1, safeMaxWidth / textWidth) : 1
+    const menuScale = baseScale * scaleFactor
+    const textHeight = (geometry.layout?.height || 0) * menuScale
     const halfTextHeight = textHeight / 2
 
     this.isMenuOpen = true
 
     gsap.to(this.mesh.scale, {
-      x: this.scale / 1.5,
-      y: this.scale / 1.5,
-      z: this.scale / 1.5,
+      x: menuScale,
+      y: menuScale,
+      z: menuScale,
       duration: 0.3,
       ease: 'expo.inOut'
     })
@@ -434,19 +455,7 @@ export default class Title {
 
     if (isMenuItem) {
       // Menu items: left-aligned
-      let px // spacing.css --text-margin-left
-
-      if (this.sizes.width >= breakpoints.xl) {
-        px = 450 // xl
-      } else if (this.sizes.width >= breakpoints.lg) {
-        px = 320 // lg
-      } else if (this.sizes.width >= breakpoints.mdL) {
-        px = 280 // md-l
-      } else {
-        px = 116 // mobile
-      }
-
-      const leftPosition = (screenWidth * px) / this.sizes.width
+      const leftPosition = (screenWidth * this.getMenuLeftPx()) / this.sizes.width
 
       // Since 0 is in the middle of the screen, subtract half width
       this.mesh.position.x = leftPosition - screenWidth / 2

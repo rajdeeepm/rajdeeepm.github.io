@@ -43,7 +43,7 @@
   },
   "about": {
     "intro": [
-      "I'm currently pursuing B.S.E. Computer Science at <strong>University of Michigan</strong>, specializing in Intelligent Systems. Previously completed B.S. Computer Science with AI specialization at Oakland University (3.92 GPA).",
+      "I'm currently pursuing B.S.E. Computer Science with focus on Intelligent Systems and Minor in Mathematics at <strong>University of Michigan</strong> (GPA: 3.555). Previously completed B.S. Computer Science with AI specialization at Oakland University (Honors College, GPA: 3.92).",
       "My journey into AI began with deep learning research, and today I work at the intersection of machine learning, reinforcement learning, and natural language processing.",
       "I'm passionate about building agentic systems that can reason, learn, and assist humans in meaningful ways.",
       "From academic research to production systems at AWS, I've explored the full spectrum of AI development.",
@@ -65,26 +65,28 @@
     ],
     "skills_title": "Technical<br/>Expertise",
     "skills": [
-      "<strong>Languages:</strong> Python, C, C++, Java, JavaScript, TypeScript, HTML/CSS, SQL, MATLAB",
-      "<strong>ML/AI Frameworks:</strong> PyTorch, TensorFlow, Hugging Face, scikit-learn, OpenCV, CUDA",
-      "<strong>Specializations:</strong> Large Language Models, Reinforcement Learning, Computer Vision, Natural Language Processing, Multimodal AI, Prompt Engineering, Model Fine-Tuning, RAG Systems",
-      "<strong>Infrastructure:</strong> AWS (SageMaker, Lambda), Docker, Git, Linux, MLOps, Data Pipelines, FAISS, Vector Databases",
-      "<strong>Research Methods:</strong> Supervised Fine-Tuning (SFT), RLHF, PPO, POMDP, Synthetic Data Generation, Benchmarking, Statistical Analysis"
+      "<strong>Languages:</strong> Python, C, C++, Java, HTML, CSS, SQL, SQLite, JavaScript, MATLAB, TypeScript",
+      "<strong>Technologies:</strong> TensorFlow, PyTorch, Pandas, AWS, Flask, Hugging Face, JMavSim, PX4 Autopilot, Unreal Engine, NVIDIA Omniverse, Human-Robot Interaction, Git, REST APIs, React, DOM, CUDA, RAG, FAISS",
+      "<strong>Expertise:</strong> Deep Neural Networks (CNNs, RNNs, LSTM), Reinforcement Learning, Computer Vision, NLP, ML Optimization, System Design"
     ],
-    "awards_title": "Recognition<br/>&<br/>Awards",
+    "awards_title": "Honors<br/>&<br/>Awards",
     "awards": [
-      "<strong>Hawaiian T-shirt Award Nominee</strong> – AWS SageMaker AI (Summer 2025)<br/>Awarded to 3 employees in a 100+ employee team in a month for the most innovative/impactful project",
-      "<strong>Dean's List</strong> – University of Michigan – Ann Arbor (Winter 2025)<br/>Given to students with at least 12 credits and 3.5+ GPA",
+      "<strong>Nominated for Hawaiian T-shirt Award</strong> – AWS SageMaker AI (Summer 2025)<br/>Awarded to 3 employees in a 100+ employee team in a month for the most innovative/impactful project",
+      "<strong>Dean's List</strong> – University of Michigan - Ann Arbor (Winter 2025)<br/>Given to students with at least 12 credits and 3.5+ GPA",
       "<strong>Dean's List</strong> – Oakland University (Winter 2024)<br/>Given to students with at least 12 credits and 3.5+ GPA",
       "<strong>President's List</strong> – Oakland University (Fall 2022, Winter 2023)<br/>Given to students with at least 12 credits and 3.9+ GPA",
-      "<strong>Oakland University International Opportunity Award</strong> (Fall 2022)<br/>International student merit scholarship",
-      "<strong>Published Researcher</strong> – 3 peer-reviewed publications (IEEE ICCCN, ACM EdgeSP, IEEE MOST) + 1 manuscript in preparation"
+      "<strong>Oakland University International Opportunity Award</strong> (Fall 2022)<br/>International student merit scholarship"
     ],
-    "teaching_title": "Teaching<br/>&<br/>Mentorship",
+    "teaching_title": "Teaching<br/>&<br/>Experience",
     "teaching": [
-      "<strong>Course Grader</strong> – CSE 231: Introduction to Programming I, Oakland University (Fall 2023)",
-      "Evaluated coding assignments, provided detailed feedback to students, and held regular office hours to support student learning.",
-      "Assisted students in understanding fundamental programming concepts, debugging techniques, and best practices in Python development."
+      "<strong>Computer Science and Engineering Dept. Grader</strong> – Oakland University (January 2024 – April 2024)",
+      "Evaluated and graded assignments, quizzes, and examinations for undergraduate students in CSI 2470 – Introduction to Computer Networks.",
+      "Aided in conducting interactive and engaging lab sessions, providing students with hands-on experience.",
+      "Enabled student learning through personalized consultations, addressing queries on course content, assignments, and projects, fostering a supportive, collaborative environment.",
+      "<strong>Mathematics and Statistics Dept. Grader</strong> – Oakland University (September 2023 – December 2023)",
+      "Evaluated and graded assignments and quizzes for undergraduate students in MTH 1554 – Calculus I.",
+      "Provided constructive feedback and guidance to students on their performance and areas of improvement.",
+      "Collaborated with instructors and teaching assistants to ensure consistency and accuracy in grading while upholding academic integrity."
     ]
   },
   "contact": {
