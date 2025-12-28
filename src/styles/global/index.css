@@ -1,9 +1,13 @@
 @import "./fontface.css";
 @import "./keyframe-animations.css";
 
+html {
+  box-sizing: border-box;
+}
+
 html, body {
+  width: 100%;
   overflow-x: hidden;
-  max-width: 100vw;
 }
 
 body {
@@ -31,7 +35,10 @@ a {
   color: var(--color-black);
 }
 
-* {
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
   padding: 0;
   margin: 0;
 }

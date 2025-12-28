@@ -6,11 +6,11 @@
   }
 
   width: calc(100% - var(--tot-margin));
-  max-width: 100vw;
+  max-width: 100%;
   margin: 0 var(--right-margin) 0 var(--text-margin-left);
 
   @media (max-width: 767px) {
-    width: calc(100vw - var(--tot-margin));
+    width: calc(100% - var(--tot-margin));
   }
 
   &.withoutMenu {
