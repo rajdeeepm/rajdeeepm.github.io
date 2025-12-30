@@ -45,7 +45,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
     name: 'EC-TSS',
     organization: 'Independent Research',
     period: 'Oct 2025 - Present',
-    heroOutcome: 'Developed a self-supervised temporal fusion system that reduces portrait matting flicker by 25% FCD, 24% HFTE without ground-truth alpha—stabilizing video mattes while avoiding EMA oversmoothing.',
+    heroOutcome: 'Developed a self-supervised temporal fusion system that reduces portrait matting flicker by 25% FCD, 24% HFTE without ground-truth alpha - stabilizing video mattes while avoiding EMA oversmoothing.',
     chips: ['25% FCD ↓', '24% HFTE ↓', 'Self-supervised', 'Motion-compensated', 'Single GPU', 'VideoMatting108'],
     highlights: [
       {
@@ -54,7 +54,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       },
       {
         title: 'Self-Supervised Training',
-        description: 'No ground-truth alpha required—combines EMA teacher consistency, reliability masking, edge/gradient consistency, and photometric reconstruction.'
+        description: 'No ground-truth alpha required - combines EMA teacher consistency, reliability masking, edge/gradient consistency, and photometric reconstruction.'
       },
       {
         title: 'Stability Metrics',
@@ -66,20 +66,20 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       '<strong>Engineered:</strong> Motion-compensated fusion pipeline with Farnebäck optical flow to warp previous fused matte and derive reliability cues (flow magnitude, occlusion from forward-backward consistency, edge-consistency gating, high-frequency energy) plus learned confidence map driving spatially varying fusion.',
       '<strong>Designed:</strong> Self-supervised training objective using only raw frames and backbone predictions (no ground-truth alpha), combining EMA teacher consistency with reliability masking, symmetric spatial anchoring, edge/gradient consistency, and photometric reconstruction + regularizers to avoid oversmoothing/ghosting.',
       '<strong>Trained + Evaluated:</strong> VideoMatting108 training split with held-out validation clips on single GPU; built temporally-aware stability metrics (flow-compensated delta, high-frequency temporal energy, hair-edge stability + burst ratios) to quantify flicker and edge jitter.',
-      '<strong>Demonstrated:</strong> Consistent stability gains over per-frame inference—EC-TSS reduces FCD by 25%, HFTE by ~24%, FCD burst ratio by ~17% versus per-frame, closing much of EMA\'s stability gap without oversmoothing artifacts.'
+      '<strong>Demonstrated:</strong> Consistent stability gains over per-frame inference - EC-TSS reduces FCD by 25%, HFTE by ~24%, FCD burst ratio by ~17% versus per-frame, closing much of EMA\'s stability gap without oversmoothing artifacts.'
     ]
   },
   'aerollm': {
     name: 'Aero-LLM',
     organization: 'Oakland University',
     period: 'Sept 2023 - April 2024',
-    heroOutcome: 'Led distributed LLM framework for secure UAV communication achieving >82% accuracy—published at IEEE ICCCN 2024.',
+    heroOutcome: 'Led distributed LLM framework for secure UAV communication achieving >82% accuracy - published at IEEE ICCCN 2024.',
     chips: ['>82% Accuracy', 'IEEE ICCCN 2024', 'SFT + RLHF', 'OPT/Llama2', 'SITL/HITL', 'Team Lead'],
     publicationUrl: 'https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Aero-LLM%20Distributed%20Framework%20Secure%20UAV',
     highlights: [
       {
         title: 'Publication',
-        description: 'Team Lead—co-authored paper on distributed framework for secure UAV communication and intelligent decision-making, published at IEEE\'s 33rd ICCCN.'
+        description: 'Team Lead - co-authored paper on distributed framework for secure UAV communication and intelligent decision-making, published at IEEE\'s 33rd ICCCN.'
       },
       {
         title: 'System Design',
@@ -91,7 +91,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Led:</strong> Research on Aero-LLM distributed framework for secure UAV communication and intelligent decision-making—co-authored paper published at IEEE\'s 33rd International Conference on Computer Communications and Networks (ICCCN) in July 2024.',
+      '<strong>Led:</strong> Research on Aero-LLM distributed framework for secure UAV communication and intelligent decision-making - co-authored paper published at IEEE\'s 33rd International Conference on Computer Communications and Networks (ICCCN) in July 2024.',
       '<strong>Designed + Implemented:</strong> Complete Aero-LLM architecture with data collection using software-in-the-loop (SITL) and hardware-in-the-loop (HITL) environments.',
       '<strong>Fine-tuned:</strong> Multiple OPT/Llama2 LLMs using both SFT and RLHF, achieving optimized model performance and enhanced decision-making capabilities for UAV communication systems.',
       '<strong>Achieved:</strong> High accuracy (>82%), precision, recall, and F1 scores with minimal error rates across extensive experimental validation.'
@@ -101,7 +101,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
     name: 'Net-GPT',
     organization: 'Oakland University',
     period: 'May 2023 - Aug 2023',
-    heroOutcome: 'Developed LLM-powered man-in-the-middle chatbot hijacking UAV-GCS communication with 95.3% predictive accuracy—published at ACM/IEEE EdgeSP 2023.',
+    heroOutcome: 'Developed LLM-powered man-in-the-middle chatbot hijacking UAV-GCS communication with 95.3% predictive accuracy - published at ACM/IEEE EdgeSP 2023.',
     chips: ['95.3% Accuracy', 'ACM/IEEE EdgeSP 2023', 'Llama-2-7B/13B', 'MitM Attack', 'Network Packets', 'UAV Security'],
     publicationUrl: 'https://dl.acm.org/doi/proceedings/10.1145/3565478',
     highlights: [
@@ -119,17 +119,17 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Researched + Developed:</strong> Net-GPT—LLM-empowered man-in-the-middle chatbot for unmanned aerial vehicle hijacking—co-authored paper published at EdgeSP: Fifth ACM/IEEE Workshop on Security and Privacy in Edge Computing in December 2023.',
+      '<strong>Researched + Developed:</strong> Net-GPT - LLM-empowered man-in-the-middle chatbot for unmanned aerial vehicle hijacking - co-authored paper published at EdgeSP: Fifth ACM/IEEE Workshop on Security and Privacy in Edge Computing in December 2023.',
       '<strong>Designed + Implemented:</strong> Attacks enabling Net-GPT to hijack benign UAVs and gain control over communication session between UAVs and Ground Control Stations (GCS).',
-      '<strong>Fine-tuned:</strong> Llama-2-7B and Llama-2-13B with extensive experiments, achieving impressive predictive accuracy of 95.3% and 94.1%, respectively—explored trade-off between dataset quantity and fine-tuning epochs.',
-      '<strong>Evaluated:</strong> Generative accuracy and analyzed errors for different LLMs; explored cost-efficiency of data size and fine-tuning epochs—demonstrated LLM potential in producing accurate network packets and simulating UAV-GCS communications.'
+      '<strong>Fine-tuned:</strong> Llama-2-7B and Llama-2-13B with extensive experiments, achieving impressive predictive accuracy of 95.3% and 94.1%, respectively - explored trade-off between dataset quantity and fine-tuning epochs.',
+      '<strong>Evaluated:</strong> Generative accuracy and analyzed errors for different LLMs; explored cost-efficiency of data size and fine-tuning epochs - demonstrated LLM potential in producing accurate network packets and simulating UAV-GCS communications.'
     ]
   },
   'heterogeneous-dataset': {
     name: 'Heterogeneous Dataset',
     organization: 'Oakland University',
     period: 'Jan 2023 - April 2023',
-    heroOutcome: 'Researched and constructed heterogeneous generative dataset for unmanned aerial systems—published at IEEE MOST 2023.',
+    heroOutcome: 'Researched and constructed heterogeneous generative dataset for unmanned aerial systems - published at IEEE MOST 2023.',
     chips: ['IEEE MOST 2023', 'UAS Dataset', 'Generative Data', 'Research Publication'],
     publicationUrl: 'https://ieeexplore.ieee.org/document/10147369',
     highlights: [
@@ -147,14 +147,14 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Researched + Constructed:</strong> Heterogeneous Generative Dataset for unmanned aerial systems (UAS)—co-authored paper published by IEEE International Conference on Mobility, Operations, Services and Technologies (MOST) in May 2023.'
+      '<strong>Researched + Constructed:</strong> Heterogeneous Generative Dataset for unmanned aerial systems (UAS) - co-authored paper published by IEEE International Conference on Mobility, Operations, Services and Technologies (MOST) in May 2023.'
     ]
   },
   'aws-agentic': {
     name: 'AWS Agentic System',
     organization: 'Amazon Web Services',
     period: 'May 2025 - Aug 2025',
-    heroOutcome: 'Shipped production LLM agent generating config files from prompts—24× faster, 95.8% effort reduction, 99%+ accuracy.',
+    heroOutcome: 'Shipped production LLM agent generating config files from prompts - 24× faster, 95.8% effort reduction, 99%+ accuracy.',
     chips: ['24× Faster', '95.8% Efficiency ↑', '99%+ Accuracy', 'Production System', 'Multi-LLM', 'Synthetic Data'],
     highlights: [
       {
@@ -171,7 +171,7 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Shipped:</strong> Production agentic LLM system auto-generating configuration files with simple user prompt—24× faster, boosting efficiency by 95.8% at 99%+ accuracy—engineered modular, extensible architecture to be reused across adjacent projects.',
+      '<strong>Shipped:</strong> Production agentic LLM system auto-generating configuration files with simple user prompt - 24× faster, boosting efficiency by 95.8% at 99%+ accuracy - engineered modular, extensible architecture to be reused across adjacent projects.',
       '<strong>Built:</strong> Multi-LLM inference harness to benchmark foundation models across accuracy, latency, and cost for experiment trials.',
       '<strong>Created:</strong> Comprehensive synthetic dataset modeling real-world ambiguities and long-tail edge cases; used for both training and evaluation.',
       '<strong>Fine-tuned:</strong> Foundation models on synthetic and curated data to maximize exact-match performance and robustness with instruction tuning.'
@@ -181,12 +181,12 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
     name: 'Multimodal Web Agents',
     organization: 'UMich EECS 545',
     period: 'Jan 2025 - May 2025',
-    heroOutcome: 'Extended DeepSeek R1 with multimodal capabilities—WebShop +15.6% relative accuracy, WebArena +60% relative accuracy.',
+    heroOutcome: 'Extended DeepSeek R1 with multimodal capabilities - WebShop +15.6% relative accuracy, WebArena +60% relative accuracy.',
     chips: ['WebShop 52%', 'WebArena +60%', 'DeepSeek R1', 'Whisper Audio', 'Llama Vision', 'FAISS Memory'],
     highlights: [
       {
         title: 'Multimodal Extension',
-        description: 'Extended DeepSeek R1 adding audio via Whisper and image/UI understanding via Llama 3.2 90B Vision—unified into single action schema.'
+        description: 'Extended DeepSeek R1 adding audio via Whisper and image/UI understanding via Llama 3.2 90B Vision - unified into single action schema.'
       },
       {
         title: 'Persistent Memory',
@@ -198,8 +198,8 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Extended:</strong> DeepSeek R1 for multimodality, adding audio via OpenAI Whisper and image/UI understanding via Llama 3.2 90B Vision—unified modalities into single action schema for planning and tool use.',
-      '<strong>Upgraded:</strong> Agent memory from episodic to persistent, cross-session recall by designing FAISS vector store backed by Gemini text embeddings—implemented memory read/write hooks directly in tool-use loop.',
+      '<strong>Extended:</strong> DeepSeek R1 for multimodality, adding audio via OpenAI Whisper and image/UI understanding via Llama 3.2 90B Vision - unified modalities into single action schema for planning and tool use.',
+      '<strong>Upgraded:</strong> Agent memory from episodic to persistent, cross-session recall by designing FAISS vector store backed by Gemini text embeddings - implemented memory read/write hooks directly in tool-use loop.',
       '<strong>Achieved:</strong> WebShop accuracy 52% vs 45% (+7pp, +15.6% relative); WebArena 24% vs 15% (+9pp, +60% relative).'
     ]
   },
@@ -224,8 +224,8 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Engineered:</strong> Real-time, GPS-independent localization system by integrating advanced sensor fusion algorithms and on-board processing capabilities—enabling autonomous drone navigation and precise pose estimation without external positioning systems.',
-      '<strong>Developed:</strong> Design for AI-driven voice command interface leveraging speech-to-text technologies and machine learning models to interpret and execute complex spoken instructions—enhancing user interaction and operational flexibility of the drone.'
+      '<strong>Engineered:</strong> Real-time, GPS-independent localization system by integrating advanced sensor fusion algorithms and on-board processing capabilities - enabling autonomous drone navigation and precise pose estimation without external positioning systems.',
+      '<strong>Developed:</strong> Design for AI-driven voice command interface leveraging speech-to-text technologies and machine learning models to interpret and execute complex spoken instructions - enhancing user interaction and operational flexibility of the drone.'
     ]
   },
   'retrospect-ai': {
@@ -249,8 +249,8 @@ export const projectDetails: { [key: string]: ProjectInfo } = {
       }
     ],
     detailedBullets: [
-      '<strong>Developed:</strong> Trajectory emulator in Python utilizing spline interpolation and parameterized paths—enabling real-time simulation of vehicle motion with acceleration and jerk constraints, processing 1000+ trajectory points per run with millisecond precision analyzing autonomous vehicle safety.',
-      '<strong>Engineered:</strong> Data processing pipeline that parsed and analyzed 5000+ data points from CSV input—generating six key motion analysis graphs (trajectory, velocity, acceleration, and jerk) to optimize vehicle trajectory planning and system performance evaluation.'
+      '<strong>Developed:</strong> Trajectory emulator in Python utilizing spline interpolation and parameterized paths - enabling real-time simulation of vehicle motion with acceleration and jerk constraints, processing 1000+ trajectory points per run with millisecond precision analyzing autonomous vehicle safety.',
+      '<strong>Engineered:</strong> Data processing pipeline that parsed and analyzed 5000+ data points from CSV input - generating six key motion analysis graphs (trajectory, velocity, acceleration, and jerk) to optimize vehicle trajectory planning and system performance evaluation.'
     ]
   }
 }
@@ -287,7 +287,7 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
   nameLines.slice(0, 1).forEach(line => {  // Show only first line of name
     ctx.fillText(line, 60, yPos)
   })
-  yPos += 35
+  yPos += 55
 
   // Organization and period with wrapping
   ctx.fillStyle = 'rgba(255, 255, 255, 0.48)'  // Secondary text color
@@ -298,7 +298,7 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
   orgLines.slice(0, 1).forEach(line => {  // Show only first line
     ctx.fillText(line, 60, yPos)
   })
-  yPos += 45
+  yPos += 65
 
   // Publication link with wrapping
   if (project.publicationUrl) {
@@ -311,7 +311,7 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
     const urlLines = wrapText(ctx, project.publicationUrl, canvas.width - 120 - linkLabelWidth)
     ctx.fillText(urlLines[0] || project.publicationUrl, 60 + linkLabelWidth, yPos)
   }
-  yPos += 30
+  yPos += 50
 
   // Hero outcome (white/pale blue, not yellow - max 2 lines)
   ctx.fillStyle = 'rgba(200, 220, 255, 0.95)'  // Pale blue instead of yellow
@@ -322,7 +322,7 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
     ctx.fillText(line, 60, yPos)
     yPos += 58
   })
-  yPos += 40
+  yPos += 60
 
   // Stats chips (smaller, cleaner, subtler) with wrapping
   let chipX = 60
@@ -359,11 +359,11 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
 
     chipX += chipWidth + chipSpacing
   })
-  yPos = currentRowY + chipHeight + 65
+  yPos = currentRowY + chipHeight + 85
 
   // 3 Highlight tiles (premium design with better hierarchy)
   const tileWidth = (canvas.width - 140) / 3
-  const tileHeight = 450
+  const tileHeight = 550
   const tileGap = 25
 
   project.highlights.forEach((highlight, index) => {
@@ -394,7 +394,7 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
       let titleY = tileY + 85
       titleLines.forEach(line => {
         ctx.fillText(line, tileX + 55, titleY)
-        titleY += 52
+        titleY += 62
       })
 
       // Tile description (better contrast, proper line-height)
@@ -402,10 +402,10 @@ function createFrontCardTexture(project: ProjectInfo): THREE.CanvasTexture {
       ctx.font = '400 32px Arial'  // Slightly larger for glass blur
       const descLines = wrapText(ctx, highlight.description, tileWidth - 75)
       const maxDescLines = 6  // Limit to prevent overflow
-      let descY = titleY + 40
+      let descY = titleY + 55
       descLines.slice(0, maxDescLines).forEach(line => {
         ctx.fillText(line, tileX + 55, descY)
-        descY += 46  // Better line-height (1.5x)
+        descY += 56  // Better line-height (1.5x)
       })
     })
   })
@@ -438,12 +438,12 @@ function createBackCardTexture(project: ProjectInfo): THREE.CanvasTexture {
   ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'  // Clean white
   ctx.font = '900 95px Arial'
   ctx.fillText(project.name, 60, yPos)
-  yPos += 40
+  yPos += 60
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.48)'  // Low contrast
   ctx.font = '400 32px Arial'
   ctx.fillText('Detailed Overview', 60, yPos)
-  yPos += 100
+  yPos += 120
 
   const bulletClipTop = yPos - 60
   const bulletClipHeight = canvas.height - yPos - 120
@@ -481,9 +481,9 @@ function createBackCardTexture(project: ProjectInfo): THREE.CanvasTexture {
           ctx.fillStyle = 'rgba(255, 255, 255, 0.78)'
           ctx.fillText(line, 90, yPos)
         }
-        yPos += 48  // Better line-height
+        yPos += 58  // Better line-height
       })
-      yPos += 35
+      yPos += 55
     })
   })
 
