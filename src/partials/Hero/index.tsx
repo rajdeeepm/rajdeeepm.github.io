@@ -59,6 +59,9 @@ export default function Hero() {
           <Menu />
         </div>
         <LangSwitch />
+        <a className={style.simpleLink} href="/simple.html">
+          Simple View
+        </a>
       </header>
       <Section name="hero" className={style.root}>
         <div className={style.middle}>
