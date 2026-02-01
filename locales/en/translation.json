@@ -63,7 +63,7 @@
       "I promote collaborative development,<br />knowledge sharing,<br />and open-source contributions",
       "When research leads to real-world impact and published work, it's even more rewarding."
     ],
-    "skills_title": "Technical<br/>Expertise",
+    "skills_title": "Technical<br/>Skills",
     "skills": [
       "<strong>Languages:</strong> Python, C, C++, Java, HTML, CSS, SQL, SQLite, JavaScript, MATLAB, TypeScript",
       "<strong>Technologies:</strong> TensorFlow, PyTorch, Pandas, AWS, Flask, Hugging Face, JMavSim, PX4 Autopilot, Unreal Engine, NVIDIA Omniverse, Human-Robot Interaction, Git, REST APIs, React, DOM, CUDA, RAG, FAISS",
@@ -77,7 +77,7 @@
       "<strong>President's List</strong> – Oakland University (Fall 2022, Winter 2023)<br/>Given to students with at least 12 credits and 3.9+ GPA",
       "<strong>Oakland University International Opportunity Award</strong> (Fall 2022)<br/>International student merit scholarship"
     ],
-    "teaching_title": "Teaching<br/>&<br/>Experience",
+    "teaching_title": "Teaching Experience",
     "teaching": [
       "<strong>Computer Science and Engineering Dept. Grader</strong> – Oakland University (January 2024 – April 2024)",
       "Evaluated and graded assignments, quizzes, and examinations for undergraduate students in CSI 2470 – Introduction to Computer Networks.",
@@ -91,6 +91,6 @@
   },
   "contact": {
     "intro": "You can get in touch with me by writing to",
-    "social_intro": "You can find me a little less on social, but if you want you can also contact me on"
+    "social_intro": "You can also contact me through"
   }
 }
