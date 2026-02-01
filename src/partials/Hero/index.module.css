@@ -16,6 +16,24 @@
   }
 }
 
+.simpleLink {
+  position: fixed;
+  top: calc(var(--frame-margin) + 44px);
+  right: var(--frame-margin);
+  z-index: var(--z-burger);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-white);
+  opacity: 0.75;
+  transition: opacity 0.2s ease, color 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .logoContainer {
   margin-top: var(--frame-margin);
   margin-bottom: var(--frame-margin);
