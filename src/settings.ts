@@ -5,7 +5,8 @@ export const showMan = true
 export const showParticles = false
 export const manMaterial = 'vibrant' // glow | lambert | outline | vibrant
 export const showTitles = true
-export const showPortfolio = true
+// WebGL cards replaced by HTML glass cards (components/ProjectCards)
+export const showPortfolio = false
 export const showCameraPath = false
 export const showManAnimationLogs = false
 export const showOrbitControls = false

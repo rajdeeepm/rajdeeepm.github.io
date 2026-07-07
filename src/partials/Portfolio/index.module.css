@@ -8,10 +8,6 @@
   color: var(--color-white);
   pointer-events: none;
 
-  @media (--md-l) {
-    height: 400vh;
-  }
-
   h3 {
     margin-top: var(--content-block-margin-top);
   }
@@ -24,11 +20,12 @@
 }
 
 .cardContainer {
-  height: 200vh;
-}
+  height: 380vh;
+  pointer-events: auto;
 
-.video {
-  display: none;
+  @media (--md-l) {
+    height: 450vh;
+  }
 }
 
 .projectSection {
@@ -37,16 +34,4 @@
   @media (--md-l) {
     padding-top: 33vh;
   }
-}
-
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
