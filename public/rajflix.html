@@ -92,9 +92,26 @@
       </nav>
     </div>
     <div style="display: flex; align-items: center; gap: 20px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" stroke-width="2" style="cursor: pointer;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+      <svg onClick="{{ onSearchOpen }}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" stroke-width="2" style="cursor: pointer;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7a7a7a; letter-spacing: .1em;">TS-16</span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" stroke-width="2" style="cursor: pointer;"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+      <div style="position: relative; display: flex; align-items: center;">
+        <svg onClick="{{ onNotifToggle }}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" stroke-width="2" style="cursor: pointer;"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+        <sc-if value="{{ notifOpen }}">
+          <div onClick="{{ stop }}" style="position: absolute; top: 34px; right: -10px; width: 322px; background: #141414; border: 1px solid #2a2a2a; border-radius: 6px; box-shadow: 0 18px 50px rgba(0,0,0,.7); overflow: hidden; animation: rf-pop .18s ease both;">
+            <div style="padding: 12px 16px; border-bottom: 1px solid #2a2a2a; font-family: Archivo, sans-serif; font-weight: 700; font-size: 14px;">Notifications</div>
+            <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="4">
+              <div onClick="{{ n.onClick }}" style="display: flex; gap: 12px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #1c1c1c; align-items: center;" style-hover="background: #1e1e1e;">
+                <div style="width: 40px; height: 40px; border-radius: 5px; background: linear-gradient(135deg, #e50914, #7d0009); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: Archivo, sans-serif; font-weight: 900; font-size: 18px; color: #fff;">R</div>
+                <div style="min-width: 0;">
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">{{ n.title }}</div>
+                  <div style="font-size: 11.5px; color: #999; margin-top: 2px;">{{ n.sub }}</div>
+                </div>
+                <span style="margin-left: auto; font-size: 10px; color: #666; font-family: 'JetBrains Mono', monospace;">{{ n.when }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
       <div onClick="{{ navAvatar }}" title="Switch profile" style="width: 33px; height: 33px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: Archivo, sans-serif; font-weight: 900; font-size: 16px; color: rgba(255,255,255,.92);" style="{{ avatarStyle }}">{{ profileInitial }}</div>
     </div>
   </div>
@@ -196,10 +213,13 @@
     </sc-for>
 
     <footer style="padding: 40px 4vw 60px; border-top: 1px solid #1c1c1c; margin-top: 20px;">
+      <div style="display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 16px;">
+        <a href="/" style="color: #e5e5e5; font-size: 13px; font-weight: 600;" style-hover="color:#fff;">↗ 3D Portfolio</a>
+        <a href="/simple.html" style="color: #e5e5e5; font-size: 13px; font-weight: 600;" style-hover="color:#fff;">↗ Scholar / CV View</a>
+      </div>
       <div style="display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 20px;">
         <a href="mailto:rajdeepm@umich.edu" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">Email</a>
         <a href="https://www.linkedin.com/in/rajdeep-mukherjee-cs752004" target="_blank" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">LinkedIn</a>
-        <a href="https://rajdeeepm.github.io/" target="_blank" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">Portfolio</a>
         <a href="https://github.com/rajdeeepm" target="_blank" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">GitHub</a>
       </div>
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #555; line-height: 1.7; max-width: 640px;">
@@ -208,6 +228,47 @@
     </footer>
   </div>
 </div>
+</sc-if>
+
+<sc-if value="{{ notifOpen }}">
+  <div onClick="{{ onNotifClose }}" style="position: fixed; inset: 0; z-index: 499;"></div>
+</sc-if>
+
+<sc-if value="{{ searchOpen }}">
+  <div style="position: fixed; inset: 0; z-index: 650; background: rgba(8,8,8,.975); overflow-y: auto; animation: rf-back .25s ease both;" data-scroll>
+    <div style="max-width: 1120px; margin: 0 auto; padding: 84px 4vw 60px;">
+      <div style="display: flex; align-items: center; gap: 14px; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 30px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8a8a8a" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <input id="rf-search-input" onInput="{{ onSearchInput }}" placeholder="Search projects, research, skills, experience…" style="flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: #fff; font-size: clamp(20px, 3vw, 34px); font-family: Archivo, sans-serif; font-weight: 500;">
+        <button onClick="{{ onSearchClose }}" style="flex-shrink: 0; background: transparent; border: 1px solid #444; color: #cfcfcf; font-size: 20px; width: 42px; height: 42px; border-radius: 50%; cursor: pointer;" style-hover="border-color: #fff; color: #fff;">✕</button>
+      </div>
+      <sc-if value="{{ idleSearch }}">
+        <div style="color: #666; font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 16px 2px;">Try “agentic”, “RL”, “AWS”, “IEEE”, “Michigan”, “sensor fusion”…</div>
+      </sc-if>
+      <sc-if value="{{ noResults }}">
+        <div style="color: #8a8a8a; font-size: 16px; padding: 16px 2px;">No matches. Try a different keyword.</div>
+      </sc-if>
+      <sc-if value="{{ hasResults }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 12px;">
+          <sc-for list="{{ searchResults }}" as="it" hint-placeholder-count="6">
+            <div onClick="{{ it.onResult }}" style="position: relative; height: 152px; border-radius: 6px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 18px rgba(0,0,0,.4); transition: transform .18s;" style-hover="transform: scale(1.03);">
+              <div style="{{ it.posterStyle }}"></div>
+              <div style="position: absolute; inset: 0; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: {{ it.hueColor }};">{{ it.cat }}</span>
+                  <span style="border: 1px solid rgba(255,255,255,.3); color: #d8d8d8; font-size: 9px; padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">{{ it.rating }}</span>
+                </div>
+                <div>
+                  <div style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 19px; line-height: 1.04; letter-spacing: -.01em; text-wrap: balance;">{{ it.title }}</div>
+                  <div style="font-size: 12px; color: #b8b8b8; margin-top: 4px;">{{ it.sub }}</div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
 </sc-if>
 
 <sc-if value="{{ pop }}">
@@ -221,7 +282,7 @@
     </div>
     <div style="padding: 14px;">
       <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
-        <div style="width: 38px; height: 38px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg></div>
+        <div onClick="{{ pop.onPlay }}" title="Open project link" style="width: 38px; height: 38px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg></div>
         <div onClick="{{ pop.onToggleStop }}" title="My List" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #888; display: flex; align-items: center; justify-content: center;" style-hover="border-color: #fff;">
           <sc-if value="{{ pop.inList }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if>
           <sc-if value="{{ pop.notInList }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if>
@@ -250,7 +311,7 @@
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: {{ modal.hueColor }}; margin-bottom: 10px;">{{ modal.cat }}</div>
           <h2 style="font-family: Archivo, sans-serif; font-weight: 900; font-size: clamp(30px, 4.4vw, 54px); line-height: .96; letter-spacing: -.02em; text-shadow: 0 3px 24px rgba(0,0,0,.7); max-width: 90%;">{{ modal.title }}</h2>
           <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-            <button style="display: flex; align-items: center; gap: 8px; background: #fff; color: #111; border: none; font-size: 15px; font-weight: 700; padding: 9px 24px; border-radius: 5px; cursor: pointer;" style-hover="background: rgba(255,255,255,.82);"><svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg>Play</button>
+            <button onClick="{{ modal.onPlay }}" style="display: flex; align-items: center; gap: 8px; background: #fff; color: #111; border: none; font-size: 15px; font-weight: 700; padding: 9px 24px; border-radius: 5px; cursor: pointer;" style-hover="background: rgba(255,255,255,.82);"><svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg>Play</button>
             <div onClick="{{ modal.onToggleStop }}" style="width: 42px; height: 42px; border-radius: 50%; border: 2px solid #999; display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="border-color: #fff;">
               <sc-if value="{{ modal.inList }}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if>
               <sc-if value="{{ modal.notInList }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if>
@@ -335,7 +396,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#e50914&quot;,&quot;options&quot;:[&quot;#e50914&quot;,&quot;#00e5c0&quot;,&quot;#7c5cff&quot;,&quot;#ff8a3d&quot;,&quot;#f5f5f5&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;},&quot;brandName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;RAJFLIX&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;},&quot;showIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;defaultProfile&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Ask&quot;,&quot;Recruiter&quot;,&quot;Professor&quot;,&quot;Engineer&quot;,&quot;Just Curious&quot;],&quot;default&quot;:&quot;Ask&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;identPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Spectrum&quot;,&quot;Michigan&quot;,&quot;Sunset&quot;],&quot;default&quot;:&quot;Spectrum&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Light-tunnel ident&quot;},&quot;beamDensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:400,&quot;min&quot;:120,&quot;max&quot;:800,&quot;step&quot;:20,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Light-tunnel ident&quot;},&quot;identDuration&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4500,&quot;min&quot;:2000,&quot;max&quot;:6000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Light-tunnel ident&quot;}}">
 class Component extends DCLogic {
-  state = { phase: 'intro', profile: null, modalId: null, myList: [], hover: null, navScrolled: false };
+  state = { phase: 'intro', profile: null, modalId: null, myList: [], hover: null, navScrolled: false, searchOpen: false, query: '', notifOpen: false };
 
   // ---- data ----
   HUE = { research: 22, experience: 45, projects: 210, skills: 152, awards: 92, education: 292, continue: 22, featured: 22 };
@@ -357,7 +418,16 @@ class Component extends DCLogic {
     port: { label: 'Full portfolio', href: 'https://rajdeeepm.github.io/' },
     gh: { label: 'GitHub', href: 'https://github.com/rajdeeepm' },
     ieee: { label: 'IEEE Xplore', href: '#' },
+    three: { label: 'Open the 3D Portfolio', href: '/' },
+    simple: { label: 'Open the Scholar / CV view', href: '/simple.html' },
   };
+
+  NOTIFS = [
+    { id: 'umich_mse', title: 'New Season: MSE @ Michigan', sub: 'Incoming CSE Master’s — Fall 2026', when: 'now' },
+    { id: 'rajflix', title: 'Now Streaming: RAJFLIX', sub: 'A portfolio as a streaming service', when: '1d' },
+    { id: 'aero_llm', title: 'Published: Aero-LLM', sub: 'IEEE ICCCN 2024 · Team Lead', when: '2w' },
+    { id: 'aw_hawaii', title: 'Award: “Hawaiian T-Shirt” nominee', sub: 'AWS SageMaker — Summer 2025', when: '1mo' },
+  ];
 
   ITEMS() {
     const L = this.LINKS;
@@ -378,21 +448,21 @@ class Component extends DCLogic {
         ptitle: 'Contributions', points: ['Team Lead on the distributed architecture and secure comms protocol.', 'Co-designed the LLM-empowered decision-making layer for autonomous agents.', 'Co-authored and published at IEEE ICCCN 2024.'],
         stack: ['LLMs', 'Distributed Systems', 'UAV', 'Security', 'Python'],
         meta: { role: 'Team Lead · Research Assistant', org: 'Oakland University', loc: 'Rochester, MI', date: 'Published Jul 2024' },
-        links: [L.ieee, L.li], more: ['net_gpt', 'hgd', 'aws'] },
+        links: [{ label: 'IEEE ICCCN 2024', href: 'https://doi.org/10.48550/ARXIV.2502.05220' }, L.li], more: ['net_gpt', 'hgd', 'aws'] },
       net_gpt: { cat: 'Research · IEEE', c: 'research', title: 'Net-GPT', sub: 'LLM-empowered MITM chatbot for UAVs', year: '2023', match: 97, rating: 'IEEE', duration: 'EdgeSP 2023',
         tags: ['LLMs', 'Security', 'Edge', 'MITM'],
         summary: 'An LLM-empowered man-in-the-middle chatbot for unmanned aerial vehicles. Co-authored and published at EdgeSP — the 5th ACM/IEEE Workshop on Security and Privacy in Edge Computing, December 2023.',
         ptitle: 'Contributions', points: ['Designed an LLM-driven MITM interface probing UAV comms security.', 'Studied privacy attack surfaces in edge-computing deployments.', 'Co-authored and published at ACM/IEEE EdgeSP 2023.'],
         stack: ['LLMs', 'Edge Computing', 'Security', 'Python'],
         meta: { role: 'Research Assistant', org: 'Oakland University', loc: 'Rochester, MI', date: 'Published Dec 2023' },
-        links: [L.ieee, L.li], more: ['aero_llm', 'hgd', 'harness'] },
+        links: [{ label: 'ACM/IEEE EdgeSP 2023', href: 'https://doi.org/10.1145/3583740.3626809' }, L.li], more: ['aero_llm', 'hgd', 'harness'] },
       hgd: { cat: 'Research · IEEE', c: 'research', title: 'Heterogeneous Generative Dataset for UASes', sub: 'Synthetic data for autonomy', year: '2023', match: 96, rating: 'IEEE', duration: 'IEEE MOST 2023',
         tags: ['Generative', 'Datasets', 'UAS'],
         summary: 'A heterogeneous generative dataset for unmanned aerial systems. Co-authored and published at the IEEE International Conference on Mobility, Operations, Services and Technologies (MOST), May 2023.',
         ptitle: 'Contributions', points: ['Built a heterogeneous, generative dataset modeling diverse UAS conditions.', 'Enabled training + evaluation across varied autonomy scenarios.', 'Co-authored and published at IEEE MOST 2023.'],
         stack: ['Generative Models', 'Data Pipelines', 'Python'],
         meta: { role: 'Research Assistant', org: 'Oakland University', loc: 'Rochester, MI', date: 'Published May 2023' },
-        links: [L.ieee, L.li], more: ['aero_llm', 'net_gpt', 'agentic'] },
+        links: [{ label: 'IEEE MOST 2023', href: 'https://doi.org/10.1109/MOST57249.2023.00034' }, L.li], more: ['aero_llm', 'net_gpt', 'agentic'] },
 
       // experience
       aws: { cat: 'Experience', c: 'experience', title: 'AWS — SDE Intern, AI/ML', sub: 'SageMaker AI GroundTruth (HIL)', year: '2025', match: 98, rating: 'PROD', duration: 'Summer 2025',
@@ -473,14 +543,14 @@ class Component extends DCLogic {
         ptitle: 'Highlights', points: ['Real-time 3D hero with a human-like figure.', 'Built to prove interactive, performant WebGL chops.'],
         stack: ['Three.js', 'React Three Fiber', 'GLSL', 'WebGL'],
         meta: { role: 'Designer / Engineer', org: 'Personal', loc: 'Ann Arbor, MI', date: '2026' },
-        links: [L.port], more: ['rajflix', 'scholar', 'harness'] },
+        links: [L.three, L.port], more: ['rajflix', 'scholar', 'harness'] },
       scholar: { cat: 'Project', c: 'projects', title: 'Scholar / CV View', sub: 'Clean academic portfolio', year: '2026', match: 92, rating: 'CV', duration: 'Companion site',
         tags: ['Academic', 'Minimal', 'CV'],
         summary: 'A simple, PhD-student-style portfolio — publications, research, and CV front and center. The version a professor would probably prefer.',
         ptitle: 'Highlights', points: ['Publication-first layout for academic audiences.', 'Fast, legible, no-nonsense — the serious counterpart to RAJFLIX.'],
         stack: ['HTML', 'CSS', 'Minimal JS'],
         meta: { role: 'Designer / Engineer', org: 'Personal', loc: 'Ann Arbor, MI', date: '2026' },
-        links: [L.port], more: ['rajflix', 'portfolio3d', 'aero_llm'] },
+        links: [L.simple, L.port], more: ['rajflix', 'portfolio3d', 'aero_llm'] },
 
       // continue watching helpers
       umich_mse: { cat: 'Continue Watching', c: 'continue', title: 'MSE, Computer Science', sub: 'University of Michigan — incoming', year: '2026', match: 97, rating: 'S1:E1', duration: 'Fall 2026 →',
@@ -572,7 +642,7 @@ class Component extends DCLogic {
   // ---- lifecycle ----
   componentDidMount() {
     this._onScroll = () => { const s = window.scrollY > 60; if (s !== this.state.navScrolled) this.setState({ navScrolled: s }); };
-    this._onKey = (e) => { if (e.key === 'Escape') this.setState({ modalId: null }); };
+    this._onKey = (e) => { if (e.key === 'Escape') this.setState({ modalId: null, searchOpen: false, notifOpen: false }); };
     window.addEventListener('scroll', this._onScroll, { passive: true });
     window.addEventListener('keydown', this._onKey);
     const dp = this.props.defaultProfile;
@@ -580,7 +650,9 @@ class Component extends DCLogic {
     const settle = () => (dp && dp !== 'Ask') ? { phase: 'browse', profile: dp } : { phase: 'profiles' };
     if (!intro) { this.setState(settle()); }
     else { this._t = setTimeout(() => this.setState(s => s.phase === 'intro' ? settle() : {}), 2600); }
+    this.setupTracks();
   }
+  componentDidUpdate() { if (this.state.phase === 'browse') this.setupTracks(); }
   componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._h); clearTimeout(this._pt); this.disposeThree(); window.removeEventListener('scroll', this._onScroll); window.removeEventListener('keydown', this._onKey); }
 
   skipIntro = () => { clearTimeout(this._t); const dp = this.props.defaultProfile; this.setState((dp && dp !== 'Ask') ? { phase: 'browse', profile: dp } : { phase: 'profiles' }); };
@@ -688,7 +760,7 @@ class Component extends DCLogic {
       if (progress > 0.15) { let tp = (progress - 0.15) / 0.85; tearIntensity = Math.pow(tp, 2.5) * 2500; }
       let globalAlpha = 1;
       if (progress > 0.75) globalAlpha = 1 - (progress - 0.75) / 0.25;
-      const targetX = w / 2, targetY = h / 2, originX = 240, originY = 500;
+      const targetX = w / 2, targetY = h / 2, originX = 470, originY = 500;
       ctx.globalAlpha = Math.max(0, globalAlpha);
       for (let i = 0; i < numStrips; i++) {
         let strip = logoStrips[i];
@@ -879,7 +951,71 @@ class Component extends DCLogic {
   stop = (e) => { e.stopPropagation(); };
   toggle = (id) => this.setState(s => ({ myList: s.myList.includes(id) ? s.myList.filter(x => x !== id) : [...s.myList, id] }));
   toggleStop = (id, e) => { e && e.stopPropagation(); this.toggle(id); };
-  scrollRow = (e, dir) => { const wrap = e.currentTarget.parentElement; const t = wrap.querySelector('[data-track]'); if (t) t.scrollBy({ left: dir * t.clientWidth * 0.85, behavior: 'smooth' }); };
+  // --- Seamless infinite rows ---
+  // Each track renders its items x3. We keep the scroll position inside the
+  // middle copy; when it drifts past a copy boundary we shift it by exactly one
+  // period. Because the copies are identical, the shift is invisible — the row
+  // scrolls on forever in both directions with no start or end.
+  trackPeriod = (t) => {
+    const k = t.children;
+    const n = k.length / 3;
+    if (!(n >= 1) || !Number.isInteger(n) || !k[n]) return 0;
+    return k[n].offsetLeft - k[0].offsetLeft;
+  };
+  normalizeTrack = (t) => {
+    const P = this.trackPeriod(t);
+    if (P <= 0) return;
+    const x = (((t.scrollLeft % P) + P) % P) + P; // fold into the middle copy [P, 2P)
+    if (Math.abs(x - t.scrollLeft) > 0.5) t.scrollLeft = x;
+  };
+  setupTracks = () => {
+    document.querySelectorAll('[data-track]').forEach((t) => {
+      if (t.dataset.loopInit) return;
+      t.dataset.loopInit = '1';
+      const P = this.trackPeriod(t);
+      if (P > 0) t.scrollLeft = P; // start in the middle copy
+      t.addEventListener('scroll', () => { if (t._loopLock) return; this.normalizeTrack(t); }, { passive: true });
+    });
+  };
+  scrollRow = (e, dir) => {
+    const wrap = e.currentTarget.parentElement;
+    const t = wrap.querySelector('[data-track]');
+    if (!t) return;
+    const P = this.trackPeriod(t);
+    if (P <= 0) { t.scrollBy({ left: dir * t.clientWidth * 0.85, behavior: 'smooth' }); return; }
+    const step = Math.min(t.clientWidth * 0.85, P * 0.98);
+    const base = t._animating ? t._targetX : t.scrollLeft; // accumulate rapid clicks
+    this.animateTrack(t, base + dir * step, P);
+  };
+  animateTrack = (t, target, P) => {
+    cancelAnimationFrame(t._raf);
+    let start = t.scrollLeft;
+    t._targetX = target;
+    t._animating = true;
+    t._loopLock = true; // suppress the manual-scroll recenter while animating
+    const dur = 460, t0 = performance.now();
+    const ease = (u) => 1 - Math.pow(1 - u, 3);
+    const frame = (now) => {
+      const u = Math.min((now - t0) / dur, 1);
+      let x = start + (t._targetX - start) * ease(u);
+      // Fold position, start and target by one period together, so the glide
+      // continues uninterrupted while always landing on real (duplicated) content.
+      while (x >= 2 * P) { x -= P; start -= P; t._targetX -= P; }
+      while (x < P) { x += P; start += P; t._targetX += P; }
+      t.scrollLeft = x;
+      if (u < 1) { t._raf = requestAnimationFrame(frame); }
+      else { t._animating = false; t._loopLock = false; }
+    };
+    t._raf = requestAnimationFrame(frame);
+  };
+  openHref = (href) => { if (!href || href.charAt(0) === '#') return; if (href.slice(0, 7) === 'mailto:') window.location.href = href; else window.open(href, '_blank', 'noopener'); };
+  openSearch = () => { this.setState({ searchOpen: true, notifOpen: false }); setTimeout(() => { const el = document.getElementById('rf-search-input'); if (el) el.focus(); }, 60); };
+  closeSearch = () => this.setState({ searchOpen: false, query: '' });
+  onSearchInput = (e) => this.setState({ query: e.target.value });
+  openFromSearch = (id) => this.setState({ searchOpen: false, query: '', modalId: id, hover: null });
+  toggleNotif = () => this.setState(s => ({ notifOpen: !s.notifOpen, searchOpen: false }));
+  closeNotif = () => this.setState({ notifOpen: false });
+  openFromNotif = (id) => this.setState({ notifOpen: false, modalId: id, hover: null });
   hoverEnter = (id, e) => { clearTimeout(this._h); const r = e.currentTarget.getBoundingClientRect(); const rect = { left: r.left, top: r.top, w: r.width }; this._h = setTimeout(() => this.setState({ hover: { id, rect } }), 480); };
   hoverLeave = () => { clearTimeout(this._h); this._h = setTimeout(() => this.setState({ hover: null }), 120); };
   popKeep = () => { clearTimeout(this._h); };
@@ -889,12 +1025,15 @@ class Component extends DCLogic {
     const base = this.ITEMS()[id];
     if (!base) return null;
     const inList = this.state.myList.includes(id);
+    const primaryHref = (base.links && base.links[0] && base.links[0].href) || 'https://www.linkedin.com/in/rajdeep-mukherjee-cs752004';
     return Object.assign({}, base, {
       id,
       posterStyle: this.posterBg(this.HUE[base.c]),
       hueColor: this.HUECOLOR[base.c],
       inList, notInList: !inList,
       tagsLine: (base.tags || []).join('  ·  '),
+      primaryHref,
+      onPlay: (e) => { e && e.stopPropagation(); this.openHref(primaryHref); },
       onOpen: (e) => { e && e.stopPropagation(); this.openId(id); },
       onEnter: (e) => this.hoverEnter(id, e),
       onLeave: this.hoverLeave,
@@ -935,6 +1074,11 @@ class Component extends DCLogic {
     const topIds = ['agentic', 'aero_llm', 'aws', 'net_gpt', 'localization', 'humanai', 'hgd', 'trajectory', 'harness', 'portfolio3d'];
     const top10 = topIds.map((id, i) => this.expand(id, { rank: String(i + 1), numStyle: this.numStyle() }));
 
+    // Triplicate every track's items so the rows can scroll as a seamless loop.
+    const tri = (a) => (a && a.length ? a.concat(a, a) : a);
+    rows.forEach((r) => { r.items = tri(r.items); });
+    const top10x = tri(top10);
+
     // hover popover
     let pop = null;
     const hv = this.state.hover;
@@ -960,6 +1104,22 @@ class Component extends DCLogic {
       }
     }
 
+    // search
+    const hasQ = (this.state.query || '').trim().length > 0;
+    let searchResults = [];
+    if (this.state.searchOpen && hasQ) {
+      const q = this.state.query.trim().toLowerCase();
+      const items = this.ITEMS();
+      searchResults = Object.keys(items).filter(id => {
+        const it = items[id];
+        const hay = (it.title + ' ' + (it.sub || '') + ' ' + (it.cat || '') + ' ' + (it.tags || []).join(' ') + ' ' + (it.summary || '')).toLowerCase();
+        return hay.indexOf(q) !== -1;
+      }).map(id => this.expand(id, { onResult: (e) => { e && e.stopPropagation(); this.openFromSearch(id); } }));
+    }
+
+    // notifications
+    const notifs = this.NOTIFS.map(n => Object.assign({}, n, { onClick: (e) => { e && e.stopPropagation(); this.openFromNotif(n.id); } }));
+
     const navStyle = this.state.navScrolled
       ? { background: '#0c0c0c', borderBottom: '1px solid #1c1c1c' }
       : { background: 'linear-gradient(180deg, rgba(0,0,0,.85), transparent)', borderBottom: '1px solid transparent' };
@@ -979,6 +1139,12 @@ class Component extends DCLogic {
       },
       identFlashDur: ((this.props.identDuration || 3000) / 1000) + 's',
       skipIntro: this.skipIntro,
+      skipTunnel: this.skipTunnel,
+      searchOpen: this.state.searchOpen,
+      onSearchOpen: this.openSearch, onSearchClose: this.closeSearch, onSearchInput: this.onSearchInput,
+      searchResults, hasResults: searchResults.length > 0,
+      idleSearch: !hasQ, noResults: hasQ && searchResults.length === 0,
+      notifOpen: this.state.notifOpen, onNotifToggle: this.toggleNotif, onNotifClose: this.closeNotif, notifs,
       profiles: this.PROFILES.map(pf => ({ name: pf.name, initial: pf.initial, sub: pf.sub, avatarStyle: this.avatarStyleFor(pf.hue), onPick: () => this.pickProfile(pf.name) })),
       profileInitial: p.initial, profileName: p.name, avatarStyle: this.avatarStyleFor(p.hue),
       navStyle,
@@ -994,7 +1160,7 @@ class Component extends DCLogic {
       navProjects: () => this.scrollToId('row-projects'),
       navList: () => this.state.myList.length ? this.scrollToId('row-mylist') : this.setState({ phase: 'profiles' }),
       navAvatar: () => this.setState({ phase: 'profiles' }),
-      top10, rows, pop, modal,
+      top10: top10x, rows, pop, modal,
       popKeep: this.popKeep, popLeave: this.hoverLeave,
       scrollLeft: (e) => this.scrollRow(e, -1), scrollRight: (e) => this.scrollRow(e, 1),
       closeModal: this.closeModal, stop: this.stop,
