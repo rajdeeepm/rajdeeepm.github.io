@@ -1,187 +1,708 @@
+/* ============================================================
+   Simple view — the Instrument Panel, distilled to pure HTML/CSS.
+   Same brand as the interactive site: black stage, monumental
+   Iskry display type, quiet Saira body, one signal color.
+   No JavaScript. Print-ready. WCAG AA.
+   ============================================================ */
+
+@font-face {
+  font-family: Iskry;
+  src: url('/fonts/iskry/Iskry-Bold.woff2') format('woff2'),
+    url('/fonts/iskry/Iskry-Bold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
-  --bg: #ffffff;
-  --panel: #ffffff;
-  --ink: #1c1c1c;
-  --muted: #4a4a4a;
-  --accent: #0b3a6f;
-  --border: #e5e5e5;
-  --max-width: 920px;
+  --signal: #ff2f00;
+  --bg: #000;
+  --bg-lift: #111;
+  --ink: #fff;
+  --body: #d4d4d4;
+  --muted: #9a9a9a;
+  --hairline: rgba(255, 255, 255, 0.14);
+  --display: Iskry, 'Helvetica Neue', Arial, sans-serif;
+  --sans: 'Saira Semi Condensed', 'Helvetica Neue', Arial, sans-serif;
+  --measure: 66ch;
+  --gutter: clamp(20px, 6vw, 96px);
 }
 
 * {
   box-sizing: border-box;
-}
-
-body {
   margin: 0;
-  color: var(--ink);
-  background: var(--bg);
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  line-height: 1.65;
-}
-
-a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.skip-link {
-  position: absolute;
-  left: -999px;
-  top: 0;
-  padding: 0.5rem 0.8rem;
-  background: var(--ink);
-  color: #fff;
-}
-
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-  z-index: 10;
-}
-
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.site-header {
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-}
-
-.header-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.identity-block {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  align-items: center;
-}
-
-.headshot {
-  width: 140px;
-  height: 140px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 1px solid var(--border);
-}
-
-.identity h1 {
-  margin: 0;
-  font-size: 2.4rem;
-}
-
-.identity .title {
-  margin: 0.4rem 0 0;
-  font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  font-size: 0.95rem;
-  color: var(--muted);
-}
-
-.identity .subtitle {
-  margin: 0.4rem 0 0;
-  color: var(--muted);
-}
-
-.contact-card {
-  min-width: 240px;
-  padding: 16px 18px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: #fff;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
-  font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
-}
-
-.contact-card .email {
-  font-weight: 600;
-}
-
-.link-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  margin-top: 10px;
-  font-size: 0.95rem;
-}
-
-.site-nav {
-  border-top: 1px solid var(--border);
-  background: #ffffff;
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-  font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.95rem;
-}
-
-main {
-  padding-bottom: 32px;
-}
-
-section {
-  margin-top: 2.4rem;
-}
-
-section h2 {
-  margin: 0 0 0.6rem;
-  font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.1rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-section p {
-  margin: 0.6rem 0;
-}
-
-ul {
-  margin: 0.6rem 0 0.2rem 1.2rem;
   padding: 0;
 }
 
-li {
-  margin: 0.35rem 0;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+body {
+  background: radial-gradient(circle at 50% 20%, var(--bg-lift), var(--bg) 70%) fixed;
+  background-color: var(--bg);
+  color: var(--body);
+  font-family: var(--sans);
+  font-size: clamp(16px, 1.15vw, 18px);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--ink);
+}
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.25s ease, color 0.25s ease;
+}
+
+a:hover {
+  text-decoration-color: var(--signal);
+}
+
+a:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+p {
+  max-width: var(--measure);
+}
+
+p + p {
+  margin-top: 1em;
+}
+
+/* ------------------------------------------------------------
+   Skip link
+   ------------------------------------------------------------ */
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--gutter);
+  z-index: 10;
+  padding: 10px 18px;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ------------------------------------------------------------
+   Masthead — the monument
+   ------------------------------------------------------------ */
+
+.masthead {
+  padding: 24px var(--gutter) 0;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.wordmark {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+}
+
+.toplinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.toplinks a {
+  color: var(--body);
+  text-decoration: none;
+}
+
+.toplinks a:hover {
+  color: var(--ink);
+}
+
+.toplinks .to-site {
+  color: var(--ink);
+}
+
+.monument {
+  margin: clamp(40px, 8vh, 96px) 0 0;
+  font-family: var(--display);
+  font-size: clamp(56px, 12.5vw, 220px);
+  font-weight: 700;
+  line-height: 0.84;
+  text-transform: uppercase;
+}
+
+.monument .outline {
+  display: block;
+  color: var(--ink);
+}
+
+/* The signature move: the stage reads through the letterforms. */
+@supports (-webkit-text-stroke: 2px white) {
+  .monument .outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--ink);
+  }
+
+  .monument .outline:last-child {
+    color: var(--ink);
+    -webkit-text-stroke: 0;
+  }
+}
+
+.role {
+  max-width: none;
+  margin-top: clamp(20px, 3vh, 36px);
+  color: var(--ink);
+  font-size: clamp(17px, 1.6vw, 22px);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-sep {
+  margin: 0 10px;
+  color: var(--signal);
+}
+
+.lede {
+  margin-top: 18px;
+  color: var(--body);
+  font-size: clamp(17px, 1.35vw, 21px);
+  font-weight: 300;
+}
+
+.subnav {
+  display: flex;
+  overflow-x: auto;
+  margin-top: clamp(32px, 6vh, 72px);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  gap: clamp(18px, 3vw, 44px);
+  scrollbar-width: none;
+}
+
+.subnav::-webkit-scrollbar {
+  display: none;
+}
+
+.subnav a {
+  padding: 14px 0;
+  color: var(--body);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.subnav a:hover {
+  color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--signal);
+}
+
+/* ------------------------------------------------------------
+   Panels
+   ------------------------------------------------------------ */
+
+.panel {
+  padding: clamp(56px, 10vh, 128px) var(--gutter) 0;
+}
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(14px, 2vw, 28px);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.panel-head h2 {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(34px, 5.5vw, 76px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.panel-body {
+  padding-top: clamp(24px, 4vh, 48px);
+}
+
+/* ------------------------------------------------------------
+   About
+   ------------------------------------------------------------ */
+
+.about-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.headshot {
+  flex-shrink: 0;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.about-grid > div {
+  flex: 1;
+  min-width: min(100%, 46ch);
 }
 
 .highlight {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 18px;
+  color: var(--ink);
+  font-size: clamp(19px, 1.7vw, 26px);
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-footer {
-  padding: 18px 0 40px;
+.highlight + p {
+  margin-top: 1.2em;
+}
+
+.focus {
+  display: grid;
+  margin-top: clamp(32px, 5vh, 56px);
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+
+.focus > div {
+  padding: 18px 20px;
+  background: var(--bg);
+}
+
+.focus dt {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.focus dd {
+  margin-top: 6px;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
-@media (max-width: 720px) {
-  .identity h1 {
-    font-size: 2rem;
+/* ------------------------------------------------------------
+   Entries (experience, teaching)
+   ------------------------------------------------------------ */
+
+.entries {
+  list-style: none;
+}
+
+.entry {
+  padding: clamp(20px, 3vh, 30px) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.entry:last-child {
+  border-bottom: 0;
+}
+
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 20px;
+}
+
+.entry h3 {
+  color: var(--ink);
+  font-size: clamp(19px, 1.7vw, 24px);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.when {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.org {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.entry p:last-child {
+  margin-top: 10px;
+}
+
+/* ------------------------------------------------------------
+   Projects
+   ------------------------------------------------------------ */
+
+.projects {
+  counter-reset: project;
+  list-style: none;
+}
+
+.project {
+  position: relative;
+  padding: clamp(26px, 4vh, 40px) 0 clamp(26px, 4vh, 40px) clamp(44px, 5vw, 76px);
+  border-bottom: 1px solid var(--hairline);
+  counter-increment: project;
+}
+
+.project:last-child {
+  border-bottom: 0;
+}
+
+.project::before {
+  position: absolute;
+  top: clamp(30px, 4.4vh, 44px);
+  left: 0;
+  color: var(--signal);
+  content: counter(project, decimal-leading-zero);
+  font-family: var(--display);
+  font-size: clamp(15px, 1.4vw, 19px);
+}
+
+.project h3 {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.project .org {
+  margin-top: 6px;
+}
+
+.project > p {
+  margin-top: 14px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  gap: 8px;
+  list-style: none;
+}
+
+.chips li {
+  padding: 4px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  color: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.project details {
+  margin-top: 16px;
+  max-width: var(--measure);
+}
+
+.project summary {
+  display: inline-block;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.project summary::before {
+  margin-right: 8px;
+  color: var(--signal);
+  content: '+';
+}
+
+.project details[open] summary::before {
+  content: '–';
+}
+
+.project summary:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.project details ul {
+  margin-top: 12px;
+  list-style: none;
+}
+
+.project details li {
+  padding: 8px 0 8px 16px;
+  border-left: 2px solid var(--signal);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.project details li + li {
+  margin-top: 10px;
+}
+
+.pub-link {
+  margin-top: 14px;
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------
+   Publications
+   ------------------------------------------------------------ */
+
+.refs {
+  list-style: none;
+}
+
+.refs li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+  gap: 6px 24px;
+}
+
+.refs li:last-child {
+  border-bottom: 0;
+}
+
+.refs a {
+  max-width: var(--measure);
+  font-size: clamp(16px, 1.3vw, 19px);
+  font-weight: 500;
+}
+
+.venue {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.scholar-link {
+  margin-top: 22px;
+}
+
+/* ------------------------------------------------------------
+   Awards & skills
+   ------------------------------------------------------------ */
+
+.awards {
+  list-style: none;
+}
+
+.awards li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+  gap: 4px 18px;
+}
+
+.awards li:last-child {
+  border-bottom: 0;
+}
+
+.award-note {
+  width: 100%;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.skills > div {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.skills > div:last-child {
+  border-bottom: 0;
+}
+
+.skills dt {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.skills dd {
+  margin-top: 6px;
+  max-width: var(--measure);
+}
+
+/* ------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------ */
+
+#contact .panel-body > p:first-child {
+  font-size: clamp(17px, 1.4vw, 21px);
+}
+
+.contact-email {
+  margin-top: 20px;
+  max-width: none;
+}
+
+.contact-email a {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(28px, 5.5vw, 84px);
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  word-break: break-all;
+}
+
+.contact-email a:hover {
+  color: var(--signal);
+}
+
+.contact-email .at {
+  color: var(--signal);
+}
+
+.contact-email a:hover .at {
+  color: var(--ink);
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 26px;
+  gap: 12px 32px;
+  list-style: none;
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+
+.site-footer {
+  margin-top: clamp(64px, 12vh, 140px);
+  padding: 28px var(--gutter) 40px;
+  border-top: 1px solid var(--hairline);
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ------------------------------------------------------------
+   Print
+   ------------------------------------------------------------ */
+
+@media print {
+  body {
+    background: #fff;
+    color: #111;
+    font-size: 11pt;
   }
 
-  .contact-card {
-    width: 100%;
+  a {
+    color: #111;
+  }
+
+  strong,
+  .entry h3,
+  .project h3,
+  .panel-head h2,
+  .highlight,
+  .focus dt,
+  .skills dt,
+  .contact-email a,
+  .monument .outline,
+  .role,
+  .wordmark {
+    color: #000 !important;
+    -webkit-text-stroke: 0 !important;
+  }
+
+  .org,
+  .when,
+  .venue,
+  .award-note,
+  .focus dd,
+  .site-footer {
+    color: #444;
+  }
+
+  .role-sep,
+  .contact-email .at,
+  .project::before,
+  .project summary::before {
+    color: #000;
+  }
+
+  .skip-link,
+  .subnav,
+  .to-site {
+    display: none;
+  }
+
+  .monument {
+    font-size: 40pt;
+  }
+
+  .panel {
+    padding-top: 24pt;
+  }
+
+  .headshot {
+    filter: none;
   }
 }
