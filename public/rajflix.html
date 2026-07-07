@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAJFLIX — Rajdeep Mukherjee</title>
+<meta name="description" content="RAJFLIX — Rajdeep Mukherjee's portfolio as a Netflix-style browse experience: projects, research, and experience as tiles.">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0a0a0a; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #e5e5e5; text-decoration: none; }
+  a:hover { color: #ffffff; }
+  [data-track]::-webkit-scrollbar { display: none; }
+  [data-track] { scrollbar-width: none; -ms-overflow-style: none; }
+  [data-scroll]::-webkit-scrollbar { width: 8px; }
+  [data-scroll]::-webkit-scrollbar-thumb { background: #333; border-radius: 8px; }
+  @keyframes rf-zoom { 0% { transform: scale(.72); opacity: 0; letter-spacing: .5em; } 40% { opacity: 1; } 100% { transform: scale(1); opacity: 1; letter-spacing: -.02em; } }
+  @keyframes rf-glow { 0%,100% { text-shadow: 0 0 24px rgba(229,9,20,.35), 0 0 60px rgba(229,9,20,.15); } 50% { text-shadow: 0 0 60px rgba(229,9,20,.85), 0 0 140px rgba(229,9,20,.45); } }
+  @keyframes rf-bar { 0% { width: 0; } 100% { width: 100%; } }
+  @keyframes rf-fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes rf-pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+  @keyframes rf-back { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes rf-idzoom { 0% { transform: scale(.34); opacity: 0; } 24% { opacity: 0; } 42% { opacity: 1; transform: scale(.9); } 64% { transform: scale(1); } 80% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(13); opacity: 0; } }
+  @keyframes rf-idbeam { 0% { background-position: 0 0; } 100% { background-position: -336px 0; } }
+  @keyframes rf-ambient { 0% { opacity: 0; transform: scaleX(1.7) scaleY(1.15); } 20% { opacity: .95; } 56% { opacity: .8; transform: scaleX(1) scaleY(1); } 80% { opacity: 0; } 100% { opacity: 0; } }
+  @keyframes rf-flash { 0%, 72% { opacity: 0; } 84% { opacity: .9; } 100% { opacity: 0; } }
+  @keyframes rf-idbg { 0% { opacity: 1; } 84% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes rf-logo { 0% { opacity: 0; transform: scaleX(1) scaleY(.7); filter: blur(10px) drop-shadow(0 0 24px rgba(229,9,20,.45)); } 22% { opacity: 1; transform: scaleX(1) scaleY(1); filter: blur(0) drop-shadow(0 0 32px rgba(229,9,20,.6)); } 50% { opacity: 1; transform: scaleX(.98) scaleY(1.06); } 100% { opacity: 0; transform: scaleX(.5) scaleY(3.8); filter: blur(9px) drop-shadow(0 0 70px rgba(229,9,20,.7)); } }
+  @keyframes rf-idflash { 0%, 82% { opacity: 0; } 92% { opacity: .55; } 100% { opacity: 0; } }
+</style>
+</helmet>
+
+<sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+  <div style="position: fixed; inset: 0; z-index: 999; background: radial-gradient(circle at 50% 45%, #161616 0%, #050505 70%); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div style="font-family: Archivo, sans-serif; font-weight: 900; font-size: clamp(56px, 15vw, 190px); color: #e50914; letter-spacing: -.02em; animation: rf-zoom 1.4s cubic-bezier(.2,.8,.2,1) both, rf-glow 2.6s ease-in-out .3s infinite;">RAJFLIX</div>
+    <div style="margin-top: 26px; width: min(340px, 60vw); height: 3px; background: #2a2a2a; border-radius: 3px; overflow: hidden;">
+      <div style="height: 100%; background: #e50914; animation: rf-bar 2.4s linear both;"></div>
+    </div>
+    <div style="margin-top: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .28em; color: #6a6a6a; text-transform: uppercase;">a personal portfolio · loading profiles</div>
+    <button onClick="{{ skipIntro }}" style="position: absolute; bottom: 34px; right: 40px; background: transparent; border: 1px solid #3a3a3a; color: #b3b3b3; font-size: 13px; padding: 9px 20px; border-radius: 4px; cursor: pointer; letter-spacing: .04em;" style-hover="border-color: #fff; color: #fff;">Skip intro ›</button>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isProfiles }}">
+  <div style="position: fixed; inset: 0; z-index: 900; background: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-direction: column; animation: rf-back .5s ease both; padding: 24px;">
+    <div style="font-family: Archivo, sans-serif; font-weight: 900; color: #e50914; font-size: 26px; letter-spacing: -.01em; position: absolute; top: 30px; left: 40px;">RAJFLIX</div>
+    <h1 style="font-family: Archivo, sans-serif; font-weight: 500; color: #fff; font-size: clamp(30px, 5vw, 58px); text-align: center; margin-bottom: 12px;">Who's watching?</h1>
+    <p style="color: #8a8a8a; font-size: 15px; margin-bottom: 48px; text-align: center; max-width: 480px;">Pick a lens. Your rows, hero, and recommendations re-order to match what you care about.</p>
+    <div style="display: flex; gap: clamp(16px, 4vw, 44px); flex-wrap: wrap; justify-content: center;">
+      <sc-for list="{{ profiles }}" as="p" hint-placeholder-count="4">
+        <div onClick="{{ p.onPick }}" style="display: flex; flex-direction: column; align-items: center; gap: 16px; cursor: pointer; width: 150px;" style-hover="transform: translateY(-4px);">
+          <div style="width: 150px; height: 150px; border-radius: 8px; border: 3px solid transparent; display: flex; align-items: center; justify-content: center; transition: border-color .18s; overflow: hidden; position: relative;" style-hover="border-color: #fff;" style="{{ p.avatarStyle }}">
+            <span style="font-family: Archivo, sans-serif; font-weight: 900; font-size: 62px; color: rgba(255,255,255,.92);">{{ p.initial }}</span>
+          </div>
+          <div style="text-align: center;">
+            <div style="color: #b3b3b3; font-size: 19px; font-weight: 500;">{{ p.name }}</div>
+            <div style="color: #666; font-size: 12px; margin-top: 4px; font-family: 'JetBrains Mono', monospace;">{{ p.sub }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isIdent }}">
+  <div style="position: fixed; inset: 0; z-index: 950; background: transparent; overflow: hidden;">
+    <button onClick="{{ skipTunnel }}" style="position: absolute; bottom: 34px; right: 40px; z-index: 20; background: rgba(20,20,20,.5); border: 1px solid #3a3a3a; color: #cfcfcf; font-size: 13px; padding: 9px 20px; border-radius: 4px; cursor: pointer; letter-spacing: .04em; font-family: 'JetBrains Mono', monospace;" style-hover="border-color: #fff; color: #fff;">Skip ›</button>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isBrowse }}">
+<div style="min-height: 100vh; background: #0a0a0a; color: #fff; overflow-x: hidden;">
+
+  <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw; height: 66px; transition: background .3s, border-color .3s;" style="{{ navStyle }}">
+    <div style="display: flex; align-items: center; gap: 30px;">
+      <div onClick="{{ navHome }}" style="font-family: Archivo, sans-serif; font-weight: 900; font-size: 25px; letter-spacing: -.01em; cursor: pointer;" style="color: {{ accent }};">{{ brand }}</div>
+      <nav style="display: flex; gap: 20px; font-size: 13.5px; color: #d2d2d2;">
+        <span onClick="{{ navHome }}" style="cursor: pointer;" style-hover="color: #fff;">Home</span>
+        <span onClick="{{ navResearch }}" style="cursor: pointer;" style-hover="color: #fff;">Research</span>
+        <span onClick="{{ navExperience }}" style="cursor: pointer;" style-hover="color: #fff;">Experience</span>
+        <span onClick="{{ navProjects }}" style="cursor: pointer;" style-hover="color: #fff;">Projects</span>
+        <span onClick="{{ navList }}" style="cursor: pointer;" style-hover="color: #fff;">My List</span>
+      </nav>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" stroke-width="2" style="cursor: pointer;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7a7a7a; letter-spacing: .1em;">TS-16</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5e5e5" stroke-width="2" style="cursor: pointer;"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+      <div onClick="{{ navAvatar }}" title="Switch profile" style="width: 33px; height: 33px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: Archivo, sans-serif; font-weight: 900; font-size: 16px; color: rgba(255,255,255,.92);" style="{{ avatarStyle }}">{{ profileInitial }}</div>
+    </div>
+  </div>
+
+  <div data-screen-label="Home / Hero" style="position: relative; min-height: 88vh; display: flex; align-items: flex-end; padding: 0 4vw 5vh; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(120% 90% at 78% 18%, rgba(229,9,20,.22), transparent 55%), linear-gradient(180deg, #111 0%, #0c0c0c 60%, #0a0a0a 100%);"></div>
+    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px); background-size: 46px 46px; mask-image: radial-gradient(120% 90% at 75% 30%, #000, transparent 70%);"></div>
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 22vh; background: linear-gradient(0deg, #0a0a0a, transparent);"></div>
+    <div style="position: relative; max-width: 720px; animation: rf-fade .7s ease both;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+        <span style="font-family: Archivo, sans-serif; font-weight: 900; font-size: 15px; color: #fff; background: {{ accent }}; padding: 3px 7px; border-radius: 3px;">TOP 1</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; letter-spacing: .16em; color: #cfcfcf; text-transform: uppercase;">{{ heroKicker }}</span>
+      </div>
+      <h1 style="font-family: Archivo, sans-serif; font-weight: 900; line-height: .92; letter-spacing: -.03em; font-size: clamp(48px, 8.5vw, 116px); text-shadow: 0 4px 40px rgba(0,0,0,.6);">RAJDEEP<br>MUKHERJEE</h1>
+      <div style="display: flex; align-items: center; gap: 14px; margin: 20px 0 16px; flex-wrap: wrap;">
+        <span style="color: #46d369; font-weight: 700; font-size: 15px;">98% Match</span>
+        <span style="color: #cfcfcf; font-size: 14px;">2026</span>
+        <span style="border: 1px solid #555; color: #cfcfcf; font-size: 12px; padding: 1px 7px; border-radius: 3px;">TS-16</span>
+        <span style="color: #cfcfcf; font-size: 14px;">3× IEEE · Ex-AWS</span>
+        <span style="border: 1px solid #555; color: #9a9a9a; font-size: 11px; padding: 1px 7px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">4K · HDR</span>
+      </div>
+      <p style="font-size: clamp(15px, 1.5vw, 19px); line-height: 1.5; color: #e2e2e2; max-width: 620px; text-shadow: 0 2px 12px rgba(0,0,0,.7);">{{ heroTagline }}</p>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8f8f8f; margin-top: 14px; letter-spacing: .02em;">{{ heroGenres }}</div>
+      <div style="display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap;">
+        <button onClick="{{ onPlay }}" style="display: flex; align-items: center; gap: 9px; background: #fff; color: #111; border: none; font-size: 17px; font-weight: 700; padding: 11px 26px; border-radius: 5px; cursor: pointer;" style-hover="background: rgba(255,255,255,.82);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg>Play
+        </button>
+        <button onClick="{{ onMore }}" style="display: flex; align-items: center; gap: 9px; background: rgba(109,109,110,.6); color: #fff; border: none; font-size: 17px; font-weight: 600; padding: 11px 26px; border-radius: 5px; cursor: pointer;" style-hover="background: rgba(109,109,110,.4);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9.5"></circle><line x1="12" y1="11" x2="12" y2="16.5"></line><circle cx="12" cy="7.6" r="1.1" fill="#fff" stroke="none"></circle></svg>More Info
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: relative; margin-top: -3vh; padding-bottom: 40px;">
+
+    <sc-if value="{{ profileBanner }}">
+      <div style="margin: 0 4vw 26px; display: flex; align-items: center; gap: 12px; background: linear-gradient(90deg, rgba(229,9,20,.14), transparent); border-left: 3px solid {{ accent }}; padding: 12px 18px; border-radius: 0 6px 6px 0;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #cfcfcf;">{{ profileBanner }}</span>
+        <span onClick="{{ navAvatar }}" style="font-size: 12px; color: {{ accent }}; cursor: pointer; margin-left: auto; font-weight: 600;" style-hover="text-decoration: underline;">Switch profile ›</span>
+      </div>
+    </sc-if>
+
+    <div data-screen-label="Top 10 Row" style="margin-bottom: 8px; padding-left: 4vw;">
+      <h2 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(18px, 2vw, 25px); margin-bottom: 4px;">Top 10 in Rajdeep's World Today</h2>
+    </div>
+    <div style="position: relative; margin-bottom: 44px;">
+      <button onClick="{{ scrollLeft }}" style="position: absolute; left: 0; top: 0; bottom: 0; z-index: 20; width: 4vw; background: linear-gradient(90deg, rgba(10,10,10,.85), transparent); border: none; color: #fff; cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center;">‹</button>
+      <div data-track style="display: flex; gap: 8px; overflow-x: auto; padding: 12px 4vw; align-items: center;">
+        <sc-for list="{{ top10 }}" as="it" hint-placeholder-count="10">
+          <div onClick="{{ it.onOpen }}" onMouseEnter="{{ it.onEnter }}" onMouseLeave="{{ it.onLeave }}" style="display: flex; align-items: flex-end; flex-shrink: 0; cursor: pointer; transition: transform .25s;" style-hover="transform: scale(1.04);">
+            <span style="{{ it.numStyle }}">{{ it.rank }}</span>
+            <div style="position: relative; width: 132px; height: 190px; border-radius: 6px; overflow: hidden; margin-left: -18px; box-shadow: 0 6px 24px rgba(0,0,0,.5);">
+              <div style="{{ it.posterStyle }}"></div>
+              <div style="position: absolute; inset: 0; padding: 12px; display: flex; flex-direction: column; justify-content: flex-end;">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: {{ it.hueColor }}; margin-bottom: 5px;">{{ it.cat }}</div>
+                <div style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 15px; line-height: 1.05; text-wrap: balance;">{{ it.title }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <button onClick="{{ scrollRight }}" style="position: absolute; right: 0; top: 0; bottom: 0; z-index: 20; width: 4vw; background: linear-gradient(270deg, rgba(10,10,10,.85), transparent); border: none; color: #fff; cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center;">›</button>
+    </div>
+
+    <sc-for list="{{ rows }}" as="row" hint-placeholder-count="5">
+      <div id="{{ row.domId }}" style="margin-bottom: 40px; scroll-margin-top: 90px;">
+        <div style="padding: 0 4vw; margin-bottom: 8px; display: flex; align-items: baseline; gap: 12px;">
+          <h2 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: clamp(18px, 2vw, 25px);">{{ row.title }}</h2>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #777; letter-spacing: .08em;">{{ row.tagline }}</span>
+        </div>
+        <div style="position: relative;">
+          <button onClick="{{ scrollLeft }}" style="position: absolute; left: 0; top: 0; bottom: 0; z-index: 20; width: 4vw; background: linear-gradient(90deg, rgba(10,10,10,.85), transparent); border: none; color: #fff; cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center;">‹</button>
+          <div data-track style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 4vw;">
+            <sc-for list="{{ row.items }}" as="it" hint-placeholder-count="6">
+              <div onClick="{{ it.onOpen }}" onMouseEnter="{{ it.onEnter }}" onMouseLeave="{{ it.onLeave }}" style="position: relative; flex-shrink: 0; width: 296px; height: 168px; border-radius: 6px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 18px rgba(0,0,0,.4); transition: transform .22s;" style-hover="transform: scale(1.05);">
+                <div style="{{ it.posterStyle }}"></div>
+                <div style="position: absolute; inset: 0; padding: 15px; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: {{ it.hueColor }};">{{ it.cat }}</span>
+                    <span style="border: 1px solid rgba(255,255,255,.3); color: #d8d8d8; font-size: 9px; padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">{{ it.rating }}</span>
+                  </div>
+                  <div>
+                    <div style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 20px; line-height: 1.02; letter-spacing: -.01em; text-wrap: balance;">{{ it.title }}</div>
+                    <div style="font-size: 12px; color: #b8b8b8; margin-top: 5px;">{{ it.sub }}</div>
+                  </div>
+                </div>
+                <sc-if value="{{ it.hasProgress }}">
+                  <div style="position: absolute; left: 15px; right: 15px; bottom: 10px; height: 3px; background: rgba(255,255,255,.28); border-radius: 3px;">
+                    <div style="height: 100%; border-radius: 3px; background: {{ accent }};" style="{{ it.progressStyle }}"></div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ scrollRight }}" style="position: absolute; right: 0; top: 0; bottom: 0; z-index: 20; width: 4vw; background: linear-gradient(270deg, rgba(10,10,10,.85), transparent); border: none; color: #fff; cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center;">›</button>
+        </div>
+      </div>
+    </sc-for>
+
+    <footer style="padding: 40px 4vw 60px; border-top: 1px solid #1c1c1c; margin-top: 20px;">
+      <div style="display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 20px;">
+        <a href="mailto:rajdeepm@umich.edu" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">Email</a>
+        <a href="https://www.linkedin.com/in/rajdeep-mukherjee-cs752004" target="_blank" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">LinkedIn</a>
+        <a href="https://rajdeeepm.github.io/" target="_blank" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">Portfolio</a>
+        <a href="https://github.com/rajdeeepm" target="_blank" style="color: #8a8a8a; font-size: 13px;" style-hover="color:#fff;">GitHub</a>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #555; line-height: 1.7; max-width: 640px;">
+        RAJFLIX is a personal-portfolio concept by Rajdeep Mukherjee — one of several site experiments (see also the 3D-hero build and the scholar/CV view). Not affiliated with, or endorsed by, Netflix. Built with too much coffee in Ann Arbor, MI.
+      </div>
+    </footer>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pop }}">
+  <div onMouseEnter="{{ popKeep }}" onMouseLeave="{{ popLeave }}" onClick="{{ pop.onOpen }}" style="position: fixed; z-index: 600; width: 336px; background: #181818; border-radius: 7px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.75); cursor: pointer; animation: rf-pop .18s ease both;" style="{{ pop.style }}">
+    <div style="position: relative; height: 178px;">
+      <div style="{{ pop.posterStyle }}"></div>
+      <div style="position: absolute; inset: 0; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(0deg, rgba(24,24,24,.9), transparent 60%);">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: {{ pop.hueColor }}; margin-bottom: 5px;">{{ pop.cat }}</div>
+        <div style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 22px; line-height: 1.02;">{{ pop.title }}</div>
+      </div>
+    </div>
+    <div style="padding: 14px;">
+      <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 12px;">
+        <div style="width: 38px; height: 38px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg></div>
+        <div onClick="{{ pop.onToggleStop }}" title="My List" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #888; display: flex; align-items: center; justify-content: center;" style-hover="border-color: #fff;">
+          <sc-if value="{{ pop.inList }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if>
+          <sc-if value="{{ pop.notInList }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if>
+        </div>
+        <div title="Impressive" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #888; display: flex; align-items: center; justify-content: center;" style-hover="border-color: #fff;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 10v10M7 10l4-8a2 2 0 0 1 3 2l-1 5h5a2 2 0 0 1 2 2.4l-1.5 7A2 2 0 0 1 20 20H7"></path></svg></div>
+        <div style="margin-left: auto; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #888; display: flex; align-items: center; justify-content: center;" style-hover="border-color: #fff;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 9px; font-size: 12.5px; margin-bottom: 9px;">
+        <span style="color: #46d369; font-weight: 700;">{{ pop.match }}% Match</span>
+        <span style="border: 1px solid #555; color: #cfcfcf; padding: 0 5px; border-radius: 3px; font-size: 10px;">{{ pop.rating }}</span>
+        <span style="color: #bbb;">{{ pop.duration }}</span>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #9a9a9a; line-height: 1.6;">{{ pop.tagsLine }}</div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ modal }}">
+  <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; z-index: 700; background: rgba(0,0,0,.75); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px;" data-scroll>
+    <div onClick="{{ stop }}" data-scroll style="width: min(880px, 100%); background: #141414; border-radius: 8px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.8); animation: rf-pop .25s ease both; margin-bottom: 40px;">
+      <div style="position: relative; height: clamp(280px, 42vh, 440px);">
+        <div style="{{ modal.posterStyle }}"></div>
+        <div style="position: absolute; inset: 0; background: linear-gradient(0deg, #141414 2%, transparent 55%), linear-gradient(90deg, rgba(20,20,20,.7), transparent 60%);"></div>
+        <button onClick="{{ closeModal }}" style="position: absolute; top: 18px; right: 18px; width: 38px; height: 38px; border-radius: 50%; background: #181818; border: none; color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: #333;">✕</button>
+        <div style="position: absolute; left: 44px; bottom: 30px; right: 44px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: {{ modal.hueColor }}; margin-bottom: 10px;">{{ modal.cat }}</div>
+          <h2 style="font-family: Archivo, sans-serif; font-weight: 900; font-size: clamp(30px, 4.4vw, 54px); line-height: .96; letter-spacing: -.02em; text-shadow: 0 3px 24px rgba(0,0,0,.7); max-width: 90%;">{{ modal.title }}</h2>
+          <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+            <button style="display: flex; align-items: center; gap: 8px; background: #fff; color: #111; border: none; font-size: 15px; font-weight: 700; padding: 9px 24px; border-radius: 5px; cursor: pointer;" style-hover="background: rgba(255,255,255,.82);"><svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M6 4l14 8-14 8z"></path></svg>Play</button>
+            <div onClick="{{ modal.onToggleStop }}" style="width: 42px; height: 42px; border-radius: 50%; border: 2px solid #999; display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="border-color: #fff;">
+              <sc-if value="{{ modal.inList }}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><polyline points="4 12 10 18 20 6"></polyline></svg></sc-if>
+              <sc-if value="{{ modal.notInList }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 8px 44px 40px;">
+        <div style="display: grid; grid-template-columns: 1.55fr 1fr; gap: 32px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+              <span style="color: #46d369; font-weight: 700; font-size: 15px;">{{ modal.match }}% Match</span>
+              <span style="color: #cfcfcf; font-size: 14px;">{{ modal.year }}</span>
+              <span style="border: 1px solid #555; color: #cfcfcf; font-size: 11px; padding: 1px 7px; border-radius: 3px;">{{ modal.rating }}</span>
+              <span style="border: 1px solid #555; color: #9a9a9a; font-size: 10px; padding: 1px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">HD</span>
+            </div>
+            <p style="font-size: 15.5px; line-height: 1.6; color: #e2e2e2;">{{ modal.summary }}</p>
+
+            <sc-if value="{{ modal.hasPoints }}">
+              <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 18px; margin: 26px 0 10px;">{{ modal.pointsTitle }}</h3>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <sc-for list="{{ modal.points }}" as="pt" hint-placeholder-count="3">
+                  <div style="display: flex; gap: 14px; align-items: baseline; border-bottom: 1px solid #1e1e1e; padding-bottom: 12px;">
+                    <span style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 20px; color: #555; min-width: 26px;">{{ pt.n }}</span>
+                    <span style="font-size: 14.5px; line-height: 1.55; color: #cfcfcf;">{{ pt.t }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="font-size: 13.5px; line-height: 1.7;">
+            <div style="color: #777;">Role: <span style="color: #e2e2e2;">{{ modal.mRole }}</span></div>
+            <div style="color: #777;">Org: <span style="color: #e2e2e2;">{{ modal.mOrg }}</span></div>
+            <div style="color: #777;">Location: <span style="color: #e2e2e2;">{{ modal.mLoc }}</span></div>
+            <div style="color: #777;">Run: <span style="color: #e2e2e2;">{{ modal.mDate }}</span></div>
+            <div style="margin-top: 16px; color: #777;">Stack:</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+              <sc-for list="{{ modal.stack }}" as="s" hint-placeholder-count="5">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #232323; color: #cfcfcf; padding: 3px 9px; border-radius: 4px;">{{ s.v }}</span>
+              </sc-for>
+            </div>
+            <sc-if value="{{ modal.hasLinks }}">
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px;">
+                <sc-for list="{{ modal.links }}" as="lk" hint-placeholder-count="2">
+                  <a href="{{ lk.href }}" target="_blank" style="font-size: 13px; color: #e5e5e5; display: flex; align-items: center; gap: 7px;" style-hover="color:#fff;">
+                    <span style="color: {{ accent }};">→</span>{{ lk.label }}
+                  </a>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{ modal.hasMore }}">
+          <h3 style="font-family: Archivo, sans-serif; font-weight: 700; font-size: 20px; margin: 36px 0 16px;">More Like This</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+            <sc-for list="{{ modal.more }}" as="m" hint-placeholder-count="3">
+              <div onClick="{{ m.onOpen }}" style="border-radius: 6px; overflow: hidden; background: #1c1c1c; cursor: pointer;" style-hover="background: #262626;">
+                <div style="position: relative; height: 118px;">
+                  <div style="{{ m.posterStyle }}"></div>
+                  <div style="position: absolute; inset: 0; padding: 12px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(0deg, rgba(28,28,28,.85), transparent 60%);">
+                    <div style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 15px; line-height: 1.05;">{{ m.title }}</div>
+                  </div>
+                </div>
+                <div style="padding: 10px 12px;">
+                  <div style="display: flex; align-items: center; gap: 8px; font-size: 11px;">
+                    <span style="color: #46d369; font-weight: 700;">{{ m.match }}% Match</span>
+                    <span style="border: 1px solid #555; color: #999; padding: 0 4px; border-radius: 3px; font-size: 9px;">{{ m.rating }}</span>
+                  </div>
+                  <div style="font-size: 12px; color: #999; margin-top: 6px; line-height: 1.4;">{{ m.sub }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#e50914&quot;,&quot;options&quot;:[&quot;#e50914&quot;,&quot;#00e5c0&quot;,&quot;#7c5cff&quot;,&quot;#ff8a3d&quot;,&quot;#f5f5f5&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;},&quot;brandName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;RAJFLIX&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;},&quot;showIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;defaultProfile&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Ask&quot;,&quot;Recruiter&quot;,&quot;Professor&quot;,&quot;Engineer&quot;,&quot;Just Curious&quot;],&quot;default&quot;:&quot;Ask&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;identPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Spectrum&quot;,&quot;Michigan&quot;,&quot;Sunset&quot;],&quot;default&quot;:&quot;Spectrum&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Light-tunnel ident&quot;},&quot;beamDensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:400,&quot;min&quot;:120,&quot;max&quot;:800,&quot;step&quot;:20,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Light-tunnel ident&quot;},&quot;identDuration&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4500,&quot;min&quot;:2000,&quot;max&quot;:6000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Light-tunnel ident&quot;}}">
+class Component extends DCLogic {
+  state = { phase: 'intro', profile: null, modalId: null, myList: [], hover: null, navScrolled: false };
+
+  // ---- data ----
+  HUE = { research: 22, experience: 45, projects: 210, skills: 152, awards: 92, education: 292, continue: 22, featured: 22 };
+  HUECOLOR = { research: '#ff6b6b', experience: '#ffb454', projects: '#5cc8ff', skills: '#5ce0a8', awards: '#ffd34d', education: '#c39bff', continue: '#ff6b6b', featured: '#ff6b6b' };
+
+  posterBg(h) {
+    return { position: 'absolute', inset: 0, background:
+      'linear-gradient(0deg, rgba(0,0,0,.62), rgba(0,0,0,.05)),' +
+      'repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 1.5px, transparent 1.5px 11px),' +
+      'radial-gradient(135% 125% at 18% 0%, oklch(.38 .11 ' + h + '), oklch(.16 .05 ' + h + ') 55%, #0a0a0a)' };
+  }
+  numStyle() {
+    return { fontFamily: 'Archivo, sans-serif', fontWeight: 900, fontSize: 'clamp(90px,10vw,150px)', lineHeight: .8, color: '#121212', WebkitTextStroke: '2.5px #4c4c4c', letterSpacing: '-.05em' };
+  }
+
+  LINKS = {
+    email: { label: 'Email Rajdeep', href: 'mailto:rajdeepm@umich.edu' },
+    li: { label: 'View on LinkedIn', href: 'https://www.linkedin.com/in/rajdeep-mukherjee-cs752004' },
+    port: { label: 'Full portfolio', href: 'https://rajdeeepm.github.io/' },
+    gh: { label: 'GitHub', href: 'https://github.com/rajdeeepm' },
+    ieee: { label: 'IEEE Xplore', href: '#' },
+  };
+
+  ITEMS() {
+    const L = this.LINKS;
+    return {
+      about: { cat: 'Featured', c: 'featured', title: 'Rajdeep Mukherjee', sub: 'CSE & Math @ Michigan · Ex-AWS', year: '2026', match: 98, rating: 'TS-16', duration: 'Ongoing series',
+        tags: ['Agentic AI', 'Reinforcement Learning', 'ML Systems', 'Multimodal'],
+        summary: 'I build and study intelligent systems that perceive, reason, learn, and act under uncertainty — agentic AI, RL, ML systems, and statistical decision-making. The question that drives me: how do we build models that stay reliable when the environment is noisy, partially observed, high-dimensional, and constantly changing? Incoming CSE MSE at Michigan, 3× published IEEE researcher, ex-AWS.',
+        ptitle: 'What I care about',
+        points: ['Post-training pipelines — SFT, RLHF, PPO, model-based RL, synthetic data, benchmarking, and diagnostic tooling.', 'The quantitative + systems side of ML — distributed training, GPU acceleration, low-latency inference, scalable infra.', 'A deep skepticism of metrics that look good but fail under distribution shift.'],
+        stack: ['Python', 'PyTorch', 'RL', 'LLMs', 'Distributed', 'Statistics'],
+        meta: { role: 'Incoming MSE, Computer Science', org: 'University of Michigan (Ex-AWS · Human-AI Lab)', loc: 'Ann Arbor, MI', date: '2026 →' },
+        links: [L.email, L.li, L.port, L.gh], more: ['aws', 'aero_llm', 'agentic'] },
+
+      // research
+      aero_llm: { cat: 'Research · IEEE', c: 'research', title: 'Aero-LLM', sub: 'Secure UAV comms & decision-making', year: '2024', match: 99, rating: 'IEEE', duration: 'ICCCN 2024',
+        tags: ['LLMs', 'Distributed', 'UAV', 'Security'],
+        summary: 'A distributed framework for secure UAV communication and intelligent decision-making. Led the team and co-authored the paper published at ICCCN — IEEE 33rd International Conference on Computer Communications and Networks, July 2024.',
+        ptitle: 'Contributions', points: ['Team Lead on the distributed architecture and secure comms protocol.', 'Co-designed the LLM-empowered decision-making layer for autonomous agents.', 'Co-authored and published at IEEE ICCCN 2024.'],
+        stack: ['LLMs', 'Distributed Systems', 'UAV', 'Security', 'Python'],
+        meta: { role: 'Team Lead · Research Assistant', org: 'Oakland University', loc: 'Rochester, MI', date: 'Published Jul 2024' },
+        links: [L.ieee, L.li], more: ['net_gpt', 'hgd', 'aws'] },
+      net_gpt: { cat: 'Research · IEEE', c: 'research', title: 'Net-GPT', sub: 'LLM-empowered MITM chatbot for UAVs', year: '2023', match: 97, rating: 'IEEE', duration: 'EdgeSP 2023',
+        tags: ['LLMs', 'Security', 'Edge', 'MITM'],
+        summary: 'An LLM-empowered man-in-the-middle chatbot for unmanned aerial vehicles. Co-authored and published at EdgeSP — the 5th ACM/IEEE Workshop on Security and Privacy in Edge Computing, December 2023.',
+        ptitle: 'Contributions', points: ['Designed an LLM-driven MITM interface probing UAV comms security.', 'Studied privacy attack surfaces in edge-computing deployments.', 'Co-authored and published at ACM/IEEE EdgeSP 2023.'],
+        stack: ['LLMs', 'Edge Computing', 'Security', 'Python'],
+        meta: { role: 'Research Assistant', org: 'Oakland University', loc: 'Rochester, MI', date: 'Published Dec 2023' },
+        links: [L.ieee, L.li], more: ['aero_llm', 'hgd', 'harness'] },
+      hgd: { cat: 'Research · IEEE', c: 'research', title: 'Heterogeneous Generative Dataset for UASes', sub: 'Synthetic data for autonomy', year: '2023', match: 96, rating: 'IEEE', duration: 'IEEE MOST 2023',
+        tags: ['Generative', 'Datasets', 'UAS'],
+        summary: 'A heterogeneous generative dataset for unmanned aerial systems. Co-authored and published at the IEEE International Conference on Mobility, Operations, Services and Technologies (MOST), May 2023.',
+        ptitle: 'Contributions', points: ['Built a heterogeneous, generative dataset modeling diverse UAS conditions.', 'Enabled training + evaluation across varied autonomy scenarios.', 'Co-authored and published at IEEE MOST 2023.'],
+        stack: ['Generative Models', 'Data Pipelines', 'Python'],
+        meta: { role: 'Research Assistant', org: 'Oakland University', loc: 'Rochester, MI', date: 'Published May 2023' },
+        links: [L.ieee, L.li], more: ['aero_llm', 'net_gpt', 'agentic'] },
+
+      // experience
+      aws: { cat: 'Experience', c: 'experience', title: 'AWS — SDE Intern, AI/ML', sub: 'SageMaker AI GroundTruth (HIL)', year: '2025', match: 98, rating: 'PROD', duration: 'Summer 2025',
+        tags: ['Agentic LLMs', 'RAG', 'PEFT', 'Benchmarking'],
+        summary: 'Software Development Engineering Intern (AI/ML) on the SageMaker AI GroundTruth Human-in-the-Loop team in Seattle. Shipped production agentic LLM systems and the tooling around them.',
+        ptitle: 'Episodes', points: ['Shipped a production agentic LLM system that auto-generates config files from a prompt — 24× faster, +95.8% efficiency at 99%+ accuracy.', 'Built a multi-model inference harness benchmarking foundation models across accuracy, latency, and cost; selected best stacks per use case.', 'Created a synthetic dataset modeling real-world ambiguity and long-tail edge cases for both training and eval.', 'Fine-tuned foundation models with PEFT — quantization, LoRA, QLoRA, adapters — for exact-match robustness.', 'Engineered a modular plug-in architecture (generators / validators / evaluators) reused across adjacent projects. Nominated for the "Hawaiian T-Shirt" award.'],
+        stack: ['Python', 'Claude', 'Llama', 'DeepSeek', 'RAG', 'LoRA/QLoRA', 'SageMaker'],
+        meta: { role: 'SDE Intern (AI/ML)', org: 'Amazon Web Services', loc: 'Seattle, WA', date: 'May – Aug 2025' },
+        links: [L.li], more: ['agentic', 'harness', 'aero_llm'] },
+      humanai: { cat: 'Experience', c: 'experience', title: 'Human-AI Lab', sub: 'Undergraduate Researcher', year: '2025', match: 95, rating: 'RSCH', duration: 'Fall 2025',
+        tags: ['Human-AI', 'Evaluation', 'Agents'],
+        summary: 'Undergraduate Researcher at the Human-AI Lab, University of Michigan — studying how people and intelligent systems interact, reason, and stay reliable together.',
+        ptitle: 'Focus', points: ['Research at the intersection of human-AI interaction and agentic systems.', 'Interpretable evaluation and diagnostics for model behavior.'],
+        stack: ['Python', 'LLM Agents', 'Evaluation'],
+        meta: { role: 'Undergraduate Researcher', org: 'University of Michigan', loc: 'Ann Arbor, MI', date: 'Sep – Dec 2025' },
+        links: [L.li], more: ['aws', 'posttrain', 'aero_llm'] },
+      vti: { cat: 'Experience', c: 'experience', title: 'VTI Aerospace — Research Fellow', sub: 'GPS-denied autonomous drones', year: '2025', match: 94, rating: 'MCITY', duration: 'Spring 2025',
+        tags: ['Sensor Fusion', 'Localization', 'Speech'],
+        summary: 'Research Fellow (PJTL @ MCity). Built a real-time, GPS-independent localization system and designed an AI voice-command interface for autonomous drones.',
+        ptitle: 'Episodes', points: ['Engineered a real-time, GPS-independent localization system via sensor fusion + on-board processing for precise pose estimation.', 'Designed an AI voice-command interface using speech-to-text + ML to interpret and execute complex spoken instructions.'],
+        stack: ['Sensor Fusion', 'Speech-to-Text', 'ML', 'Robotics'],
+        meta: { role: 'Research Fellow — PJTL @ MCity', org: 'VTI Aerospace', loc: 'Ann Arbor, MI', date: 'Jan – May 2025' },
+        links: [L.li], more: ['retrospect', 'localization', 'aero_llm'] },
+      retrospect: { cat: 'Experience', c: 'experience', title: 'Retrospect — Research Fellow', sub: 'Trajectory emulation @ MCity', year: '2024', match: 92, rating: 'MCITY', duration: 'Fall 2024',
+        tags: ['Trajectory', 'Simulation', 'Signals'],
+        summary: 'Research Fellow (PJTL @ MCity). Built a Python trajectory emulator and a data-processing pipeline for vehicle motion analysis and planning.',
+        ptitle: 'Episodes', points: ['Built a trajectory emulator using spline interpolation and parameterized paths — real-time sim with acceleration/jerk constraints, 1000+ points per run at ms precision.', 'Engineered a pipeline parsing 5000+ CSV data points into six motion-analysis graphs (trajectory, velocity, acceleration, jerk).'],
+        stack: ['Python', 'NumPy', 'Signal Processing', 'Matplotlib'],
+        meta: { role: 'Research Fellow — PJTL @ MCity', org: 'Retrospect', loc: 'Ann Arbor, MI', date: 'Aug – Dec 2024' },
+        links: [L.li], more: ['vti', 'trajectory', 'hgd'] },
+      oakland: { cat: 'Experience', c: 'experience', title: 'Oakland University — RA & Grader', sub: 'IEEE research + teaching', year: '2024', match: 90, rating: 'RSCH', duration: '2 years',
+        tags: ['Research', 'Teaching', 'Networking'],
+        summary: 'Two years as a Research Assistant (three IEEE publications) plus CS and Mathematics Grader roles — supporting students in networking and calculus while leading UAV/LLM research.',
+        ptitle: 'Highlights', points: ['Team Lead / co-author on 3 IEEE papers (Aero-LLM, Net-GPT, Heterogeneous Generative Dataset).', 'CS Grader — led lab sessions in computer networking; personalized student consultations.', 'Mathematics Grader — evaluated calculus coursework with constructive feedback.'],
+        stack: ['Research', 'Networking', 'Calculus', 'Mentoring'],
+        meta: { role: 'Research Assistant · Grader', org: 'Oakland University', loc: 'Rochester, MI', date: 'Jan 2023 – Dec 2024' },
+        links: [L.li], more: ['aero_llm', 'net_gpt', 'hgd'] },
+
+      // projects
+      agentic: { cat: 'Project · Flagship', c: 'projects', title: 'Agentic Config Generator', sub: '24× faster · 99%+ accuracy', year: '2025', match: 99, rating: 'PROD', duration: 'AWS · shipped',
+        tags: ['Agentic', 'RAG', 'PEFT', 'Prod'],
+        summary: 'A production agentic LLM system that auto-generates configuration files from a single user prompt — 24× faster, boosting efficiency 95.8% at 99%+ accuracy. Shipped at AWS SageMaker GroundTruth.',
+        ptitle: 'How it works', points: ['Agentic pipeline with zero/one/few-shot prompting + a RAG service with GenAI indexing.', 'Multi-model inference harness benchmarks FMs on accuracy, latency, and cost.', 'PEFT fine-tuning (LoRA/QLoRA/quantization) on synthetic + curated data for exact-match robustness.', 'Modular plug-in generators / validators / evaluators reused across adjacent teams.'],
+        stack: ['Claude', 'Llama', 'DeepSeek', 'RAG', 'LoRA/QLoRA', 'Python'],
+        meta: { role: 'Builder', org: 'AWS SageMaker GroundTruth', loc: 'Seattle, WA', date: 'Summer 2025' },
+        links: [L.li], more: ['aws', 'harness', 'aero_llm'] },
+      localization: { cat: 'Project', c: 'projects', title: 'GPS-Denied Localization', sub: 'Sensor fusion pose estimation', year: '2025', match: 95, rating: 'ROBO', duration: 'Real-time',
+        tags: ['Sensor Fusion', 'Robotics', 'Autonomy'],
+        summary: 'A real-time, GPS-independent localization system for autonomous drones — sensor fusion + on-board processing for precise pose estimation with no external positioning.',
+        ptitle: 'Highlights', points: ['Fused IMU + on-board sensors for drift-resistant real-time pose estimation.', 'Enabled autonomous navigation with no external positioning infrastructure.'],
+        stack: ['Sensor Fusion', 'C++', 'Robotics', 'Embedded'],
+        meta: { role: 'Research Fellow', org: 'VTI Aerospace @ MCity', loc: 'Ann Arbor, MI', date: 'Spring 2025' },
+        links: [L.li], more: ['vti', 'trajectory', 'agentic'] },
+      trajectory: { cat: 'Project', c: 'projects', title: 'Trajectory Emulator', sub: 'Spline sim, jerk-constrained', year: '2024', match: 93, rating: 'SIM', duration: 'ms precision',
+        tags: ['Simulation', 'Splines', 'Motion'],
+        summary: 'A Python trajectory emulator using spline interpolation and parameterized paths — real-time vehicle motion sim with acceleration and jerk constraints, 1000+ points per run at millisecond precision.',
+        ptitle: 'Highlights', points: ['Spline-interpolated parameterized paths with acceleration + jerk limits.', 'Pipeline turning 5000+ CSV points into six motion-analysis graphs.'],
+        stack: ['Python', 'NumPy', 'SciPy', 'Matplotlib'],
+        meta: { role: 'Research Fellow', org: 'Retrospect @ MCity', loc: 'Ann Arbor, MI', date: 'Fall 2024' },
+        links: [L.li], more: ['retrospect', 'localization', 'harness'] },
+      harness: { cat: 'Project', c: 'projects', title: 'Multi-Model Inference Harness', sub: 'Benchmark FMs: acc · latency · cost', year: '2025', match: 96, rating: 'EVAL', duration: 'Tooling',
+        tags: ['Benchmarking', 'Eval', 'Infra'],
+        summary: 'A harness to benchmark foundation models across accuracy, latency, and cost — selecting the best-performing stack per use case, with synthetic edge-case data for robust evaluation.',
+        ptitle: 'Highlights', points: ['Unified benchmarking across proprietary + open models (Claude, Llama, DeepSeek).', 'Synthetic long-tail dataset surfaces failures under distribution shift.'],
+        stack: ['Python', 'LLM Eval', 'Benchmarking', 'Data'],
+        meta: { role: 'Builder', org: 'AWS SageMaker GroundTruth', loc: 'Seattle, WA', date: 'Summer 2025' },
+        links: [L.li], more: ['agentic', 'aws', 'net_gpt'] },
+      rajflix: { cat: 'Project · Meta', c: 'projects', title: 'RAJFLIX (you are here)', sub: 'A portfolio as a streaming service', year: '2026', match: 100, rating: 'FUN', duration: 'This site',
+        tags: ['Frontend', 'Motion', 'Design'],
+        summary: 'The site you are looking at — a personal portfolio reimagined as a streaming service. One of several portfolio experiments, alongside a 3D human-figure hero build and a clean scholar/CV view.',
+        ptitle: 'The idea', points: ['Papers = films, roles = series, projects = episodes.', 'Profile gate re-orders everything for recruiters, professors, and engineers.', 'Built to show range: engineering + design + a sense of play.'],
+        stack: ['React', 'Motion', 'Design Systems', 'CSS'],
+        meta: { role: 'Designer / Engineer', org: 'Personal', loc: 'Ann Arbor, MI', date: '2026' },
+        links: [L.port, L.gh], more: ['portfolio3d', 'scholar', 'agentic'] },
+      portfolio3d: { cat: 'Project', c: 'projects', title: '3D Portfolio', sub: 'Human-figure hero, WebGL', year: '2026', match: 94, rating: 'FUN', duration: 'Companion site',
+        tags: ['Three.js', 'WebGL', '3D'],
+        summary: 'A full 3D portfolio site with a human-like figure hero section — the most visually ambitious of the portfolio experiments.',
+        ptitle: 'Highlights', points: ['Real-time 3D hero with a human-like figure.', 'Built to prove interactive, performant WebGL chops.'],
+        stack: ['Three.js', 'React Three Fiber', 'GLSL', 'WebGL'],
+        meta: { role: 'Designer / Engineer', org: 'Personal', loc: 'Ann Arbor, MI', date: '2026' },
+        links: [L.port], more: ['rajflix', 'scholar', 'harness'] },
+      scholar: { cat: 'Project', c: 'projects', title: 'Scholar / CV View', sub: 'Clean academic portfolio', year: '2026', match: 92, rating: 'CV', duration: 'Companion site',
+        tags: ['Academic', 'Minimal', 'CV'],
+        summary: 'A simple, PhD-student-style portfolio — publications, research, and CV front and center. The version a professor would probably prefer.',
+        ptitle: 'Highlights', points: ['Publication-first layout for academic audiences.', 'Fast, legible, no-nonsense — the serious counterpart to RAJFLIX.'],
+        stack: ['HTML', 'CSS', 'Minimal JS'],
+        meta: { role: 'Designer / Engineer', org: 'Personal', loc: 'Ann Arbor, MI', date: '2026' },
+        links: [L.port], more: ['rajflix', 'portfolio3d', 'aero_llm'] },
+
+      // continue watching helpers
+      umich_mse: { cat: 'Continue Watching', c: 'continue', title: 'MSE, Computer Science', sub: 'University of Michigan — incoming', year: '2026', match: 97, rating: 'S1:E1', duration: 'Fall 2026 →',
+        tags: ['Grad School', 'AI', 'Systems'],
+        summary: 'Incoming CSE Master\u2019s at the University of Michigan — focused on agentic AI, reinforcement learning, and ML systems. The next season, just getting started.',
+        ptitle: 'Focus', points: ['Deepening post-training, RL, and ML-systems research.', 'Continuing at the intersection of research and production ML.'],
+        stack: ['AI', 'RL', 'ML Systems'],
+        meta: { role: 'Incoming MSE Student', org: 'University of Michigan', loc: 'Ann Arbor, MI', date: 'Fall 2026 →' },
+        links: [L.li], more: ['humanai', 'posttrain', 'aws'] },
+      posttrain: { cat: 'Continue Watching', c: 'continue', title: 'The Post-Training Playbook', sub: 'SFT · RLHF · PPO · model-based RL', year: '2025', match: 96, rating: 'TS-16', duration: 'In progress',
+        tags: ['SFT', 'RLHF', 'PPO', 'Synthetic Data'],
+        summary: 'An ongoing deep-dive into turning raw model capability into robust, measurable behavior — SFT, RLHF, PPO, model-based RL, synthetic data generation, benchmarking, and diagnostic tooling.',
+        ptitle: 'Chapters', points: ['Supervised fine-tuning + preference optimization pipelines.', 'Synthetic data generation for long-tail robustness.', 'Benchmarking and diagnostics that survive distribution shift.'],
+        stack: ['SFT', 'RLHF', 'PPO', 'PEFT', 'Python'],
+        meta: { role: 'Self-directed research', org: 'Personal / Michigan', loc: 'Ann Arbor, MI', date: '2025 →' },
+        links: [L.li], more: ['aws', 'harness', 'agentic'] },
+
+      // skills as genres
+      skill_agentic: { cat: 'Genre', c: 'skills', title: 'Agentic AI & LLM Post-Training', sub: 'SFT · RLHF · PPO · LoRA/QLoRA', year: '', match: 99, rating: 'CORE', duration: '',
+        tags: ['Agents', 'PEFT', 'RAG'], summary: 'Building agentic LLM systems and the post-training that makes them reliable: SFT, RLHF, PPO, LoRA/QLoRA, RAG, synthetic data, and evaluation.',
+        ptitle: '', points: [], stack: ['Claude', 'Llama', 'DeepSeek', 'RAG', 'LoRA/QLoRA'], meta: { role: 'Skill genre', org: '—', loc: '—', date: '—' }, links: [], more: ['agentic', 'aws', 'posttrain'] },
+      skill_rl: { cat: 'Genre', c: 'skills', title: 'Reinforcement Learning', sub: 'Model-based RL · decision-making', year: '', match: 97, rating: 'CORE', duration: '',
+        tags: ['RL', 'Decision-Making'], summary: 'Reinforcement learning and statistical decision-making under uncertainty — from model-based RL to policy optimization.',
+        ptitle: '', points: [], stack: ['RL', 'PPO', 'Bandits', 'Python'], meta: { role: 'Skill genre', org: '—', loc: '—', date: '—' }, links: [], more: ['posttrain', 'agentic', 'aero_llm'] },
+      skill_mlsys: { cat: 'Genre', c: 'skills', title: 'ML Systems & Infrastructure', sub: 'Distributed · GPU · low-latency', year: '', match: 96, rating: 'CORE', duration: '',
+        tags: ['Distributed', 'GPU', 'Infra'], summary: 'Large-scale ML systems — distributed training, GPU acceleration, low-latency inference, and scalable infrastructure.',
+        ptitle: '', points: [], stack: ['CUDA', 'Distributed', 'Inference', 'Python'], meta: { role: 'Skill genre', org: '—', loc: '—', date: '—' }, links: [], more: ['harness', 'aws', 'agentic'] },
+      skill_cv: { cat: 'Genre', c: 'skills', title: 'Computer Vision & Multimodal', sub: 'Perception under uncertainty', year: '', match: 94, rating: 'CORE', duration: '',
+        tags: ['CV', 'Multimodal'], summary: 'Computer vision and multimodal models — perception systems that hold up in noisy, partially observed environments.',
+        ptitle: '', points: [], stack: ['PyTorch', 'CV', 'Multimodal'], meta: { role: 'Skill genre', org: '—', loc: '—', date: '—' }, links: [], more: ['hgd', 'localization', 'agentic'] },
+      skill_ir: { cat: 'Genre', c: 'skills', title: 'Information Retrieval & Ranking', sub: 'Search engine ranking · IR', year: '', match: 93, rating: 'CORE', duration: '',
+        tags: ['IR', 'Ranking', 'Search'], summary: 'Information retrieval and search-engine ranking — one of the top skills, feeding into RAG and retrieval-augmented agents.',
+        ptitle: '', points: [], stack: ['IR', 'Ranking', 'RAG', 'Python'], meta: { role: 'Skill genre', org: '—', loc: '—', date: '—' }, links: [], more: ['agentic', 'harness', 'skill_agentic'] },
+      skill_stats: { cat: 'Genre', c: 'skills', title: 'Statistical Modeling & Time-Series', sub: 'Signal discovery · backtesting', year: '', match: 95, rating: 'CORE', duration: '',
+        tags: ['Statistics', 'Time-Series'], summary: 'Quantitative modeling — large-scale data analysis, statistical modeling, time-series reasoning, signal discovery, optimization, and rigorous backtesting.',
+        ptitle: '', points: [], stack: ['Statistics', 'Time-Series', 'Optimization', 'Python'], meta: { role: 'Skill genre', org: '—', loc: '—', date: '—' }, links: [], more: ['harness', 'trajectory', 'posttrain'] },
+
+      // awards
+      aw_hawaii: { cat: 'Award', c: 'awards', title: '"Hawaiian T-Shirt" Award', sub: 'AWS — team impact & craftsmanship', year: '2025', match: 98, rating: 'AWS', duration: 'Nominee',
+        tags: ['Impact', 'Craftsmanship'], summary: 'Nominated for AWS\u2019s "Hawaiian T-Shirt" award in recognition of team impact and craftsmanship in innovation during the SageMaker GroundTruth internship.',
+        ptitle: '', points: [], stack: ['Impact', 'Innovation'], meta: { role: 'Nominee', org: 'Amazon Web Services', loc: 'Seattle, WA', date: 'Summer 2025' }, links: [], more: ['aws', 'agentic', 'aw_presidents'] },
+      aw_presidents: { cat: 'Award', c: 'awards', title: "President's List (×2)", sub: 'Top academic standing', year: '', match: 96, rating: 'HONOR', duration: '',
+        tags: ['Academics'], summary: 'Awarded the President\u2019s List twice for top academic standing.', ptitle: '', points: [], stack: ['Academics'], meta: { role: 'Recipient', org: 'University', loc: '—', date: '—' }, links: [], more: ['aw_deans', 'aw_honors', 'aw_ald'] },
+      aw_deans: { cat: 'Award', c: 'awards', title: "Dean's List", sub: 'Academic excellence', year: '', match: 95, rating: 'HONOR', duration: '',
+        tags: ['Academics'], summary: 'Recognized on the Dean\u2019s List for academic excellence.', ptitle: '', points: [], stack: ['Academics'], meta: { role: 'Recipient', org: 'University', loc: '—', date: '—' }, links: [], more: ['aw_presidents', 'aw_honors', 'aw_ald'] },
+      aw_honors: { cat: 'Award', c: 'awards', title: 'Honors College Student', sub: 'Honors program', year: '', match: 95, rating: 'HONOR', duration: '',
+        tags: ['Honors'], summary: 'Member of the Honors College — an academically selective honors program.', ptitle: '', points: [], stack: ['Honors'], meta: { role: 'Member', org: 'University', loc: '—', date: '—' }, links: [], more: ['aw_ald', 'aw_presidents', 'aw_deans'] },
+      aw_ald: { cat: 'Award', c: 'awards', title: 'Alpha Lambda Delta', sub: 'Honor society member', year: '', match: 94, rating: 'HONOR', duration: '',
+        tags: ['Honor Society'], summary: 'Member of the Alpha Lambda Delta Honor Society, recognizing high academic achievement.', ptitle: '', points: [], stack: ['Honor Society'], meta: { role: 'Member', org: '—', loc: '—', date: '—' }, links: [], more: ['aw_honors', 'aw_presidents', 'aw_deans'] },
+
+      // education
+      edu_umich: { cat: 'Documentary', c: 'education', title: 'University of Michigan', sub: 'B.S.E CS (Intelligent Systems) + Math minor', year: '2026', match: 98, rating: 'B.S.E', duration: '2024 – 2026',
+        tags: ['CS', 'Math', 'Intelligent Systems'], summary: 'Bachelor of Science in Engineering, Computer Science with a focus on Intelligent Systems, plus a minor in Mathematics. Continuing into the CSE MSE program.',
+        ptitle: '', points: [], stack: ['CS', 'Mathematics', 'Intelligent Systems'], meta: { role: 'B.S.E → MSE', org: 'University of Michigan', loc: 'Ann Arbor, MI', date: 'May 2024 – May 2026' }, links: [], more: ['edu_oakland', 'edu_harvard', 'edu_berkeley'] },
+      edu_oakland: { cat: 'Documentary', c: 'education', title: 'Oakland University', sub: 'B.S. CS — AI specialization', year: '2024', match: 95, rating: 'B.S', duration: '2022 – 2024',
+        tags: ['CS', 'AI'], summary: 'Bachelor of Science in Computer Science with a specialization in Artificial Intelligence. Where the three IEEE papers began.',
+        ptitle: '', points: [], stack: ['CS', 'AI'], meta: { role: 'B.S. Computer Science', org: 'Oakland University', loc: 'Rochester, MI', date: 'Sep 2022 – Apr 2024' }, links: [], more: ['edu_umich', 'oakland', 'edu_harvard'] },
+      edu_harvard: { cat: 'Documentary', c: 'education', title: 'Harvard University', sub: 'Summer program', year: '2023', match: 92, rating: 'SUMMER', duration: 'Summer 2023',
+        tags: ['Summer'], summary: 'Summer coursework at Harvard University.', ptitle: '', points: [], stack: ['Summer Study'], meta: { role: 'Student', org: 'Harvard University', loc: 'Cambridge, MA', date: 'May – Aug 2023' }, links: [], more: ['edu_berkeley', 'edu_umich', 'edu_oakland'] },
+      edu_berkeley: { cat: 'Documentary', c: 'education', title: 'UC Berkeley', sub: 'Summer program', year: '2023', match: 92, rating: 'SUMMER', duration: 'Summer 2023',
+        tags: ['Summer'], summary: 'Summer coursework at the University of California, Berkeley.', ptitle: '', points: [], stack: ['Summer Study'], meta: { role: 'Student', org: 'UC Berkeley', loc: 'Berkeley, CA', date: 'May – Aug 2023' }, links: [], more: ['edu_harvard', 'edu_umich', 'edu_oakland'] },
+    };
+  }
+
+  ROWMETA = {
+    continue: { title: 'Continue Watching for Rajdeep', tagline: 'in progress', ids: ['umich_mse', 'humanai', 'posttrain', 'rajflix'], progress: { umich_mse: 12, humanai: 64, posttrain: 45, rajflix: 92 } },
+    research: { title: 'Published Research', tagline: '3× IEEE', ids: ['aero_llm', 'net_gpt', 'hgd'] },
+    experience: { title: 'Work Experience', tagline: 'AWS · MCity · labs', ids: ['aws', 'humanai', 'vti', 'retrospect', 'oakland'] },
+    projects: { title: 'Projects & Experiments', tagline: 'shipped + for fun', ids: ['agentic', 'harness', 'localization', 'trajectory', 'rajflix', 'portfolio3d', 'scholar'] },
+    skills: { title: 'Browse by Genre — Skills', tagline: 'what I do', ids: ['skill_agentic', 'skill_rl', 'skill_mlsys', 'skill_cv', 'skill_ir', 'skill_stats'] },
+    awards: { title: 'Award-Winning', tagline: 'honors', ids: ['aw_hawaii', 'aw_presidents', 'aw_deans', 'aw_honors', 'aw_ald'] },
+    education: { title: 'Documentaries: The Education Arc', tagline: 'origin story', ids: ['edu_umich', 'edu_oakland', 'edu_harvard', 'edu_berkeley'] },
+  };
+
+  PROFILES = [
+    { name: 'Recruiter', initial: 'R', sub: 'ships & impact', hue: 210, order: ['experience', 'projects', 'continue', 'research', 'skills', 'awards', 'education'],
+      hero: 'Ships production ML — fast, reliable, measured. Ex-AWS SDE (AI/ML) who took an agentic system from prompt to 24× faster at 99%+ accuracy.', banner: 'For Recruiters — impact & shipped work first.' },
+    { name: 'Professor', initial: 'P', sub: 'research first', hue: 292, order: ['research', 'continue', 'awards', 'education', 'experience', 'projects', 'skills'],
+      hero: '3× published IEEE researcher in agentic AI and autonomous systems, driven by reliability under uncertainty. (Prefer a traditional CV? The scholar view is one tile away.)', banner: 'For Professors — publications & the academic arc first.' },
+    { name: 'Engineer', initial: 'E', sub: 'build & systems', hue: 152, order: ['projects', 'skills', 'experience', 'research', 'continue', 'awards', 'education'],
+      hero: 'Research-to-production ML — post-training, RL, and the systems that make models fast and reliable. Loves building things that actually ship.', banner: 'For Engineers — projects, systems & stack first.' },
+    { name: 'Just Curious', initial: '?', sub: 'the human', hue: 45, order: ['continue', 'research', 'experience', 'projects', 'skills', 'awards', 'education'],
+      hero: 'I build and study intelligent systems that perceive, reason, learn, and act under uncertainty. Engineer, researcher — and clearly someone who likes to build for fun.', banner: 'Just browsing — a bit of everything.' },
+  ];
+
+  profileObj() { return this.PROFILES.find(p => p.name === this.state.profile) || this.PROFILES[3]; }
+  avatarStyleFor(hue) { return { background: 'radial-gradient(circle at 35% 25%, oklch(.6 .16 ' + hue + '), oklch(.32 .12 ' + hue + '))' }; }
+
+  // ---- lifecycle ----
+  componentDidMount() {
+    this._onScroll = () => { const s = window.scrollY > 60; if (s !== this.state.navScrolled) this.setState({ navScrolled: s }); };
+    this._onKey = (e) => { if (e.key === 'Escape') this.setState({ modalId: null }); };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('keydown', this._onKey);
+    const dp = this.props.defaultProfile;
+    const intro = this.props.showIntro !== false;
+    const settle = () => (dp && dp !== 'Ask') ? { phase: 'browse', profile: dp } : { phase: 'profiles' };
+    if (!intro) { this.setState(settle()); }
+    else { this._t = setTimeout(() => this.setState(s => s.phase === 'intro' ? settle() : {}), 2600); }
+  }
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._h); clearTimeout(this._pt); this.disposeThree(); window.removeEventListener('scroll', this._onScroll); window.removeEventListener('keydown', this._onKey); }
+
+  skipIntro = () => { clearTimeout(this._t); const dp = this.props.defaultProfile; this.setState((dp && dp !== 'Ask') ? { phase: 'browse', profile: dp } : { phase: 'profiles' }); };
+  pickProfile = (name) => {
+    window.scrollTo(0, 0);
+    this._tunnelStarted = false; this._finished = false; this._disposed = false; this._canvasWait = 0;
+    this.setState({ phase: 'ident', profile: name });
+    requestAnimationFrame(() => this.startTunnel());
+  };
+  skipTunnel = () => this.finishTunnel();
+
+  // warm-left -> cool-right stops, sampled by normalized x
+  identStops() {
+    const p = this.props.identPalette || 'Spectrum';
+    if (p === 'Michigan') return [0xff5a1e, 0xffab1e, 0xffcb05, 0xffe98a, 0xffffff, 0x9fd0ff, 0x5fa8ff, 0x2a6fdb, 0x123f6b];
+    if (p === 'Sunset') return [0xff1414, 0xff4d1e, 0xff7a1e, 0xffab20, 0xffd34d, 0xff7ab0, 0xff3b6e, 0xff1a5a];
+    return [0xff1717, 0xff4a1e, 0xff7d1e, 0xffab24, 0xff3b6e, 0xff29b6, 0x9b5cff, 0x4a6bff, 0x2a9bff, 0x2ad4ff];
+  }
+  colorForXt(xt) {
+    const THREE = window.THREE, s = this._stops;
+    const n = s.length - 1, f = Math.max(0, Math.min(1, xt)) * n, i = Math.floor(f), frac = f - i;
+    const a = new THREE.Color(s[i]), b = new THREE.Color(s[Math.min(i + 1, n)]);
+    return a.lerp(b, frac);
+  }
+
+  // spectrum for the 2D light-tunnel (rgb stops); default matches the reference frames
+  identSpectrum() {
+    const p = this.props.identPalette || 'Spectrum';
+    if (p === 'Michigan') return [{r:255,g:90,b:30},{r:255,g:171,b:30},{r:255,g:203,b:5},{r:255,g:255,b:255},{r:143,g:200,b:255},{r:42,g:111,b:219},{r:18,g:63,b:107}];
+    if (p === 'Sunset') return [{r:255,g:20,b:20},{r:255,g:77,b:30},{r:255,g:122,b:30},{r:255,g:171,b:32},{r:255,g:211,b:77},{r:255,g:122,b:176},{r:255,g:59,b:110}];
+    return [{r:229,g:9,b:20},{r:255,g:89,b:0},{r:255,g:0,b:128},{r:128,g:0,b:255},{r:0,g:100,b:255},{r:0,g:255,b:204}];
+  }
+  spectrumColor(t, sp) {
+    t = Math.max(0, Math.min(1, t));
+    const st = t * (sp.length - 1), i = Math.floor(st), ni = Math.min(i + 1, sp.length - 1), f = st - i;
+    const a = sp[i], b = sp[ni];
+    return 'rgb(' + Math.round(a.r+(b.r-a.r)*f) + ',' + Math.round(a.g+(b.g-a.g)*f) + ',' + Math.round(a.b+(b.b-a.b)*f) + ')';
+  }
+
+  startTunnel() {
+    if (this._tunnelStarted || this._finished) return;
+    this._tunnelStarted = true;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dur = this.props.identDuration || 4500;
+    clearTimeout(this._pt);
+    this._pt = setTimeout(() => this.finishTunnel(), dur + 3000); // safety net
+    if (reduced) { clearTimeout(this._pt); this._pt = setTimeout(() => this.finishTunnel(), 950); return; }
+    this.run2D(dur);
+  }
+
+  // user's exact slit-scan light-tunnel, adapted: perspective-scaled vertical lines,
+  // spectrum color by (normalized x * progress^1.2), motion-blur trail + 'screen' blend
+  run2D(duration) {
+    // Own the canvas imperatively so React reconciliation can't swap/reset it mid-animation
+    const stray = document.getElementById('rf-tunnel'); if (stray && stray.parentNode) stray.parentNode.removeChild(stray);
+    const canvas = document.createElement('canvas');
+    canvas.id = 'rf-tunnel';
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;display:block;z-index:948;background:#000;';
+    document.body.appendChild(canvas);
+    this._canvasEl = canvas;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    let w, h;
+    const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, w, h); };
+    this._onResize2 = resize; window.addEventListener('resize', resize); resize();
+    const sp = this.identSpectrum();
+    const self = this;
+
+    // --- 1. Offscreen R logo (exact) ---
+    const offW = 800, offH = 1000;
+    const offCanvas = document.createElement('canvas');
+    offCanvas.width = offW; offCanvas.height = offH;
+    const offCtx = offCanvas.getContext('2d');
+    offCtx.scale(4, 4);
+    offCtx.shadowColor = 'rgba(229, 9, 20, 0.8)'; offCtx.shadowBlur = 20;
+    offCtx.fillStyle = '#E50914';
+    offCtx.fill(new Path2D("M 40,20 L 80,20 L 80,230 L 40,230 Z"));
+    const loopGrad = offCtx.createLinearGradient(0, 0, 200, 250);
+    loopGrad.addColorStop(0, '#E50914'); loopGrad.addColorStop(1, '#b20710');
+    offCtx.fillStyle = loopGrad;
+    offCtx.fill(new Path2D("M 80,20 L 140,20 C 180,20 180,120 140,120 L 80,120 Z M 80,55 L 125,55 C 140,55 140,85 125,85 L 80,85 Z"), 'evenodd');
+    const legGrad = offCtx.createLinearGradient(0, 0, 0, 250);
+    legGrad.addColorStop(0, '#830000'); legGrad.addColorStop(0.3, '#E50914');
+    offCtx.fillStyle = legGrad;
+    offCtx.fill(new Path2D("M 90,110 L 145,110 L 195,230 L 140,230 Z"));
+
+    // --- 2. Strip slicer engine (exact) ---
+    const numStrips = 250;
+    const stripW = offW / numStrips;
+    const logoStrips = [];
+    for (let i = 0; i < numStrips; i++) {
+      logoStrips.push({
+        sx: i * stripW, sw: stripW,
+        tearSpeed: Math.random() * 2 + 0.5,
+        tearOffset: (Math.random() - 0.5) * 80,
+        shrinkFactor: Math.random() * 0.8 + 0.2,
+        colorFringe: Math.random() > 0.6,
+        fringeColor: ['#ff0055', '#ff9900', '#00aaff', '#ffffff'][Math.floor(Math.random() * 4)],
+      });
+    }
+    function drawLogoStrips(progress) {
+      if (progress >= 1) return;
+      let scale = 0.8;
+      if (progress > 0.1) { let p = (progress - 0.1) / 0.9; scale = 0.8 + Math.pow(p, 5) * 120; }
+      let tearIntensity = 0;
+      if (progress > 0.15) { let tp = (progress - 0.15) / 0.85; tearIntensity = Math.pow(tp, 2.5) * 2500; }
+      let globalAlpha = 1;
+      if (progress > 0.75) globalAlpha = 1 - (progress - 0.75) / 0.25;
+      const targetX = w / 2, targetY = h / 2, originX = 240, originY = 500;
+      ctx.globalAlpha = Math.max(0, globalAlpha);
+      for (let i = 0; i < numStrips; i++) {
+        let strip = logoStrips[i];
+        let dx = targetX + (strip.sx - originX) * scale;
+        let dy = targetY + (0 - originY) * scale;
+        let dw = strip.sw * scale;
+        let dh = offH * scale;
+        let yOffset = strip.tearOffset * tearIntensity * strip.tearSpeed * 0.01;
+        let yStretch = 1 + (tearIntensity * strip.tearSpeed * 0.001);
+        let stripCenterY = dy + dh / 2;
+        let newDh = dh * yStretch;
+        let newDy = stripCenterY - newDh / 2 + yOffset;
+        let gapRatio = Math.max(0.1, 1 - (tearIntensity * strip.shrinkFactor * 0.002));
+        let newDw = dw * gapRatio;
+        let newDx = dx + (dw - newDw) / 2;
+        if (tearIntensity > 20 && strip.colorFringe) {
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.globalAlpha = Math.max(0, globalAlpha * 0.6);
+          ctx.drawImage(offCanvas, strip.sx, 0, strip.sw, offH, newDx, newDy, newDw + 0.5, newDh);
+          let glowAlpha = Math.min(1, tearIntensity / 500);
+          ctx.globalAlpha = Math.max(0, globalAlpha * glowAlpha);
+          ctx.fillStyle = strip.fringeColor;
+          ctx.fillRect(newDx, newDy - tearIntensity * 0.1, newDw, newDh + tearIntensity * 0.2);
+          ctx.globalCompositeOperation = 'source-over';
+        } else {
+          ctx.globalAlpha = Math.max(0, globalAlpha);
+          ctx.drawImage(offCanvas, strip.sx, 0, strip.sw, offH, newDx, newDy, newDw + 0.5, newDh);
+        }
+      }
+    }
+
+    // --- 3. Background lines (exact) ---
+    class Line {
+      constructor() { this.reset(); this.z = Math.random() * 1000 + 100; }
+      reset() { this.z = 1000; this.x = (Math.random() - 0.5) * w * 2.5 + w / 2; this.width = Math.random() * 10 + 2; this.maxAlpha = Math.random() * 0.7 + 0.3; }
+      update(progress, dt) {
+        let speed = 1 + progress * 4; this.z -= dt * speed;
+        if (this.z < 10) { this.reset(); this.z = 1000; }
+        let scale = 1000 / this.z;
+        this.drawX = (this.x - w / 2) * scale + w / 2; this.drawWidth = this.width * scale;
+        let nx = this.drawX / w; nx = Math.max(0, Math.min(1, nx));
+        this.color = self.spectrumColor(nx * Math.pow(progress, 1.2), sp);
+        if (progress < 0.1) this.alpha = (progress / 0.1) * this.maxAlpha;
+        else if (progress > 0.8) this.alpha = ((1 - progress) / 0.2) * this.maxAlpha;
+        else this.alpha = this.maxAlpha;
+        if (scale > 15) this.alpha *= Math.max(0, 1 - (scale - 15) / 10);
+      }
+      draw(c) {
+        if (this.alpha <= 0) return;
+        c.globalAlpha = this.alpha * 0.4; c.fillStyle = this.color; c.fillRect(this.drawX - this.drawWidth / 2, 0, this.drawWidth, h);
+        c.globalAlpha = this.alpha * 0.9; c.fillRect(this.drawX - this.drawWidth / 4, 0, this.drawWidth / 2, h);
+      }
+    }
+    const N = Math.max(120, Math.min(this.props.beamDensity || 400, 800));
+    const lines = Array.from({ length: N }, () => new Line());
+
+    // --- 4. Main loop (exact timings) ---
+    const logoDuration = 3500, linesDelay = 2000, linesDuration = 3000;
+    const total = linesDelay + linesDuration + 1000; // 6000ms
+    let startTime = null, lastTime = null;
+    this._disposed = false;
+    const animate = (time) => {
+      if (this._disposed) return;
+      if (!startTime) { startTime = time; lastTime = time; }
+      const elapsed = time - startTime;
+      const dt = Math.min(time - lastTime, 30); lastTime = time;
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.25; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, w, h);
+      if (elapsed > linesDelay) {
+        const linesProgress = Math.max(0, Math.min((elapsed - linesDelay) / linesDuration, 1));
+        ctx.globalCompositeOperation = 'screen';
+        let gf = 1; if (linesProgress < 0.1) gf = linesProgress / 0.1; else if (linesProgress > 0.8) gf = (1 - linesProgress) / 0.2;
+        if (gf > 0) lines.forEach(l => { l.update(linesProgress, dt); const a = l.alpha; l.alpha *= gf; l.draw(ctx); l.alpha = a; });
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      if (elapsed < logoDuration) { drawLogoStrips(Math.max(0, Math.min(elapsed / logoDuration, 1))); }
+      if (elapsed < total) { this._raf = requestAnimationFrame(animate); }
+      else { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, w, h); this.finishTunnel(); }
+    };
+    this._raf = requestAnimationFrame(animate);
+  }
+
+  placeBeam(m, z) {
+    const xt = Math.random();
+    const x = (xt * 2 - 1) * 48;
+    const thin = Math.random() < 0.72;
+    const w = thin ? (0.3 + Math.random() * 0.9) : (2.2 + Math.random() * 4.2);
+    m.scale.set(w, 34 + Math.random() * 86, 1);
+    m.position.set(x, (Math.random() * 2 - 1) * 8, z != null ? z : 40 - Math.random() * 300);
+    if (m.material && this._stops) {
+      const col = (Math.random() < 0.07) ? new window.THREE.Color(0xffffff) : this.colorForXt(xt);
+      m.material.color.copy(col);
+    }
+    m.userData.baseOp = 0.28 + Math.random() * 0.72;
+  }
+
+  makeBeamTexture() {
+    const THREE = window.THREE;
+    const c = document.createElement('canvas'); c.width = 48; c.height = 256;
+    const g = c.getContext('2d');
+    const hx = g.createLinearGradient(0, 0, 48, 0);
+    hx.addColorStop(0, 'rgba(255,255,255,0)'); hx.addColorStop(0.5, 'rgba(255,255,255,1)'); hx.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = hx; g.fillRect(0, 0, 48, 256);
+    g.globalCompositeOperation = 'destination-in';
+    const vy = g.createLinearGradient(0, 0, 0, 256);
+    vy.addColorStop(0, 'rgba(255,255,255,0)'); vy.addColorStop(0.5, 'rgba(255,255,255,1)'); vy.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = vy; g.fillRect(0, 0, 48, 256);
+    const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex;
+  }
+
+  easeWarp(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+  buildTunnel(canvas, duration) {
+    const THREE = window.THREE;
+    let W = window.innerWidth, H = window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W, H); renderer.setClearColor(0x000000, 1);
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.0055);
+    const camera = new THREE.PerspectiveCamera(82, W / H, 0.1, 600);
+    const startZ = 60, endZ = -260;
+    camera.position.set(0, 0, startZ);
+
+    this._stops = this.identStops();
+    const tex = this.makeBeamTexture();
+    const N = Math.max(80, Math.min(this.props.beamDensity || 320, 520));
+    const geo = new THREE.PlaneGeometry(1, 1);
+    const beams = [];
+    for (let i = 0; i < N; i++) {
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.9 });
+      const m = new THREE.Mesh(geo, mat);
+      this.placeBeam(m);
+      scene.add(m); beams.push(m);
+    }
+    this._three = { renderer, beams, geo, tex };
+    this._disposed = false;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      if (this._disposed) return;
+      this._raf = requestAnimationFrame(animate);
+      const t = Math.min(clock.getElapsedTime() * 1000 / duration, 1);
+      const e = this.easeWarp(t);
+      camera.position.z = startZ + (endZ - startZ) * e;
+      camera.rotation.z = Math.sin(t * Math.PI) * 0.06;
+      const glob = 0.7 + Math.sin(t * Math.PI) * 0.3;
+      const ending = t > 0.84 ? (t - 0.84) / 0.16 : 0;
+      for (let i = 0; i < beams.length; i++) {
+        const m = beams[i];
+        if (i > 0 && m.position.z > camera.position.z + 5) this.placeBeam(m, camera.position.z - (150 + Math.random() * 110));
+        m.material.opacity = (m.userData.baseOp || 0.7) * glob * (1 - ending);
+      }
+      if (ending > 0) {
+        const hb = beams[0];
+        hb.material.color.setHex(0xff1717);
+        hb.position.set(0, 0, camera.position.z - 26 + ending * 22);
+        hb.scale.set(2.6 + ending * 5, 130, 1);
+        hb.material.opacity = 1;
+      }
+      renderer.render(scene, camera);
+      if (t >= 1) this.finishTunnel();
+    };
+    animate();
+
+    this._onResize2 = () => { W = window.innerWidth; H = window.innerHeight; renderer.setSize(W, H); camera.aspect = W / H; camera.updateProjectionMatrix(); };
+    window.addEventListener('resize', this._onResize2);
+  }
+
+  disposeThree() {
+    this._disposed = true;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._onResize2) { window.removeEventListener('resize', this._onResize2); this._onResize2 = null; }
+    if (this._canvasEl && this._canvasEl.parentNode) { this._canvasEl.parentNode.removeChild(this._canvasEl); }
+    this._canvasEl = null;
+  }
+
+  finishTunnel() {
+    if (this._finished) return;
+    this._finished = true;
+    clearTimeout(this._pt);
+    try { sessionStorage.setItem('rf_ident_seen', '1'); } catch (e) {}
+    this.disposeThree();
+    window.scrollTo(0, 0);
+    this.setState({ phase: 'browse' });
+  }
+  openId = (id) => { this.setState({ modalId: id, hover: null }); };
+  closeModal = () => this.setState({ modalId: null });
+  stop = (e) => { e.stopPropagation(); };
+  toggle = (id) => this.setState(s => ({ myList: s.myList.includes(id) ? s.myList.filter(x => x !== id) : [...s.myList, id] }));
+  toggleStop = (id, e) => { e && e.stopPropagation(); this.toggle(id); };
+  scrollRow = (e, dir) => { const wrap = e.currentTarget.parentElement; const t = wrap.querySelector('[data-track]'); if (t) t.scrollBy({ left: dir * t.clientWidth * 0.85, behavior: 'smooth' }); };
+  hoverEnter = (id, e) => { clearTimeout(this._h); const r = e.currentTarget.getBoundingClientRect(); const rect = { left: r.left, top: r.top, w: r.width }; this._h = setTimeout(() => this.setState({ hover: { id, rect } }), 480); };
+  hoverLeave = () => { clearTimeout(this._h); this._h = setTimeout(() => this.setState({ hover: null }), 120); };
+  popKeep = () => { clearTimeout(this._h); };
+  scrollToId = (domId) => { const el = document.getElementById(domId); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 84, behavior: 'smooth' }); };
+
+  expand(id, extra) {
+    const base = this.ITEMS()[id];
+    if (!base) return null;
+    const inList = this.state.myList.includes(id);
+    return Object.assign({}, base, {
+      id,
+      posterStyle: this.posterBg(this.HUE[base.c]),
+      hueColor: this.HUECOLOR[base.c],
+      inList, notInList: !inList,
+      tagsLine: (base.tags || []).join('  ·  '),
+      onOpen: (e) => { e && e.stopPropagation(); this.openId(id); },
+      onEnter: (e) => this.hoverEnter(id, e),
+      onLeave: this.hoverLeave,
+      onToggleStop: (e) => this.toggleStop(id, e),
+      stack: (base.stack || []).map(v => ({ v })),
+      links: base.links || [],
+      hasLinks: (base.links || []).length > 0,
+      points: (base.points || []).map((t, i) => ({ n: String(i + 1).padStart(2, '0'), t })),
+      hasPoints: (base.points || []).length > 0,
+      pointsTitle: base.ptitle || 'Highlights',
+    }, extra || {});
+  }
+
+  renderVals() {
+    const accent = this.props.accent || '#e50914';
+    const brand = this.props.brandName || 'RAJFLIX';
+    const p = this.profileObj();
+    const phase = this.state.phase;
+
+    // rows ordered by profile, with My List prepended when non-empty
+    const order = p.order;
+    const rows = [];
+    if (this.state.myList.length) {
+      rows.push({ domId: 'row-mylist', title: 'My List', tagline: 'saved', items: this.state.myList.map(id => this.expand(id)) });
+    }
+    order.forEach(key => {
+      const meta = this.ROWMETA[key];
+      if (!meta) return;
+      const items = meta.ids.map(id => {
+        const prog = meta.progress && meta.progress[id];
+        const extra = prog != null ? { hasProgress: true, progressStyle: { width: prog + '%' } } : { hasProgress: false };
+        return this.expand(id, extra);
+      });
+      rows.push({ domId: 'row-' + key, title: meta.title, tagline: meta.tagline, items });
+    });
+
+    // top 10
+    const topIds = ['agentic', 'aero_llm', 'aws', 'net_gpt', 'localization', 'humanai', 'hgd', 'trajectory', 'harness', 'portfolio3d'];
+    const top10 = topIds.map((id, i) => this.expand(id, { rank: String(i + 1), numStyle: this.numStyle() }));
+
+    // hover popover
+    let pop = null;
+    const hv = this.state.hover;
+    if (hv && phase === 'browse') {
+      const it = this.expand(hv.id);
+      const W = 336;
+      let left = hv.rect.left + hv.rect.w / 2 - W / 2;
+      left = Math.max(12, Math.min(left, window.innerWidth - W - 12));
+      const top = Math.max(70, hv.rect.top - 54);
+      pop = Object.assign({}, it, { style: { left: left + 'px', top: top + 'px' } });
+    }
+
+    // modal
+    let modal = null;
+    if (this.state.modalId) {
+      const m = this.expand(this.state.modalId);
+      if (m) {
+        modal = Object.assign({}, m, {
+          mRole: m.meta.role, mOrg: m.meta.org, mLoc: m.meta.loc, mDate: m.meta.date,
+          more: (m.more || []).map(id => this.expand(id)).filter(Boolean),
+          hasMore: (m.more || []).length > 0,
+        });
+      }
+    }
+
+    const navStyle = this.state.navScrolled
+      ? { background: '#0c0c0c', borderBottom: '1px solid #1c1c1c' }
+      : { background: 'linear-gradient(180deg, rgba(0,0,0,.85), transparent)', borderBottom: '1px solid transparent' };
+
+    return {
+      accent, brand,
+      isIntro: phase === 'intro', isProfiles: phase === 'profiles', isIdent: phase === 'ident', isBrowse: phase === 'browse',
+      identLetter: (brand || 'R').charAt(0).toUpperCase(),
+      identRStyle: {
+        position: 'relative', zIndex: 2, fontFamily: 'Archivo, sans-serif', fontWeight: 900,
+        fontSize: '48vh', lineHeight: 1, letterSpacing: '-.04em',
+        background: 'linear-gradient(180deg, #ff6a6a 0%, #ff1e1e 32%, #e50914 60%, #8f0007 100%)',
+        WebkitBackgroundClip: 'text', backgroundClip: 'text',
+        WebkitTextFillColor: 'transparent', color: 'transparent',
+        filter: 'drop-shadow(0 0 26px rgba(229,9,20,.55)) drop-shadow(0 0 70px rgba(229,9,20,.35))',
+        animation: 'rf-logo 1.5s cubic-bezier(.5,0,.2,1) both',
+      },
+      identFlashDur: ((this.props.identDuration || 3000) / 1000) + 's',
+      skipIntro: this.skipIntro,
+      profiles: this.PROFILES.map(pf => ({ name: pf.name, initial: pf.initial, sub: pf.sub, avatarStyle: this.avatarStyleFor(pf.hue), onPick: () => this.pickProfile(pf.name) })),
+      profileInitial: p.initial, profileName: p.name, avatarStyle: this.avatarStyleFor(p.hue),
+      navStyle,
+      heroKicker: '#1 in ' + p.name + '\u2019s picks today',
+      heroTagline: p.hero,
+      heroGenres: 'Agentic AI · Reinforcement Learning · ML Systems · Multimodal · Autonomy',
+      profileBanner: p.banner,
+      onPlay: () => this.openId('about'),
+      onMore: () => this.openId('about'),
+      navHome: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      navResearch: () => this.scrollToId('row-research'),
+      navExperience: () => this.scrollToId('row-experience'),
+      navProjects: () => this.scrollToId('row-projects'),
+      navList: () => this.state.myList.length ? this.scrollToId('row-mylist') : this.setState({ phase: 'profiles' }),
+      navAvatar: () => this.setState({ phase: 'profiles' }),
+      top10, rows, pop, modal,
+      popKeep: this.popKeep, popLeave: this.hoverLeave,
+      scrollLeft: (e) => this.scrollRow(e, -1), scrollRight: (e) => this.scrollRow(e, 1),
+      closeModal: this.closeModal, stop: this.stop,
+    };
+  }
+}
+</script>
+</body>
+</html>

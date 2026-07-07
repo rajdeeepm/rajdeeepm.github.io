@@ -62,6 +62,9 @@ export default function Hero() {
         <a className={style.simpleLink} href="/simple.html">
           Simple View
         </a>
+        <a className={style.rajflixLink} href="/rajflix.html">
+          RAJFLIX
+        </a>
       </header>
       <Section name="hero" className={style.root}>
         <div className={style.middle}>
