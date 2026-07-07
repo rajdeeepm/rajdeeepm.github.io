@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-01T00:00:00.000Z",
+  "title": "Design System: Rajdeep Mukherjee Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Signal Orange-Red",
+        "canonical": "#ff2f00",
+        "tonalRamp": ["#2b0800", "#5c1200", "#8f1c00", "#c22600", "#ff2f00", "#ff6640", "#ff9c80", "#ffcdbf"]
+      },
+      "secondary-deep-teal": {
+        "role": "secondary",
+        "displayName": "Deep Teal-Navy",
+        "canonical": "hsl(199deg 100% 14%)",
+        "tonalRamp": ["#001019", "#00202f", "#003147", "#004a6b", "#00648f", "#1a86b8", "#5cb0d8", "#a9d9ee"]
+      },
+      "cursor-blue": {
+        "role": "accent",
+        "displayName": "Cursor Blue",
+        "canonical": "#007fff",
+        "tonalRamp": ["#001830", "#003060", "#004a94", "#0064c8", "#007fff", "#4da2ff", "#8cc4ff", "#c7e2ff"]
+      },
+      "bg-black": {
+        "role": "neutral",
+        "displayName": "Void Black",
+        "canonical": "#000000",
+        "tonalRamp": ["#000000", "#111111", "#2b2b2b", "#4d4d4d", "#808080", "#cccccc", "#f2f2f2", "#ffffff"]
+      },
+      "ink-white": {
+        "role": "neutral",
+        "displayName": "Ink White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#4d4d4d", "#808080", "#999999", "#cccccc", "#d9d9d9", "#e6e6e6", "#f2f2f2", "#ffffff"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero name and section monoliths; oversized uppercase Iskry, often outlined over the 3D scene." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles (Works, About)." },
+      "title": { "displayName": "Title", "purpose": "Sub-sections and project titles." },
+      "body": { "displayName": "Body", "purpose": "Reading copy in condensed Saira; cap at 65-75ch." },
+      "label": { "displayName": "Label", "purpose": "Metadata and nav (Role, Agency, Completed)." }
+    },
+    "shadows": [
+      { "name": "cursor-glow", "value": "0 0 1px 0 #ffffff inset, 0 0 1px 0 #ffffff, 0 2px 16px 2px #007fff", "purpose": "The ONLY sanctioned shadow: blue glow on the custom cursor strokes. Light, not elevation." }
+    ],
+    "motion": [
+      { "name": "expo-ease-out", "value": "cubic-bezier(0.15, 0.94, 0.21, 0.98)", "purpose": "Decisive exponential ease-out for reveals and CTA rings." },
+      { "name": "power3-ease-out", "value": "cubic-bezier(0.23, 1, 0.38, 1)", "purpose": "Default easing for cursor and state transitions." },
+      { "name": "expo-ease-in-out", "value": "cubic-bezier(0.86, 0.01, 0.14, 1)", "purpose": "Symmetric moves (camera-linked, section crossfades)." },
+      { "name": "reduced-motion", "value": "all animation/transition durations forced to 0s", "purpose": "Global prefers-reduced-motion kill-switch; mandatory, never remove." }
+    ],
+    "breakpoints": [
+      { "name": "xsm", "value": "480px" },
+      { "name": "sm", "value": "600px" },
+      { "name": "md-p", "value": "768px" },
+      { "name": "md-l", "value": "1024px" },
+      { "name": "lg", "value": "1280px" },
+      { "name": "xl", "value": "1440px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Enter CTA",
+      "kind": "button",
+      "refersTo": "button-enter",
+      "description": "Signature entry button: five drifting concentric white rings, no fill, no label box. On hover the disc faintly fills.",
+      "html": "<button class=\"ds-enter\" aria-label=\"Enter\"><span class=\"ds-enter-ring\"></span><span class=\"ds-enter-ring\"></span><span class=\"ds-enter-ring\"></span><span class=\"ds-enter-label\">Enter</span></button>",
+      "css": ".ds-enter { position: relative; width: 150px; height: 150px; border: 0; background: transparent; color: #fff; font-family: 'Saira Semi Condensed', sans-serif; font-weight: 700; text-transform: uppercase; cursor: none; } .ds-enter::after { content: ''; position: absolute; inset: 0; border: 2px solid #fff; border-radius: 50%; transition: background 0.5s cubic-bezier(0.23,1,0.38,1); } .ds-enter-ring { position: absolute; inset: 0; border-radius: 50%; } .ds-enter-ring:nth-child(1) { border: 1px solid rgba(255,255,255,0.5); transform-origin: 48% 47%; } .ds-enter-ring:nth-child(2) { border: 1px solid rgba(255,255,255,0.8); transform-origin: 52% 49%; } .ds-enter-ring:nth-child(3) { border: 1px solid rgba(255,255,255,0.2); transform-origin: 54% 51%; } .ds-enter-label { position: absolute; inset: 0; display: grid; place-items: center; } .ds-enter:hover::after { background: rgba(255,255,255,0.1); } .ds-enter:focus-visible { outline: 2px solid #ff2f00; outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-enter::after { transition: none; } }"
+    },
+    {
+      "name": "Custom Cursor",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Replaces the OS pointer everywhere (cursor:none). Two white strokes plus a dot, all with a blue outer glow.",
+      "html": "<div class=\"ds-cursor\"><span class=\"ds-cursor-line ds-cursor-left\"></span><span class=\"ds-cursor-line ds-cursor-right\"></span><span class=\"ds-cursor-dot\"></span></div>",
+      "css": ".ds-cursor { position: fixed; top: 0; left: 0; pointer-events: none; will-change: transform; } .ds-cursor-line, .ds-cursor-dot { position: absolute; background: #fff; box-shadow: 0 0 1px 0 #fff inset, 0 0 1px 0 #fff, 0 2px 16px 2px #007fff; transition: transform 0.3s cubic-bezier(0.23,1,0.38,1); } .ds-cursor-line { width: 2px; height: 20px; border-radius: 2px; transform-origin: top center; } .ds-cursor-left { transform: rotate(-5deg); } .ds-cursor-right { transform: rotate(-55deg); } .ds-cursor-dot { width: 16px; height: 16px; border-radius: 50%; transform: translate3d(-50%,-50%,0) scale(0); } @media (prefers-reduced-motion: reduce) { .ds-cursor-line, .ds-cursor-dot { transition: none; } }"
+    },
+    {
+      "name": "Outlined Display Heading",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "Monumental uppercase Iskry rendered as a white stroke with transparent fill, so the 3D scene reads through the letterforms.",
+      "html": "<h1 class=\"ds-display-outline\">RM</h1>",
+      "css": ".ds-display-outline { font-family: 'Iskry', 'Helvetica Neue', sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(150px, 30vw, 400px); line-height: 0.8; margin: 0; color: transparent; -webkit-text-stroke: 1px #fff; } @supports not (-webkit-text-stroke: 1px #fff) { .ds-display-outline { color: #000; text-shadow: 1px 1px #fff, -1px -1px #fff; } }"
+    },
+    {
+      "name": "Outbound Link",
+      "kind": "nav",
+      "refersTo": "link-inline",
+      "description": "Inline body-scale link with an external-arrow glyph; hover shifts opacity, not color.",
+      "html": "<a class=\"ds-link\" href=\"#\">LinkedIn <svg class=\"ds-link-arrow\" viewBox=\"0 0 16 16\" width=\"14\" height=\"14\" aria-hidden=\"true\"><path d=\"M4 12L12 4M12 4H5M12 4V11\" stroke=\"currentColor\" stroke-width=\"1.5\" fill=\"none\"/></svg></a>",
+      "css": ".ds-link { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-family: 'Saira Semi Condensed', sans-serif; font-weight: 500; text-decoration: none; transition: opacity 0.3s cubic-bezier(0.23,1,0.38,1); } .ds-link:hover { opacity: 0.5; } .ds-link:focus-visible { outline: 2px solid #ff2f00; outline-offset: 2px; } .ds-link-arrow { transition: transform 0.3s cubic-bezier(0.23,1,0.38,1); } .ds-link:hover .ds-link-arrow { transform: translate(2px, -2px); } @media (prefers-reduced-motion: reduce) { .ds-link, .ds-link-arrow { transition: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument Panel",
+    "overview": "A dark, cinematic control surface where the interface itself is the proof of competence. Content floats over a fixed near-black WebGL field with a shader-lit figure, lightning, and a scroll-driven camera path. The register is brand: the design is the product. Spectacle is never decoration; it is the argument that the author can build hard, polished technical things, and it always resolves into substance (a metric, a venue, a paper). Display type is enormous and set in bold uppercase Iskry; body copy retreats to quiet condensed Saira. The OS pointer is banned in favor of a custom glowing cursor. Motion is exponential and decisive, with a global reduced-motion kill-switch.",
+    "keyCharacteristics": [
+      "Fixed near-black WebGL stage; HTML content scrolls over a living 3D scene.",
+      "Monumental Iskry display type (up to 400px) vs. quiet condensed Saira body.",
+      "Single signal color (#ff2f00) used sparingly against black and white.",
+      "Custom glowing cursor; the native pointer is banned.",
+      "Exponential, committed motion with a mandatory reduced-motion fallback."
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "#ff2f00 appears on <=10% of any screen. It is signal, never surface.", "section": "colors" },
+      { "name": "The Glow-Not-Fill Rule", "body": "Cursor Blue (#007fff) exists only as light (box-shadow / text-shadow). Filling a shape with it is forbidden.", "section": "colors" },
+      { "name": "The Monument Rule", "body": "Display type is uppercase Iskry with 0.8-1.1 line-height. Never letterspace wider for elegance, never shrink to be safe.", "section": "typography" },
+      { "name": "The Outline Window Rule", "body": "Display type over the 3D scene uses a white -webkit-text-stroke outline with transparent fill so the scene reads through.", "section": "typography" },
+      { "name": "The No-Shadow-On-Flat Rule", "body": "HTML surfaces cast no drop-shadows. The only sanctioned shadow is the cursor glow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep #ff2f00 as pure signal - <=10% of any screen, never a surface fill.",
+      "Do set display type in oversized uppercase Iskry with 0.8-1.1 line-height.",
+      "Do use the white -webkit-text-stroke outline on display type that overlaps the 3D scene.",
+      "Do ease with the project's exponential curves (expo-ease-out, power3-ease-out).",
+      "Do keep muted body text near the light end of the gray ramp (#cccccc+) so it clears 4.5:1 on black.",
+      "Do preserve the global prefers-reduced-motion kill-switch and keep /simple.html + SR-only content accurate."
+    ],
+    "donts": [
+      "Don't ship the generic AI-slop template: no gradient cards, no tiny uppercase tracked eyebrows, no hero-metric templates, no identical icon+heading+text card grids.",
+      "Don't use gradient text (background-clip: text) anywhere.",
+      "Don't add drop-shadows to flat HTML surfaces; the only sanctioned shadow is the #007fff cursor glow.",
+      "Don't fill shapes or paint text with Cursor Blue (#007fff) - it is light, not pigment.",
+      "Don't let it read like a sterile academic CV or a navy-and-white corporate SaaS landing page.",
+      "Don't nest cards, and don't reach for rounded-rectangle cards when space and contrast would separate content better."
+    ]
+  }
+}
