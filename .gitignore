@@ -34,3 +34,8 @@ dist-ssr
 
 # Local Netlify folder
 .netlify
+
+# Vendored agent tooling
+.claude/skills/
+.agents/
+skills-lock.json
