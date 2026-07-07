@@ -3,183 +3,523 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rajdeep Mukherjee | Simple View</title>
+    <title>Rajdeep Mukherjee — AI Researcher &amp; Engineer</title>
     <meta
       name="description"
-      content="Simple academic profile for Rajdeep Mukherjee: AI research, agentic systems, multimodal agents, and human-centered AI."
+      content="Text-first profile for Rajdeep Mukherjee: AI researcher and engineer working on agentic LLMs, multimodal agents, reinforcement learning, and accessibility-aware AI."
     />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:wght@400;600&display=swap" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@300;400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="simple.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="container header-grid">
-        <div class="identity-block">
-          <img class="headshot" src="images/rajdeep-headshot.jpg" alt="Rajdeep Mukherjee headshot" />
-          <div class="identity">
-            <h1>Rajdeep Mukherjee</h1>
-            <p class="title">AI Researcher and Engineer</p>
-            <p class="subtitle">University of Michigan - Ann Arbor</p>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="email">
-            <a href="mailto:rajdeepm@umich.edu">rajdeepm@umich.edu</a>
-          </div>
-          <div class="link-row">
-            <a href="https://linkedin.com/in/rajdeep-mukherjee-cs752004" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="https://scholar.google.com/citations?user=q5MaIsUAAAAJ" target="_blank" rel="noreferrer">Google Scholar</a>
-            <a href="https://github.com/rajdeeepm" target="_blank" rel="noreferrer">GitHub</a>
-          </div>
-          <div class="link-row">
-            <a href="/cv.pdf">CV</a>
-            <a href="/resume.pdf">Resume</a>
-            <a href="/">Interactive site</a>
-          </div>
-        </div>
+
+    <header class="masthead">
+      <div class="topbar">
+        <span class="wordmark" aria-hidden="true">RM.</span>
+        <nav class="toplinks" aria-label="Documents and links">
+          <a href="mailto:rajdeepm@umich.edu">rajdeepm@umich.edu</a>
+          <a href="/cv.pdf">CV</a>
+          <a href="/resume.pdf">Résumé</a>
+          <a href="/rajflix.html">RAJFLIX</a>
+          <a class="to-site" href="/">Interactive site &rarr;</a>
+        </nav>
       </div>
-      <nav class="site-nav">
-        <div class="container nav-links">
-          <a href="#about">About</a>
-          <a href="#research">Research</a>
-          <a href="#experience">Experience</a>
-          <a href="#publications">Publications</a>
-          <a href="#projects">Projects</a>
-          <a href="#teaching">Teaching</a>
-          <a href="#awards">Awards</a>
-          <a href="#contact">Contact</a>
-        </div>
+
+      <h1 class="monument">
+        <span class="outline">Rajdeep</span>
+        <span class="outline">Mukherjee</span>
+      </h1>
+
+      <p class="role">
+        AI Researcher &amp; Engineer
+        <span class="role-sep" aria-hidden="true">/</span>
+        University of Michigan — Ann Arbor
+      </p>
+
+      <p class="lede">
+        I build intelligent systems that learn, adapt, and assist — agentic LLMs, multimodal
+        web agents, accessibility-aware computer-use agents, and reinforcement learning,
+        from published research to production systems at AWS.
+      </p>
+
+      <nav class="subnav" aria-label="Section navigation">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="#teaching">Teaching</a>
+        <a href="#awards">Awards</a>
+        <a href="#contact">Contact</a>
       </nav>
     </header>
 
-    <main id="main" class="container">
-      <section id="about">
-        <h2>About</h2>
-        <p>
-          I build human-centered AI systems that blend rigorous research with practical, trustworthy user experiences.
-          My work spans agentic LLMs, multimodal agents, reinforcement learning, and accessibility-aware interfaces,
-          with an emphasis on reliability, evaluation, and real-world deployment.
-        </p>
-        <p>
-          I am a senior, currently pursuing a B.S.E. in Computer Science (Intelligent Systems) with a minor in Mathematics at the
-          University of Michigan (GPA 3.555).
-        </p>
-        <p>
-          I like building end-to-end systems: data pipelines, model training, evaluation, and the interface people
-          actually use. I care about agent safety, interpretability, and making advanced AI accessible to diverse users.
-        </p>
+    <main id="main">
+      <!-- 01 · ABOUT -->
+      <section id="about" class="panel" aria-labelledby="about-h">
+        <header class="panel-head">
+          <h2 id="about-h">About</h2>
+        </header>
+        <div class="panel-body">
+          <div class="about-grid">
+            <img
+              class="headshot"
+              src="images/rajdeep-headshot.jpg"
+              width="132"
+              height="132"
+              alt="Portrait of Rajdeep Mukherjee"
+            />
+            <div>
+              <p class="highlight">
+                My journey into AI began with deep learning research; today I work at the
+                intersection of machine learning, reinforcement learning, and natural
+                language processing.
+              </p>
+              <p>
+                I'm pursuing a B.S.E. in Computer Science (Intelligent Systems) with a minor in
+                Mathematics at the <strong>University of Michigan</strong> (GPA 3.555), after a
+                B.S. in Computer Science with AI specialization at Oakland University (Honors
+                College, GPA 3.92).
+              </p>
+              <p>
+                I'm passionate about agentic systems that can reason, learn, and assist humans
+                in meaningful ways — and about making advanced AI usable by everyone. From
+                academic research to production systems at AWS, I've worked across the full
+                spectrum of AI development: data pipelines, model training, evaluation, and the
+                interface people actually use.
+              </p>
+            </div>
+          </div>
+
+          <dl class="focus" aria-label="Research focus">
+            <div><dt>Agentic&nbsp;AI</dt><dd>LLM agents, tool use, planning, evaluation harnesses</dd></div>
+            <div><dt>Multimodal</dt><dd>Audio, vision, and web interaction in one action schema</dd></div>
+            <div><dt>RL&nbsp;&amp;&nbsp;Decisions</dt><dd>PPO, SFT+RLHF, POMDP policies under uncertainty</dd></div>
+            <div><dt>Human-AI</dt><dd>Accessibility-aware agents, trustworthy interfaces</dd></div>
+          </dl>
+        </div>
       </section>
 
-      <section id="research" class="highlight">
-        <h2>Research Interests</h2>
-        <ul>
-          <li>Agentic LLMs and tool-using systems</li>
-          <li>Multimodal agents (audio, vision, and web interaction)</li>
-          <li>Reinforcement learning and decision making under uncertainty</li>
-          <li>Human-AI interaction and trustworthy AI</li>
-        </ul>
+      <!-- 02 · EXPERIENCE -->
+      <section id="experience" class="panel" aria-labelledby="experience-h">
+        <header class="panel-head">
+          <h2 id="experience-h">Experience</h2>
+        </header>
+        <div class="panel-body">
+          <ol class="entries">
+            <li class="entry">
+              <div class="entry-head">
+                <h3>Undergraduate Researcher</h3>
+                <span class="when">Sep 2025 — Present</span>
+              </div>
+              <p class="org">University of Michigan · Human-AI Lab</p>
+              <p>
+                Accessibility-aware computer-use agents: preregistered evaluation of SOTA agents
+                under keyboard-only, screen-reader, and high-zoom constraints, plus LSTM-POMDP
+                adaptive policies trained with SFT and PPO.
+              </p>
+            </li>
+            <li class="entry">
+              <div class="entry-head">
+                <h3>Software Development Engineer Intern</h3>
+                <span class="when">May 2025 — Aug 2025</span>
+              </div>
+              <p class="org">Amazon Web Services · SageMaker AI</p>
+              <p>
+                Shipped a production agentic LLM system generating configuration files from
+                prompts — <strong>24× faster</strong>, 95.8% effort reduction, 99%+ accuracy.
+                Nominated for the team's most-impactful-project award.
+              </p>
+            </li>
+            <li class="entry">
+              <div class="entry-head">
+                <h3>Research — Multimodal Web Agents</h3>
+                <span class="when">Jan 2025 — May 2025</span>
+              </div>
+              <p class="org">University of Michigan · EECS 545</p>
+              <p>
+                Extended DeepSeek R1 with audio (Whisper), vision (Llama 3.2 90B), and
+                persistent FAISS memory — <strong>+9pp on WebArena</strong>, +7pp on WebShop.
+              </p>
+            </li>
+            <li class="entry">
+              <div class="entry-head">
+                <h3>Research Assistant</h3>
+                <span class="when">Jan 2023 — Apr 2024</span>
+              </div>
+              <p class="org">Oakland University</p>
+              <p>
+                Team lead on Aero-LLM (secure UAV communication, IEEE ICCCN 2024); Net-GPT
+                (ACM/IEEE EdgeSP 2023); heterogeneous UAS dataset (IEEE MOST 2023).
+              </p>
+            </li>
+          </ol>
+        </div>
       </section>
 
-      <section id="experience">
-        <h2>Experience</h2>
-        <ul>
-          <li>
-            <strong>University of Michigan Human-AI Lab</strong> - Undergraduate Researcher (Sep 2025 - Present):
-            accessibility-aware computer-use agents with LSTM POMDP policies and capability-aware evaluation.
-          </li>
-          <li>
-            <strong>AWS SageMaker AI</strong> - SDE Intern (May 2025 - Aug 2025): production agentic LLM system for
-            auto-configuration generation (24x speed, 95.8% efficiency gain, 99%+ accuracy).
-          </li>
-          <li>
-            <strong>EECS 545, University of Michigan</strong> - Multimodal Web Agents (Jan 2025 - May 2025): extended
-            DeepSeek R1 with audio, vision, and persistent memory for WebShop and WebArena gains.
-          </li>
-          <li>
-            <strong>Oakland University</strong> - Research Assistant (2023 - 2024): UAV security, LLM-based communication,
-            and synthetic dataset generation.
-          </li>
-        </ul>
+      <!-- 03 · PROJECTS -->
+      <section id="projects" class="panel" aria-labelledby="projects-h">
+        <header class="panel-head">
+          <h2 id="projects-h">Projects</h2>
+        </header>
+        <div class="panel-body">
+          <ol class="projects">
+            <li class="project">
+              <div class="project-head">
+                <h3>Accessibility Agents</h3>
+                <p class="org">UMich Human-AI Lab · Sep 2025 — Present</p>
+              </div>
+              <p>
+                Systematically quantifying the modality gap in SOTA computer-use agents under
+                accessibility constraints to map failure modes and prototype adaptive decision
+                policies.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>CUA Benchmark</li><li>LSTM-POMDP</li><li>F1–F8 Taxonomy</li><li>PPO + SFT</li><li>Reproducible Eval</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Investigating:</strong> SOTA computer-use agents under preregistered accessibility constraints (keyboard-only, screen-reader, high-zoom), quantifying failure modes via controlled interventions.</li>
+                  <li><strong>Building:</strong> capability-aware benchmark with success rate, latency, action/error counts, an F1–F8 failure taxonomy, Wilson CIs and Cliff's δ in a fully reproducible evaluation suite.</li>
+                  <li><strong>Prototyping:</strong> LSTM-based POMDP decision policy mapping capability-aware observations to reliable keyboard/screen-reader actions, trained via SFT then PPO with action masking.</li>
+                </ul>
+              </details>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>EC-TSS</h3>
+                <p class="org">Independent Research · Oct 2025 — Present</p>
+              </div>
+              <p>
+                Self-supervised temporal fusion that cuts portrait-matting flicker by
+                <strong>25% FCD</strong> and 24% HFTE without ground-truth alpha — stabilizing
+                video mattes while avoiding EMA oversmoothing.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>25% FCD ↓</li><li>24% HFTE ↓</li><li>Self-supervised</li><li>Motion-compensated</li><li>Single GPU</li><li>VideoMatting108</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Developed:</strong> lightweight, backbone-agnostic temporal fusion head (shallow U-Net) refining a frozen per-frame MODNet-style backbone with motion-compensated priors and pixel-wise fusion weights.</li>
+                  <li><strong>Engineered:</strong> Farnebäck optical-flow pipeline warping the previous fused matte and deriving reliability cues (flow magnitude, occlusion, edge-consistency gating, high-frequency energy) plus a learned confidence map.</li>
+                  <li><strong>Designed:</strong> self-supervised objective from raw frames only — EMA teacher consistency with reliability masking, symmetric spatial anchoring, edge/gradient consistency, photometric reconstruction.</li>
+                  <li><strong>Demonstrated:</strong> FCD −25%, HFTE −24%, FCD burst ratio −17% versus per-frame inference on VideoMatting108, closing most of EMA's stability gap without oversmoothing.</li>
+                </ul>
+              </details>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>AWS Agentic System</h3>
+                <p class="org">Amazon Web Services · May 2025 — Aug 2025</p>
+              </div>
+              <p>
+                Production LLM agent generating config files from prompts —
+                <strong>24× faster</strong>, 95.8% effort reduction, 99%+ accuracy.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>24× Faster</li><li>95.8% Efficiency ↑</li><li>99%+ Accuracy</li><li>Production</li><li>Multi-LLM</li><li>Synthetic Data</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Shipped:</strong> production agentic LLM system auto-generating configuration files from a simple prompt, with a modular, extensible architecture reused across adjacent projects.</li>
+                  <li><strong>Built:</strong> multi-LLM inference harness benchmarking foundation models across accuracy, latency, and cost.</li>
+                  <li><strong>Created:</strong> synthetic dataset modeling real-world ambiguities and long-tail edge cases, used for both training and evaluation.</li>
+                  <li><strong>Fine-tuned:</strong> foundation models on synthetic and curated data to maximize exact-match performance and robustness.</li>
+                </ul>
+              </details>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>Multimodal Web Agents</h3>
+                <p class="org">UMich EECS 545 · Jan 2025 — May 2025</p>
+              </div>
+              <p>
+                Extended DeepSeek R1 with multimodal capabilities — WebShop
+                <strong>+15.6%</strong> relative accuracy, WebArena <strong>+60%</strong>
+                relative accuracy.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>WebShop 52%</li><li>WebArena +60%</li><li>DeepSeek R1</li><li>Whisper Audio</li><li>Llama Vision</li><li>FAISS Memory</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Extended:</strong> DeepSeek R1 with audio via OpenAI Whisper and image/UI understanding via Llama 3.2 90B Vision — unified into a single action schema for planning and tool use.</li>
+                  <li><strong>Upgraded:</strong> agent memory from episodic to persistent cross-session recall with a FAISS vector store backed by Gemini embeddings, with read/write hooks in the tool-use loop.</li>
+                  <li><strong>Achieved:</strong> WebShop 52% vs 45% (+7pp, +15.6% relative); WebArena 24% vs 15% (+9pp, +60% relative).</li>
+                </ul>
+              </details>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>VTI Aero</h3>
+                <p class="org">PJTL at MCity · Jan 2025 — Apr 2025</p>
+              </div>
+              <p>
+                GPS-independent drone localization with an AI voice interface for autonomous
+                navigation and spoken command execution.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>GPS-Independent</li><li>Sensor Fusion</li><li>Real-Time</li><li>AI Voice Interface</li><li>Pose Estimation</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Engineered:</strong> real-time GPS-independent localization integrating sensor-fusion algorithms and on-board processing for autonomous navigation and precise pose estimation.</li>
+                  <li><strong>Developed:</strong> AI-driven voice command interface using speech-to-text and ML models to interpret and execute complex spoken instructions.</li>
+                </ul>
+              </details>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>Retrospect AI</h3>
+                <p class="org">PJTL at MCity · Aug 2024 — Dec 2024</p>
+              </div>
+              <p>
+                Real-time trajectory emulator processing 1000+ points per run with millisecond
+                precision for autonomous-vehicle safety analysis.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>1000+ Points/Run</li><li>Millisecond Precision</li><li>5000+ Data Points</li><li>Spline Interpolation</li><li>AV Safety</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Developed:</strong> Python trajectory emulator with spline interpolation and parameterized paths — real-time simulation of vehicle motion under acceleration and jerk constraints.</li>
+                  <li><strong>Engineered:</strong> data pipeline parsing 5000+ CSV data points into six motion-analysis graphs (trajectory, velocity, acceleration, jerk) for planning optimization.</li>
+                </ul>
+              </details>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>Aero-LLM</h3>
+                <p class="org">Oakland University · Sep 2023 — Apr 2024</p>
+              </div>
+              <p>
+                Led a distributed LLM framework for secure UAV communication achieving
+                <strong>&gt;82% accuracy</strong> — published at IEEE ICCCN 2024.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>&gt;82% Accuracy</li><li>IEEE ICCCN 2024</li><li>SFT + RLHF</li><li>OPT/Llama2</li><li>SITL/HITL</li><li>Team Lead</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Led:</strong> research on the Aero-LLM distributed framework for secure UAV communication and intelligent decision-making — co-authored paper at IEEE's 33rd ICCCN (July 2024).</li>
+                  <li><strong>Designed + implemented:</strong> the complete architecture with data collection in software-in-the-loop (SITL) and hardware-in-the-loop (HITL) environments.</li>
+                  <li><strong>Fine-tuned:</strong> multiple OPT/Llama2 models with SFT and RLHF, achieving &gt;82% accuracy with high precision, recall, and F1.</li>
+                </ul>
+              </details>
+              <p class="pub-link"><a href="https://doi.org/10.48550/ARXIV.2502.05220" target="_blank" rel="noreferrer">Read the paper ↗</a></p>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>Net-GPT</h3>
+                <p class="org">Oakland University · May 2023 — Aug 2023</p>
+              </div>
+              <p>
+                LLM-powered man-in-the-middle chatbot hijacking UAV–GCS communication with
+                <strong>95.3%</strong> predictive accuracy — published at ACM/IEEE EdgeSP 2023.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>95.3% Accuracy</li><li>ACM/IEEE EdgeSP 2023</li><li>Llama-2-7B/13B</li><li>Network Packets</li><li>UAV Security</li>
+              </ul>
+              <details>
+                <summary>Full details</summary>
+                <ul>
+                  <li><strong>Researched + developed:</strong> Net-GPT, an LLM-empowered man-in-the-middle chatbot for UAV hijacking — published at EdgeSP, the Fifth ACM/IEEE Workshop on Security and Privacy in Edge Computing (Dec 2023).</li>
+                  <li><strong>Fine-tuned:</strong> Llama-2-7B (95.3%) and Llama-2-13B (94.1%) for accurate network-packet generation and UAV–GCS communication simulation, exploring the trade-off between data size and fine-tuning epochs.</li>
+                </ul>
+              </details>
+              <p class="pub-link"><a href="https://doi.org/10.1145/3583740.3626809" target="_blank" rel="noreferrer">Read the paper ↗</a></p>
+            </li>
+
+            <li class="project">
+              <div class="project-head">
+                <h3>Heterogeneous Dataset</h3>
+                <p class="org">Oakland University · Jan 2023 — Apr 2023</p>
+              </div>
+              <p>
+                Constructed a heterogeneous generative dataset for unmanned aerial systems —
+                published at IEEE MOST 2023.
+              </p>
+              <ul class="chips" aria-label="Key facts">
+                <li>IEEE MOST 2023</li><li>UAS Dataset</li><li>Generative Data</li>
+              </ul>
+              <p class="pub-link"><a href="https://doi.org/10.1109/MOST57249.2023.00034" target="_blank" rel="noreferrer">Read the paper ↗</a></p>
+            </li>
+          </ol>
+        </div>
       </section>
 
-      <section id="publications">
-        <h2>Selected Publications</h2>
-        <ul>
-          <li>
-            <a href="https://doi.org/10.48550/ARXIV.2502.05220" target="_blank" rel="noreferrer">
-              Aero-LLM: secure UAV communication with LLMs.
+      <!-- 04 · PUBLICATIONS -->
+      <section id="publications" class="panel" aria-labelledby="publications-h">
+        <header class="panel-head">
+          <h2 id="publications-h">Publications</h2>
+        </header>
+        <div class="panel-body">
+          <ol class="refs">
+            <li>
+              <a href="https://doi.org/10.48550/ARXIV.2502.05220" target="_blank" rel="noreferrer">
+                Aero-LLM: a distributed framework for secure UAV communication and intelligent decision-making
+              </a>
+              <span class="venue">IEEE ICCCN 2024</span>
+            </li>
+            <li>
+              <a href="https://doi.org/10.1145/3583740.3626809" target="_blank" rel="noreferrer">
+                Net-GPT: an LLM-empowered man-in-the-middle chatbot for UAV networks
+              </a>
+              <span class="venue">ACM/IEEE EdgeSP 2023</span>
+            </li>
+            <li>
+              <a href="https://doi.org/10.1109/MOST57249.2023.00034" target="_blank" rel="noreferrer">
+                Heterogeneous generative dataset for unmanned aerial systems
+              </a>
+              <span class="venue">IEEE MOST 2023</span>
+            </li>
+          </ol>
+          <p class="scholar-link">
+            <a href="https://scholar.google.com/citations?user=q5MaIsUAAAAJ" target="_blank" rel="noreferrer">
+              All citations on Google Scholar ↗
             </a>
-            IEEE ICCCN 2024 (workshop).
-          </li>
-          <li>
-            <a href="https://doi.org/10.1145/3583740.3626809" target="_blank" rel="noreferrer">
-              Net-GPT: LLM-empowered man-in-the-middle chatbot for UAV networks.
-            </a>
-            EdgeSP 2023 (ACM EdgeSys workshop).
-          </li>
-          <li>
-            <a href="https://doi.org/10.1109/MOST57249.2023.00034" target="_blank" rel="noreferrer">
-              Heterogeneous generative dataset for UAV intrusion detection.
-            </a>
-            IEEE MOST 2023.
-          </li>
-        </ul>
+          </p>
+        </div>
       </section>
 
-      <section id="projects">
-        <h2>Research Projects</h2>
-        <ul>
-          <li><a href="/accessibility">Accessibility-Aware Computer-Use Agents</a> — capability-aware benchmarks and LSTM POMDP policies.</li>
-          <li><a href="/multimodal">Multimodal Web Agents</a> — DeepSeek R1 extension with audio, vision, and persistent memory.</li>
-          <li><a href="/aws-agentic">AWS Production Agentic System</a> — auto-configuration generation at scale.</li>
-          <li><a href="/ectss">EC-TSS</a> — self-supervised temporal stabilization for portrait matting.</li>
-          <li><a href="/vti-aero">VTI Aero Localization</a> — GPS-independent UAV navigation via sensor fusion.</li>
-          <li><a href="/retrospect-ai">Retrospect AI</a> — autonomous vehicle trajectory emulation.</li>
-          <li><a href="/net-gpt">Net-GPT</a> — LLM-based UAV communication security.</li>
-          <li><a href="/aerollm">Aero-LLM</a> — distributed LLM framework for UAV decision-making.</li>
-          <li><a href="/heterogeneous-dataset">Heterogeneous UAV Dataset</a> — synthetic data for intrusion detection.</li>
-        </ul>
+      <!-- 05 · TEACHING -->
+      <section id="teaching" class="panel" aria-labelledby="teaching-h">
+        <header class="panel-head">
+          <h2 id="teaching-h">Teaching</h2>
+        </header>
+        <div class="panel-body">
+          <ol class="entries">
+            <li class="entry">
+              <div class="entry-head">
+                <h3>CSI 2470 · Introduction to Computer Networks</h3>
+                <span class="when">Jan — Apr 2024</span>
+              </div>
+              <p class="org">Grader · Oakland University, CSE Department</p>
+              <p>
+                Graded assignments, quizzes, and exams; helped run interactive lab sessions and
+                supported students through personalized consultations.
+              </p>
+            </li>
+            <li class="entry">
+              <div class="entry-head">
+                <h3>MTH 1554 · Calculus I</h3>
+                <span class="when">Sep — Dec 2023</span>
+              </div>
+              <p class="org">Grader · Oakland University, Mathematics &amp; Statistics</p>
+              <p>
+                Graded assignments and quizzes with constructive feedback; collaborated with
+                instructors and TAs to keep grading consistent and fair.
+              </p>
+            </li>
+          </ol>
+        </div>
       </section>
 
-      <section id="teaching">
-        <h2>Teaching</h2>
-        <ul>
-          <li>CSI 2470 - Introduction to Computer Networks, Grader, Oakland University (Jan 2024 - Apr 2024).</li>
-          <li>MTH 1554 - Calculus I, Grader, Oakland University (Sep 2023 - Dec 2023).</li>
-        </ul>
+      <!-- 06 · AWARDS -->
+      <section id="awards" class="panel" aria-labelledby="awards-h">
+        <header class="panel-head">
+          <h2 id="awards-h">Honors &amp; Awards</h2>
+        </header>
+        <div class="panel-body">
+          <ul class="awards">
+            <li>
+              <strong>Hawaiian T-shirt Award nominee</strong> — AWS SageMaker AI
+              <span class="when">Summer 2025</span>
+              <span class="award-note">3 of 100+ engineers recognized monthly for the most innovative, impactful project</span>
+            </li>
+            <li>
+              <strong>Dean's List</strong> — University of Michigan
+              <span class="when">Winter 2025</span>
+            </li>
+            <li>
+              <strong>Dean's List</strong> — Oakland University
+              <span class="when">Winter 2024</span>
+            </li>
+            <li>
+              <strong>President's List</strong> — Oakland University
+              <span class="when">Fall 2022 · Winter 2023</span>
+              <span class="award-note">12+ credits with a 3.9+ GPA</span>
+            </li>
+            <li>
+              <strong>International Opportunity Award</strong> — Oakland University
+              <span class="when">Fall 2022</span>
+            </li>
+          </ul>
+        </div>
       </section>
 
-      <section id="awards">
-        <h2>Honors and Awards</h2>
-        <ul>
-          <li>Hawaiian T-shirt Award nominee - AWS SageMaker AI (Summer 2025).</li>
-          <li>Dean's List - University of Michigan (Winter 2025).</li>
-          <li>Dean's List - Oakland University (Winter 2024).</li>
-          <li>President's List - Oakland University (Fall 2022, Winter 2023).</li>
-          <li>Oakland University International Opportunity Award (Fall 2022).</li>
-        </ul>
+      <!-- 07 · SKILLS -->
+      <section id="skills" class="panel" aria-labelledby="skills-h">
+        <header class="panel-head">
+          <h2 id="skills-h">Technical Skills</h2>
+        </header>
+        <div class="panel-body">
+          <dl class="skills">
+            <div>
+              <dt>Languages</dt>
+              <dd>Python, C, C++, Java, TypeScript, JavaScript, SQL, MATLAB, HTML, CSS</dd>
+            </div>
+            <div>
+              <dt>Technologies</dt>
+              <dd>PyTorch, TensorFlow, Hugging Face, AWS, CUDA, RAG, FAISS, Flask, React, PX4 Autopilot, JMavSim, NVIDIA Omniverse, Unreal Engine, Git</dd>
+            </div>
+            <div>
+              <dt>Expertise</dt>
+              <dd>Deep neural networks (CNNs, RNNs, LSTMs), reinforcement learning, computer vision, NLP, ML optimization, system design</dd>
+            </div>
+          </dl>
+        </div>
       </section>
 
-      <section id="contact">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:rajdeepm@umich.edu">rajdeepm@umich.edu</a></p>
-        <p>
-          If you are interested in collaborating on research, applied AI, or any topic you think would be exciting to explore together, please reach out by email.
-        </p>
-        <p>
-          Links: <a href="https://linkedin.com/in/rajdeep-mukherjee-cs752004" target="_blank" rel="noreferrer">LinkedIn</a>,
-          <a href="https://scholar.google.com/citations?user=q5MaIsUAAAAJ" target="_blank" rel="noreferrer">Google Scholar</a>,
-          <a href="https://github.com/rajdeeepm" target="_blank" rel="noreferrer">GitHub</a>
-        </p>
+      <!-- 08 · CONTACT -->
+      <section id="contact" class="panel" aria-labelledby="contact-h">
+        <header class="panel-head">
+          <h2 id="contact-h">Contact</h2>
+        </header>
+        <div class="panel-body">
+          <p>
+            Interested in collaborating on research, applied AI, or anything you think would be
+            exciting to explore together? Reach out.
+          </p>
+          <p class="contact-email">
+            <a href="mailto:rajdeepm@umich.edu">rajdeepm<span class="at">@</span>umich.edu</a>
+          </p>
+          <ul class="contact-links">
+            <li><a href="https://linkedin.com/in/rajdeep-mukherjee-cs752004" target="_blank" rel="noreferrer">LinkedIn ↗</a></li>
+            <li><a href="https://scholar.google.com/citations?user=q5MaIsUAAAAJ" target="_blank" rel="noreferrer">Google Scholar ↗</a></li>
+            <li><a href="https://github.com/rajdeeepm" target="_blank" rel="noreferrer">GitHub ↗</a></li>
+            <li><a href="/cv.pdf">Download CV</a></li>
+            <li><a href="/resume.pdf">Download Résumé</a></li>
+          </ul>
+        </div>
       </section>
     </main>
 
-    <footer class="container">
-      <div>
-        This is a simplified, no-animation view. For the full interactive experience, visit the
-        <a href="/">interactive site</a>.
-      </div>
+    <footer class="site-footer">
+      <p>
+        Text-first view — no scripts, no motion, fully keyboard- and screen-reader-friendly.
+        For the cinematic 3D experience, visit the <a href="/">interactive site</a>.
+      </p>
     </footer>
   </body>
 </html>
